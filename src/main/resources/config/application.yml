@@ -1,0 +1,200 @@
+logging:
+    level:
+        ROOT: DEBUG
+        io.github.jhipster: DEBUG
+        id.kas.smartpesantren: DEBUG
+
+management:
+    endpoints:
+        web:
+            base-path: /management
+            exposure:
+                include: ["configprops", "env", "health", "info", "threaddump", "logfile" ]
+    endpoint:
+        health:
+            show-details: when-authorized
+    info:
+        git:
+            mode: full
+    health:
+        mail:
+            enabled: false # When using the MailService, configure an SMTP server and set this to true
+    metrics:
+        enabled: false # http://micrometer.io/ is disabled by default, as we use http://metrics.dropwizard.io/ instead
+
+spring:
+    application:
+        name: AkuntingApp
+    config:
+        import: optional:file:.env[.properties]
+    profiles:
+        # The commented value for `active` can be replaced with valid Spring profiles to load.
+        # Otherwise, it will be filled in by maven when building the WAR file
+        # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+        active: dev
+        include:
+            - swagger
+    devtools:
+        restart:
+            enabled: true
+            additional-exclude: .h2.server.properties
+        livereload:
+            enabled: false # we use Webpack dev server + BrowserSync for livereload
+    jackson:
+        serialization:
+            indent-output: true
+    cache:
+        jcache:
+            config: classpath:config/ehcache/ehcache-dev.xml
+    datasource:
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+        hikari:
+            auto-commit: false
+
+    jpa:
+        database-platform: io.github.jhipster.domain.util.FixedPostgreSQL82Dialect
+        database: POSTGRESQL
+        show-sql: true
+        properties:
+            hibernate.id.new_generator_mappings: true
+            hibernate.connection.provider_disables_autocommit: true
+            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: true
+            hibernate.jdbc.lob.non_contextual_creation: true
+            hibernate.jdbc.time_zone: UTC
+
+        open-in-view: false
+        hibernate:
+            ddl-auto: update
+            naming:
+                physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+                implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    messages:
+        basename: i18n/messages
+        cache-duration: PT1S # 1 second, see the ISO 8601 standard
+    mvc:
+        favicon:
+            enabled: false
+    thymeleaf:
+        mode: HTML
+        cache: false
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: ${AKUNTING_EMAIL_USER:akunting.sby@gmail.com}
+        password: ${AKUNTING_EMAIL_PASSWORD}
+        protocol: smtp
+        tls: true
+        properties.mail.smtp:
+            auth: true
+            starttls.enable: true
+            ssl.trust: smtp.gmail.com
+    servlet:
+        multipart:
+            max-file-size: 2MB
+            max-request-size: 2MB
+    security:
+        authentication:
+            jwt:
+                # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
+                base64-secret: ${JWT_SECRET}
+                # Token is valid 24 hours
+                token-validity-in-seconds: 86400
+                token-validity-in-seconds-for-remember-me: 2592000
+        remember-me:
+            # security key (this key should be unique for your application, and kept secret)
+            key: 5f48f11d4faef8ce9d76380c28dc47450aa65070
+    h2:
+        enabled: false
+
+
+server:
+    port: ${PORT:10000}
+    servlet:
+        session:
+            cookie:
+                http-only: true
+
+# Properties to be exposed on the /info management endpoint
+info:
+    # Comma separated list of profiles that will trigger the ribbon to show
+    display-ribbon-on-profiles: "dev"
+
+# ===================================================================
+# JHipster specific properties
+#
+# Full reference is available at: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+jhipster:
+    http:
+        version: V_1_1 # To use HTTP/2 you will need to activate TLS (see application-tls.yml)
+    cache: # Cache configuration
+        ehcache: # Ehcache configuration
+            time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
+            max-entries: 100 # Number of objects in each cache entry
+    # CORS is only enabled by default with the "dev" profile, so BrowserSync can access the API
+    cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
+        allowed-headers: "*"
+        exposed-headers: "Authorization,Link,X-Total-Count"
+        allow-credentials: true
+        max-age: 1800
+    security:
+        authentication:
+            jwt:
+                # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
+                base64-secret: ZTdjNDhiN2U1ZGQ4Zjc3NjMyZGY4OGY3NmQ1MmY1OGM5YWQ0NmMyMDgzYzQ4YTNmNDRiM2ZjNDJjNjQ5MjUzMTZlOWYyN2Y4ODIyMDVhNDU1ZjAxYmMxYTIxYjcyMmFmMGYyYWVhZTMyN2M2ZjQ2MTkxYzY2ZDgwODEyZTY2ODc=
+                # Token is valid 24 hours
+                token-validity-in-seconds: 86400
+                token-validity-in-seconds-for-remember-me: 2592000
+        remember-me:
+            # security key (this key should be unique for your application, and kept secret)
+            key: ${JWT_SECRET_REMEMBER_ME}
+    async:
+        core-pool-size: 2
+        max-pool-size: 50
+        queue-capacity: 10000
+        # By default CORS is disabled. Uncomment to enable.
+        #cors:
+        #allowed-origins: "*"
+        #allowed-methods: "*"
+        #allowed-headers: "*"
+        #exposed-headers: "Authorization,Link,X-Total-Count"
+        #allow-credentials: true
+        #max-age: 1800
+    mail: # specific JHipster mail property, for standard properties see MailProperties
+        from: smartpesantren@localhost
+        base-url: http://127.0.0.1:8080
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx:
+            enabled: true
+        prometheus:
+            enabled: false #expose metrics via prometheus
+        logs: # Reports Dropwizard metrics in the logs
+            enabled: false
+            report-frequency: 60 # in seconds
+    logging:
+        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+            enabled: false
+            host: localhost
+            port: 5000
+            queue-size: 512
+
+    swagger:
+        default-include-pattern: /api/.*
+        title: Smart Pesantren API
+        description: Smart Pesantren documentation
+        version: 0.0.1
+        terms-of-service-url:
+        contact-name:
+        contact-url:
+        contact-email:
+        license:
+        license-url:
+

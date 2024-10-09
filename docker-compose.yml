@@ -1,0 +1,10 @@
+version: "3.3"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smart-pesantren-be
+    ports:
+      - 9099:9099
+      
