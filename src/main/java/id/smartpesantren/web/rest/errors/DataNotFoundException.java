@@ -10,4 +10,8 @@ public class DataNotFoundException extends AbstractThrowableProblem {
     public DataNotFoundException() {
         super(ErrorConstants.NOMOR_NOTA_NOT_FOUND_TYPE, "Data tidak ditemukan", Status.BAD_REQUEST);
     }
+
+    public DataNotFoundException(String s) {
+        super(ErrorConstants.NOMOR_NOTA_NOT_FOUND_TYPE, s, Status.BAD_REQUEST);
+    }
 }
