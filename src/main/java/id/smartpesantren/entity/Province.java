@@ -1,15 +1,17 @@
 package id.smartpesantren.entity;
 
-import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name = "m_country")
-public class Country extends AbstractAuditingEntity{
+@Table(name = "m_province")
+public class Province extends AbstractAuditingEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "country_id", nullable = false)
+    Country country;
 
     @Column(length = 3, nullable = false, unique = true)
     private String code;
@@ -17,11 +19,15 @@ public class Country extends AbstractAuditingEntity{
     private String name;
     private String description;
 
-    public Country() {
+    public Province() {
     }
 
-    public Country(Integer id) {
+    public Province(Integer id, Country country, String code, String name, String description) {
         this.id = id;
+        this.country = country;
+        this.code = code;
+        this.name = name;
+        this.description = description;
     }
 
     public Integer getId() {
@@ -30,6 +36,14 @@ public class Country extends AbstractAuditingEntity{
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public String getCode() {
