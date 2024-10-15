@@ -29,11 +29,11 @@ public class CityResource {
         return cityRepository.filterCity(q, p).map(CityDTO::new);
     }
 
-    @GetMapping("/all/{cityId}")
-    public List<CityDTO> findAllCity(@PathVariable("cityId") Integer cid, @RequestParam(value = "q", required = false) String q, Pageable p) {
+    @GetMapping("/all/{pid}")
+    public List<CityDTO> findAllCity(@PathVariable("pid") Integer provinceId, @RequestParam(value = "q", required = false) String q, Pageable p) {
         q = q == null? "": q.toUpperCase();
         q = "%"+q+"%";
-        return cityRepository.findAllCity(cid, q, p)
+        return cityRepository.findAllCity(provinceId, q, p)
                 .stream()
                 .map(CityDTO::new)
                 .collect(Collectors.toList());
