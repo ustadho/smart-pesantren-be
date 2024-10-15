@@ -3,32 +3,28 @@ package id.smartpesantren.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "m_province")
-public class Province extends AbstractAuditingEntity{
+@Table(name = "m_city")
+public class City extends AbstractAuditingEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
-    Country country;
+    @JoinColumn(name = "province_id", nullable = false)
+    Province province;
 
-    @Column(length = 3, nullable = false, unique = true)
+    @Column(length = 4, nullable = false, unique = true)
     private String code;
     @Column(length = 100, nullable = false, unique = true)
     private String name;
     private String description;
 
-    public Province() {
+    public City() {
     }
 
-    public Province(Integer id) {
+    public City(Integer id, Province province, String code, String name, String description) {
         this.id = id;
-    }
-
-    public Province(Integer id, Country country, String code, String name, String description) {
-        this.id = id;
-        this.country = country;
+        this.province = province;
         this.code = code;
         this.name = name;
         this.description = description;
@@ -42,12 +38,12 @@ public class Province extends AbstractAuditingEntity{
         this.id = id;
     }
 
-    public Country getCountry() {
-        return country;
+    public Province getProvince() {
+        return province;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setProvince(Province province) {
+        this.province = province;
     }
 
     public String getCode() {

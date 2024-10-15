@@ -28,8 +28,8 @@ public class ProvinceResource {
         return provinceRepository.filterProvince(q, p);
     }
 
-    @GetMapping("/all/{countryId}")
-    public List<Province> findAllCountry(@PathVariable("countryId") Integer cid, @RequestParam(value = "q", required = false) String q, Pageable p) {
+    @GetMapping("/all/{pid}")
+    public List<Province> findAllProvince(@PathVariable("pid") Integer cid, @RequestParam(value = "q", required = false) String q, Pageable p) {
         q = q == null? "": q.toUpperCase();
         q = "%"+q+"%";
         return provinceRepository.findAllProvince(cid, q, p);
@@ -48,14 +48,14 @@ public class ProvinceResource {
     }
 
     @PutMapping("/{id}")
-    public void updateCountry(@PathVariable("id") Integer id, @RequestBody @Valid ProvinceDTO c) {
+    public void updateProvince(@PathVariable("id") Integer id, @RequestBody @Valid ProvinceDTO c) {
         Optional<Province> e = provinceRepository.findByCode(c.getCode());
         if(e.isPresent() && e.get().getId() != id) {
             throw new CodeAlreadyUsedException();
         }
         Province exist = provinceRepository.findById(id).get();
         if(exist == null) {
-            throw new DataNotFoundException("Data negara dengan id tersebut tidak ditemukan");
+            throw new DataNotFoundException("Data provinsi dengan id tersebut tidak ditemukan");
         }
         exist.setCountry(new Country(c.getCountryId()));
         exist.setCode(c.getCode());
@@ -65,7 +65,7 @@ public class ProvinceResource {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCountry(@PathVariable("id") Integer id) {
+    public void deleteProvince(@PathVariable("id") Integer id) {
         Optional<Province> e = provinceRepository.findById(id);
         if(!e.isPresent() ) {
             throw new DataNotFoundException("data provinsi tidak ditemukan");

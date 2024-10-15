@@ -12,7 +12,7 @@ public class ProvinceDTO {
     private Integer id;
     @NotNull
     private Integer countryId;
-    private Integer countryName;
+    private String countryName;
     @NotNull @NotEmpty
     private String code;
     @NotNull @NotEmpty
@@ -35,11 +35,11 @@ public class ProvinceDTO {
         this.countryId = countryId;
     }
 
-    public Integer getCountryName() {
+    public String getCountryName() {
         return countryName;
     }
 
-    public void setCountryName(Integer countryName) {
+    public void setCountryName(String countryName) {
         this.countryName = countryName;
     }
 
