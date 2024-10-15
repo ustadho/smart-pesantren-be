@@ -16,7 +16,7 @@ public interface DistrictRepository extends JpaRepository<District, Integer> {
     Page<District> filterDistrict(@Param("q") String q, Pageable p);
 
     @Query("from District c " +
-            "where c.city.id=:pid \n" +
+            "where (coalesce(:pid,0)=0 OR c.city.id=:pid) \n" +
             "and upper(c.code) like :q or upper(c.name) like :q ")
     List<District> findAllDistrict(@Param("pid") Integer pid, @Param("q") String q, Pageable p);
 

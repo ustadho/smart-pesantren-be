@@ -16,7 +16,7 @@ public interface CityRepository extends JpaRepository<City, Integer> {
     Page<City> filterCity(@Param("q") String q, Pageable p);
 
     @Query("from City c " +
-            "where c.province.id=:pid \n" +
+            "where (coalesce(:pid,0)=0 OR c.province.id=:pid) \n" +
             "and upper(c.code) like :q or upper(c.name) like :q ")
     List<City> findAllCity(@Param("pid") Integer pid, @Param("q") String q, Pageable p);
 

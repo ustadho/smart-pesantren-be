@@ -3,15 +3,15 @@ package id.smartpesantren.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "m_district") // Kecamatan
-public class District extends AbstractAuditingEntity{
+@Table(name = "m_sub_district") // Kelurahan
+public class SubDistrict extends AbstractAuditingEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "city_id", nullable = false)
-    City city;
+    @JoinColumn(name = "district_id", nullable = false)
+    District district;
 
     @Column(length = 6, nullable = false, unique = true)
     private String code;
@@ -19,16 +19,12 @@ public class District extends AbstractAuditingEntity{
     private String name;
     private String description;
 
-    public District() {
+    public SubDistrict() {
     }
 
-    public District(Integer id) {
+    public SubDistrict(Integer id, District district, String code, String name, String description) {
         this.id = id;
-    }
-
-    public District(Integer id, City city, String code, String name, String description) {
-        this.id = id;
-        this.city = city;
+        this.district = district;
         this.code = code;
         this.name = name;
         this.description = description;
@@ -42,12 +38,12 @@ public class District extends AbstractAuditingEntity{
         this.id = id;
     }
 
-    public City getCity() {
-        return city;
+    public District getDistrict() {
+        return district;
     }
 
-    public void setCity(City city) {
-        this.city = city;
+    public void setDistrict(District district) {
+        this.district = district;
     }
 
     public String getCode() {
