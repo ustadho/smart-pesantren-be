@@ -260,7 +260,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        Foundation c = foundationRepository.findById(SecurityUtils.getCompanyIdOfCurrentUser().get()).get();
+        Foundation c = foundationRepository.findTop1ByOrderById().get();
         return userRepository.findOneWithAuthoritiesByLogin(login)
                 .map(user -> {
                     user.getAuthorities().stream().filter(authority -> {
@@ -307,7 +307,7 @@ public class UserService {
      * @return a list of all the authorities
      */
     public List<String> getAuthorities() {
-        Optional<Foundation> c = foundationRepository.findById(SecurityUtils.getCompanyIdOfCurrentUser().get());
+        Optional<Foundation> c = foundationRepository.findTop1ByOrderById();
         if(c.isPresent()) {
             return authorityRepository.findAll().stream()
                     .filter(a -> {
