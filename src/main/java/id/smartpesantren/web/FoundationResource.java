@@ -16,19 +16,18 @@ public class FoundationResource {
 
     @GetMapping
     public Foundation getFoundation() {
-        return foundationRepository.findTop1ByOrderById().get();
+        return foundationRepository.findCurrentFoundation().get();
     }
 
     @PostMapping
     public Foundation create(@RequestBody @Valid Foundation f) {
-        f.setId(1);
         foundationRepository.save(f);
         return f;
     }
 
     @PutMapping
     public void updateCountry(@RequestBody @Valid Foundation c) {
-        Optional<Foundation> e = foundationRepository.findTop1ByOrderById();
+        Optional<Foundation> e = foundationRepository.findCurrentFoundation();
         Foundation exist = null;
         if(e.isPresent()) {
             exist = e.get();

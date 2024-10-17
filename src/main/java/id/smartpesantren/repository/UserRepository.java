@@ -12,6 +12,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
@@ -48,5 +50,9 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Cacheable(cacheNames = USERS_BY_EMAIL_CACHE)
     Optional<User> findOneWithAuthoritiesByEmail(String email);
 
-    Page<User> findAllByLoginNot(Pageable pageable, String login);
+    @Query("from User u " +
+            "where u.foundation.id=?#{principal.foundationId} \n " +
+            "and u.login !=:login \n" +
+            "and (u.login like :q or u.email like :q)")
+    Page<User> findAllByLoginNot(Pageable pageable, @Param("login") String login, @Param("q") String q);
 }

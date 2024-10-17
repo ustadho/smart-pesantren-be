@@ -47,10 +47,10 @@ public final class SecurityUtils {
                 .map(authentication -> (String) authentication.getCredentials());
     }
 
-    public static Optional<String> getCompanyIdOfCurrentUser() {
+    public static Optional<String> getFoundationId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails currentUser = (MyUserDetails)auth.getPrincipal();
-        return Optional.ofNullable(currentUser.getCompanyId());
+        return Optional.ofNullable(currentUser.getFoundationId());
     }
 
     /**

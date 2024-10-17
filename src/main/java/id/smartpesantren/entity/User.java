@@ -39,6 +39,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(length = 36)
     private String id;
 
+    @ManyToOne
+    @JoinColumn(name = "foundation_id", nullable = false)
+    Foundation foundation;
+
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1)
     @Column(length = 50, unique = true, nullable = false)
@@ -100,6 +104,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Foundation getFoundation() {
+        return foundation;
+    }
+
+    public void setFoundation(Foundation foundation) {
+        this.foundation = foundation;
     }
 
     public String getLogin() {

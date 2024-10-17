@@ -143,7 +143,7 @@ public class UserService {
     }
 
     public User createUser(UserDTO userDTO) {
-        String cid = SecurityUtils.getCompanyIdOfCurrentUser().get();
+        String cid = SecurityUtils.getFoundationId().get();
         User user = new User();
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
@@ -254,13 +254,13 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserDTO> getAllManagedUsers(Pageable pageable, String cid) {
-        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+    public Page<UserDTO> getAllManagedUsers(Pageable pageable, String q) {
+        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER, "%"+q+"%").map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        Foundation c = foundationRepository.findTop1ByOrderById().get();
+        Foundation c = foundationRepository.findCurrentFoundation().get();
         return userRepository.findOneWithAuthoritiesByLogin(login)
                 .map(user -> {
                     user.getAuthorities().stream().filter(authority -> {
@@ -307,7 +307,7 @@ public class UserService {
      * @return a list of all the authorities
      */
     public List<String> getAuthorities() {
-        Optional<Foundation> c = foundationRepository.findTop1ByOrderById();
+        Optional<Foundation> c = foundationRepository.findCurrentFoundation();
         if(c.isPresent()) {
             return authorityRepository.findAll().stream()
                     .filter(a -> {

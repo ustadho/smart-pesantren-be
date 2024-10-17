@@ -150,11 +150,11 @@ public class UserResource {
      */
     @GetMapping("/users")
     @Timed
-    public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        MyUserDetails currentUser = (MyUserDetails)auth.getPrincipal();
+    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(value = "q", required = false) String q, Pageable pageable) {
+        q = q == null? "": q;
+        q = "%"+q+"%";
 
-        final Page<UserDTO> page = userService.getAllManagedUsers(pageable, currentUser.getCompanyId());
+        final Page<UserDTO> page = userService.getAllManagedUsers(pageable, q);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

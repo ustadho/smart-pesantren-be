@@ -10,8 +10,10 @@ import javax.persistence.*;
 @Table(name = "c_foundation")
 public class Foundation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @Column(length = 36)
+    private String id;
 
     @Column(nullable = false)
     private String name;
@@ -65,11 +67,15 @@ public class Foundation {
     public Foundation() {
     }
 
-    public Integer getId() {
+    public Foundation(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
