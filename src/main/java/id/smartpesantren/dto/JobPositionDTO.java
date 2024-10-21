@@ -1,34 +1,42 @@
 package id.smartpesantren.dto;
 
+import id.smartpesantren.entity.JobPosition;
 import id.smartpesantren.entity.Organization;
 
-public class OrganizationDTO {
+public class JobPositionDTO {
     private String id;
-    private String parentId;
     private String code;
     private String name;
     private String description;
+    private String jobLevelId;
+    private String jobLevelName;
+    private Integer level;
     private Boolean active;
 
-    public OrganizationDTO() {
+    public JobPositionDTO() {
     }
 
-    public OrganizationDTO(Organization o) {
+    public JobPositionDTO(JobPosition o) {
         this(o.getId(),
-                o.getParent() == null? null: o.getParent().getId(),
-                o.getCode(),
-                o.getName(),
-                o.getDescription(),
-                o.getActive());
+            o.getCode(),
+            o.getName(),
+            o.getDescription(),
+            o.getJobLevel().getId(),
+            o.getJobLevel().getName(),
+            o.getJobLevel().getLevel(),
+            o.getActive()
+        );
     }
 
-    public OrganizationDTO(String id, String parentId, String code, String name, String description, Boolean active) {
+    public JobPositionDTO(String id, String code, String name, String description, String jobLevelId, String jobLevelName, Integer level, Boolean active) {
         this.id = id;
-        this.parentId = parentId;
         this.code = code;
         this.name = name;
         this.description = description;
         this.active = active;
+        this.jobLevelId = jobLevelId;
+        this.jobLevelName = jobLevelName;
+        this.level = level;
     }
 
     public String getId() {
@@ -37,14 +45,6 @@ public class OrganizationDTO {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
     }
 
     public String getCode() {
@@ -77,5 +77,29 @@ public class OrganizationDTO {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public String getJobLevelId() {
+        return jobLevelId;
+    }
+
+    public void setJobLevelId(String jobLevelId) {
+        this.jobLevelId = jobLevelId;
+    }
+
+    public String getJobLevelName() {
+        return jobLevelName;
+    }
+
+    public void setJobLevelName(String jobLevelName) {
+        this.jobLevelName = jobLevelName;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 }

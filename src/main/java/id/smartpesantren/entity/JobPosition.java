@@ -5,8 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "m_job_level")
-public class JobLevel {
+@Table(name = "m_job_position")
+public class JobPosition extends AbstractAuditingEntity {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
@@ -17,22 +17,18 @@ public class JobLevel {
     @JoinColumn(name = "foundation_id", nullable = false)
     Foundation foundation;
 
-    @Column(length = 4, nullable = false)
+    @Column(length = 10, nullable = false)
     private String code;
     @Column(length = 100, nullable = false)
     private String name;
     private String description;
-    private String color;
 
-    @Column(columnDefinition = "integer default 1", nullable = false)
-    private Integer level;
+    @Column(columnDefinition = "boolean default true")
+    private Boolean active;
 
-    public JobLevel() {
-    }
-
-    public JobLevel(String id) {
-        this.id = id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "level_id", nullable = false)
+    private JobLevel jobLevel;
 
     public String getId() {
         return id;
@@ -74,19 +70,19 @@ public class JobLevel {
         this.description = description;
     }
 
-    public String getColor() {
-        return color;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
-    public Integer getLevel() {
-        return level;
+    public JobLevel getJobLevel() {
+        return jobLevel;
     }
 
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setJobLevel(JobLevel jobLevel) {
+        this.jobLevel = jobLevel;
     }
 }
