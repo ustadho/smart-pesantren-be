@@ -2,13 +2,23 @@ package id.smartpesantren.dto;
 
 import id.smartpesantren.entity.Organization;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class OrganizationDTO {
     private String id;
     private String parentId;
+
+    @NotNull @NotEmpty
     private String code;
+
+    @NotNull @NotEmpty
     private String name;
     private String description;
     private Boolean active;
+
+    @NotNull @NotEmpty
+    private String jobLevelId;
 
     public OrganizationDTO() {
     }
@@ -19,16 +29,19 @@ public class OrganizationDTO {
                 o.getCode(),
                 o.getName(),
                 o.getDescription(),
-                o.getActive());
+                o.getActive(),
+                o.getJobLevel().getId()
+                );
     }
 
-    public OrganizationDTO(String id, String parentId, String code, String name, String description, Boolean active) {
+    public OrganizationDTO(String id, String parentId, String code, String name, String description, Boolean active, String jobLvelId) {
         this.id = id;
         this.parentId = parentId;
         this.code = code;
         this.name = name;
         this.description = description;
         this.active = active;
+        this.jobLevelId = jobLvelId;
     }
 
     public String getId() {
@@ -77,5 +90,13 @@ public class OrganizationDTO {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public String getJobLevelId() {
+        return jobLevelId;
+    }
+
+    public void setJobLevelId(String jobLevelId) {
+        this.jobLevelId = jobLevelId;
     }
 }

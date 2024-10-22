@@ -30,6 +30,10 @@ public class Organization extends AbstractAuditingEntity{
     @Column(columnDefinition = "boolean default true")
     private Boolean active;
 
+    @ManyToOne
+    @JoinColumn(name = "level_id", nullable = false)
+    private JobLevel jobLevel;
+
     public Organization() {
     }
 
@@ -91,5 +95,13 @@ public class Organization extends AbstractAuditingEntity{
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public JobLevel getJobLevel() {
+        return jobLevel;
+    }
+
+    public void setJobLevel(JobLevel jobLevel) {
+        this.jobLevel = jobLevel;
     }
 }

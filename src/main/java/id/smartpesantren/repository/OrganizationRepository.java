@@ -12,14 +12,14 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface OrganizationRepository extends PagingAndSortingRepository<Organization, String> {
-    @Query("select new id.smartpesantren.dto.OrganizationDTO(c.id, p.id, c.code, c.name, c.description, c.active) " +
+    @Query("select new id.smartpesantren.dto.OrganizationDTO(c.id, p.id, c.code, c.name, c.description, c.active, c.jobLevel.id) " +
             "from Organization c \n" +
             "left join c.parent p \n" +
             "where c.foundation.id=?#{principal.foundationId} \n" +
             "and upper(c.name) like :q")
     public Page<OrganizationDTO> findAllOrganization(@Param("q") String q, Pageable p);
 
-    @Query("select new id.smartpesantren.dto.OrganizationDTO(c.id, p.id, c.code, c.name, c.description, c.active) " +
+    @Query("select new id.smartpesantren.dto.OrganizationDTO(c.id, p.id, c.code, c.name, c.description, c.active, c.jobLevel.id) " +
             "from Organization c \n" +
             "left join c.parent p \n" +
             "where c.foundation.id=?#{principal.foundationId} \n" +
@@ -41,10 +41,12 @@ public interface OrganizationRepository extends PagingAndSortingRepository<Organ
             "    m_organization o\n" +
             "    WHERE o.parent_id = p.id\n" +
             ")\n" +
-            "SELECT c.id, c.code, c.name, c.parent_id \"parentId\", c.level, c.active, ( SELECT count(1) AS count\n" +
+            "SELECT c.id, c.code, c.name, c.parent_id \"parentId\", l.level, c.active, l.color, ( SELECT count(1) AS count\n" +
             "FROM cte\n" +
             "WHERE cte.parent_id = c.id) AS \"childCount\", c.path\n" +
             "FROM cte c\n" +
+            "join m_organization o on o.id=c.id\n" +
+            "join m_job_level l on l.id=o.level_id\n" +
             "ORDER BY c.path;", nativeQuery = true)
     List<OrganizationTreeDTO> findAllOrganizationTree();
 }

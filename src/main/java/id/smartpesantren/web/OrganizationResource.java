@@ -3,6 +3,7 @@ package id.smartpesantren.web;
 import id.smartpesantren.dto.OrganizationDTO;
 import id.smartpesantren.dto.OrganizationTreeDTO;
 import id.smartpesantren.entity.Foundation;
+import id.smartpesantren.entity.JobLevel;
 import id.smartpesantren.entity.Organization;
 import id.smartpesantren.repository.OrganizationRepository;
 import id.smartpesantren.security.SecurityUtils;
@@ -29,6 +30,7 @@ public class OrganizationResource {
         o.setName(req.getName());
         o.setDescription(req.getDescription());
         o.setParent(req.getParentId() == null? null: new Organization(req.getParentId()));
+        o.setJobLevel(new JobLevel(req.getJobLevelId()));
         o.setActive(req.getActive());
         organizationRepository.save(o);
     }
@@ -67,6 +69,7 @@ public class OrganizationResource {
         data.setName(req.getName());
         data.setDescription(req.getDescription());
         data.setParent(req.getParentId() == null? null: new Organization(req.getParentId()));
+        data.setJobLevel(new JobLevel(req.getJobLevelId()));
         data.setActive(req.getActive());
         organizationRepository.save(data);
     }

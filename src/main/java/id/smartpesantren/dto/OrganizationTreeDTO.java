@@ -11,4 +11,5 @@ public interface OrganizationTreeDTO {
     public Boolean getActive();
     public Integer getChildCount();
     public String getPath();
+    public String getColor();
 }
