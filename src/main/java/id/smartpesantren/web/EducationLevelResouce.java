@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/hr/education-level")
-public class AcademicLevelResouce {
+public class EducationLevelResouce {
     @Autowired
     EducationLevelRepository educationLevelRepository;
 
