@@ -1,9 +1,9 @@
 package id.smartpesantren.web;
 
-import id.smartpesantren.dto.WorkingHourDTO;
+import id.smartpesantren.dto.WorkingTimeDTO;
 import id.smartpesantren.entity.Foundation;
-import id.smartpesantren.entity.WorkingHour;
-import id.smartpesantren.repository.WorkingHourRepository;
+import id.smartpesantren.entity.WorkingTime;
+import id.smartpesantren.repository.WorkingTimeRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.errors.CodeAlreadyUsedException;
 import id.smartpesantren.web.rest.errors.DataNotFoundException;
@@ -17,35 +17,35 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/hr/working-hour")
-public class WorkingHourResource {
+@RequestMapping("api/hr/working-time")
+public class WorkingTimeResource {
     @Autowired
-    WorkingHourRepository workingHourRepository;
+    WorkingTimeRepository workingTimeRepository;
 
     @GetMapping
-    public Page<WorkingHourDTO> filter(@RequestParam(value = "q", defaultValue = "") String q, Pageable p) {
-        return workingHourRepository.filter("%"+q+"%", p);
+    public Page<WorkingTimeDTO> filter(@RequestParam(value = "q", defaultValue = "") String q, Pageable p) {
+        return workingTimeRepository.filter("%"+q+"%", p);
     }
 
     @GetMapping("/{id}")
-    public WorkingHourDTO findById(@PathVariable String id) {
-        return workingHourRepository.findById(id)
-                .map(WorkingHourDTO::new)
+    public WorkingTimeDTO findById(@PathVariable String id) {
+        return workingTimeRepository.findById(id)
+                .map(WorkingTimeDTO::new)
                 .orElseThrow(() -> new DataNotFoundException("data tidak ditemukan"));
     }
 
     @GetMapping("all")
-    public Iterable<WorkingHourDTO> findAllWorkHour(@RequestParam String q) {
-        return workingHourRepository.findAll("%"+q+"%");
+    public Iterable<WorkingTimeDTO> findAllWorkHour(@RequestParam String q) {
+        return workingTimeRepository.findAll("%"+q+"%");
     }
 
     @PostMapping
-    public WorkingHourDTO createWorkHour(@RequestBody @Valid WorkingHourDTO req) {
-        Optional<WorkingHour> e = workingHourRepository.findByCode(req.getCode());
+    public WorkingTimeDTO createWorkHour(@RequestBody @Valid WorkingTimeDTO req) {
+        Optional<WorkingTime> e = workingTimeRepository.findByCode(req.getCode());
         if (e.isPresent()) {
             throw new CodeAlreadyUsedException();
         }
-        WorkingHour a = new WorkingHour();
+        WorkingTime a = new WorkingTime();
         a.setCode(req.getCode());
         a.setName(req.getName());
         a.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
@@ -62,21 +62,21 @@ public class WorkingHourResource {
         a.setColor(req.getColor());
         a.setEarlyLeaveTolerance(req.getEarlyLeaveTolerance());
         a.setNoOfWorkingDays(req.getNoOfWorkingDays());
-        workingHourRepository.save(a);
+        workingTimeRepository.save(a);
         req.setId(a.getId());
         return req;
     }
 
     @PutMapping("/{id}")
-    public WorkingHourDTO updateWorkHour(@PathVariable String id, @RequestBody @Valid WorkingHourDTO req) {
-        WorkingHour a = null;
-        Optional<WorkingHour> e = workingHourRepository.findById(id);
+    public WorkingTimeDTO updateWorkHour(@PathVariable String id, @RequestBody @Valid WorkingTimeDTO req) {
+        WorkingTime a = null;
+        Optional<WorkingTime> e = workingTimeRepository.findById(id);
         if (!e.isPresent()) {
             throw new InternalServerErrorException("Data dengan id tersebut tidak ditemukan");
         }
         a = e.get();
         if(!e.get().getCode().equalsIgnoreCase(req.getCode())) {
-            Optional<WorkingHour> ec = workingHourRepository.findByCode(req.getCode());
+            Optional<WorkingTime> ec = workingTimeRepository.findByCode(req.getCode());
             if (ec.isPresent()) {
                 throw new CodeAlreadyUsedException();
             }
@@ -98,17 +98,17 @@ public class WorkingHourResource {
         a.setColor(req.getColor());
         a.setEarlyLeaveTolerance(req.getEarlyLeaveTolerance());
         a.setNoOfWorkingDays(req.getNoOfWorkingDays());
-        workingHourRepository.save(a);
+        workingTimeRepository.save(a);
         req.setId(a.getId());
         return req;
     }
 
     @DeleteMapping("/{id}")
     public void deleteWorkHour(@PathVariable String id) {
-        Optional<WorkingHour> e = workingHourRepository.findById(id);
+        Optional<WorkingTime> e = workingTimeRepository.findById(id);
         if (!e.isPresent()) {
             throw new InternalServerErrorException("Data dengan id tersebut tidak ditemukan");
         }
-        workingHourRepository.deleteById(id);
+        workingTimeRepository.deleteById(id);
     }
 }
