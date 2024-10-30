@@ -1,6 +1,8 @@
 package id.smartpesantren.repository;
 
+import id.smartpesantren.dto.BaseEnityDTO;
 import id.smartpesantren.dto.RegionDTO;
+import id.smartpesantren.entity.EmployeeStatus;
 import id.smartpesantren.entity.SubDistrict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +26,7 @@ public interface SubDistrictRepository extends JpaRepository<SubDistrict, Intege
     Optional<SubDistrict> findByCode(String code);
 
     @Query(value = "-- name: ResolveAllLocations :many\n" +
-            "select c.province_id \"provinceId\", p.name \"provinceName\", d.city_id \"cityId\" , c.name \"cityName\", sd.district_id \"districtId\", d.name \"districtName\", sd.id \"subDistrictId\", sd.name \"subDistrictName\", \n" +
+            "select c.province_id \"provinceId\", p.name \"provinceName\", d.city_id \"cityId\" , c.name \"cityName\", sd.district_id \"districtId\", d.name \"districtName\", sd.id, sd.name , \n" +
             "sd.name||', '||d.name||', '||c.name||', '||p.name \"locationName\",\n" +
             "SIMILARITY(sd.name||d.name, lower(replace(:q, ' ', ''))) similarity\n" +
             "from m_sub_district sd \n" +

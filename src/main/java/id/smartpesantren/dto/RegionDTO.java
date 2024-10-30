@@ -7,8 +7,8 @@ public interface RegionDTO {
     public String getCityName();
     public String getDistrictId();
     public String getDistrictName();
-    public String getSubDistrictId();
-    public String getSubDistrictName();
+    public String getId();
+    public String getName();
     public String getLocationName();
     public Float getSimiliarity();
 }

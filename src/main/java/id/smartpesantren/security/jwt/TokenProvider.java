@@ -28,7 +28,7 @@ public class TokenProvider {
     private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
 
     private static final String AUTHORITIES_KEY = "authorities";
-    private static final String INSTITUTION_KEY = "inst";
+    private static final String FOUNDATION_KEY = "fdn";
 
     private Key key;
 
@@ -62,7 +62,7 @@ public class TokenProvider {
                 .getTokenValidityInSecondsForRememberMe();
     }
 
-    public String createToken(Authentication authentication, boolean rememberMe) {
+    public String createToken(Authentication authentication, String foundationId, boolean rememberMe) {
         String authorities = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(","));
@@ -78,6 +78,7 @@ public class TokenProvider {
         return Jwts.builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
+            .claim(FOUNDATION_KEY, foundationId)
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)
             .compact();
@@ -93,7 +94,7 @@ public class TokenProvider {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        MyUserDetails principal = new MyUserDetails(claims.getSubject(), "", authorities);
+        MyUserDetails principal = new MyUserDetails(claims.getSubject(), "", authorities, claims.get(FOUNDATION_KEY).toString());
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 

@@ -1,5 +1,6 @@
 package id.smartpesantren.web;
 
+import id.smartpesantren.dto.CityDTO;
 import id.smartpesantren.dto.DistrictDTO;
 import id.smartpesantren.dto.RegionDTO;
 import id.smartpesantren.dto.SubDistrictDTO;
@@ -30,6 +31,11 @@ public class SubDistrictResource {
         q = q == null? "": q.toUpperCase();
         q = "%"+q+"%";
         return subDistrictRepository.filterSubDistrict(q, p).map(SubDistrictDTO::new);
+    }
+
+    @GetMapping("/{id}")
+    public SubDistrictDTO findById(@PathVariable("id") Integer id) {
+        return subDistrictRepository.findById(id).map(SubDistrictDTO::new).get();
     }
 
     @GetMapping("/all")

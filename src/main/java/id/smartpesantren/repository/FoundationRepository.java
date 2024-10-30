@@ -6,15 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface FoundationRepository extends JpaRepository<Foundation, String> {
+public interface FoundationRepository extends JpaRepository<Foundation, Integer> {
     String FOUNDATION_BY_ID_CACHE = "foundationById";
-
-    @Query("from Foundation c " +
-            "where c.id=?1")
-    Optional<Foundation> findById(String id);
-
-    @Query("from Foundation c " +
-            "where c.id=?#{principal.companyId}")
-    Optional<Foundation> findByUserLoggedIn();
-
+    @Query("from Foundation f " +
+           "where f.id=?#{principal.foundationId}")
+    Optional<Foundation> findCurrentFoundation();
 }

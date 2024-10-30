@@ -96,7 +96,7 @@ public class AccountResource {
 
     @GetMapping("/info/{id}")
     public String getInfo(@PathVariable Integer id) {
-        return SecurityUtils.getCompanyIdOfCurrentUser().get();
+        return SecurityUtils.getFoundationId().get();
     }
 
     /**

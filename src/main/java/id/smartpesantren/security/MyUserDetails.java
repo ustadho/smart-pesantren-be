@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class MyUserDetails implements UserDetails {
 
     private String username;
-    private String companyId;
+    private String foundationId;
 
     @JsonIgnore
     private String password;
@@ -22,11 +22,13 @@ public class MyUserDetails implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 
     public MyUserDetails(String username, String password,
-                         Collection<? extends GrantedAuthority> authorities) {
+                         Collection<? extends GrantedAuthority> authorities,
+                         String foundationId) {
         System.out.println("MyUserDetails: "+ username);
         this.username = username;
         this.password = password;
         this.authorities = authorities;
+        this.foundationId = foundationId;
     }
 
     public static MyUserDetails build(User user) {
@@ -37,7 +39,8 @@ public class MyUserDetails implements UserDetails {
         return new MyUserDetails(
                 user.getLogin(),
                 user.getLastName(),
-                authorities);
+                authorities,
+                user.getFoundation().getId());
     }
 
     @Override
@@ -45,12 +48,12 @@ public class MyUserDetails implements UserDetails {
         return authorities;
     }
 
-    public String getCompanyId() {
-        return companyId;
+    public String getFoundationId() {
+        return foundationId;
     }
 
-    public void setCompanyId(String companyId) {
-        this.companyId = companyId;
+    public void setFoundationId(String foundationId) {
+        this.foundationId = foundationId;
     }
 
     @Override

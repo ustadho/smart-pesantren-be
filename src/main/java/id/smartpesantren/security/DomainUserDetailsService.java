@@ -48,7 +48,7 @@ public class DomainUserDetailsService implements UserDetailsService {
 //            return new org.springframework.security.core.userdetails.User(lowercaseLogin,
 //                user.getPassword(),
 //                grantedAuthorities);
-            return new MyUserDetails(lowercaseLogin, user.getPassword(), grantedAuthorities);
+            return new MyUserDetails(lowercaseLogin, user.getPassword(), grantedAuthorities, userFromDatabase.get().getFoundation().getId());
         }).orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the " +
         "database"));
     }

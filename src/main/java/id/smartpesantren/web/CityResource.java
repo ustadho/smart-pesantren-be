@@ -29,11 +29,26 @@ public class CityResource {
         return cityRepository.filterCity(q, p).map(CityDTO::new);
     }
 
+    @GetMapping("/{id}")
+    public CityDTO findById(@PathVariable("id") Integer id) {
+        return cityRepository.findById(id).map(CityDTO::new).get();
+    }
+
     @GetMapping("/all/{pid}")
-    public List<CityDTO> findAllCity(@PathVariable("pid") Integer provinceId, @RequestParam(value = "q", required = false) String q, Pageable p) {
+    public List<CityDTO> findAllCity(@PathVariable("pid") Integer provinceId, @RequestParam(value = "q", required = false) String q) {
         q = q == null? "": q.toUpperCase();
         q = "%"+q+"%";
-        return cityRepository.findAllCity(provinceId, q, p)
+        return cityRepository.findAllCity(provinceId, q)
+                .stream()
+                .map(CityDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/all")
+    public List<CityDTO> findAllCity(@RequestParam(value = "q", required = false) String q) {
+        q = q == null? "": q.toUpperCase();
+        q = "%"+q+"%";
+        return cityRepository.findAllCity(q)
                 .stream()
                 .map(CityDTO::new)
                 .collect(Collectors.toList());
@@ -76,8 +91,4 @@ public class CityResource {
         }
         cityRepository.deleteById(id);
     }
-
-
-
-
 }
