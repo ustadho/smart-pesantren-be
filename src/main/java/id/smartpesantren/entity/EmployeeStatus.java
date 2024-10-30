@@ -3,11 +3,10 @@ package id.smartpesantren.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
-@Table(name = "hr_section")
-public class Section extends AbstractAuditingEntity implements Serializable {
+@Table(name = "hr_employee_status")
+public class EmployeeStatus {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
@@ -18,24 +17,16 @@ public class Section extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "foundation_id", nullable = false)
     Foundation foundation;
 
-    @Column(length = 4, nullable = false)
-    private String code;
-    @Column(length = 100, nullable = false)
+    @Column(nullable = false)
     private String name;
-    private String description;
 
-    public Section() {
+    @Column(nullable = false, columnDefinition = "integer default 1")
+    private Integer seq;
+
+    public EmployeeStatus() {
     }
 
-    public Section(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
+    public EmployeeStatus(String id) {
         this.id = id;
     }
 
@@ -47,12 +38,12 @@ public class Section extends AbstractAuditingEntity implements Serializable {
         this.foundation = foundation;
     }
 
-    public String getCode() {
-        return code;
+    public String getId() {
+        return id;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -63,11 +54,11 @@ public class Section extends AbstractAuditingEntity implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public Integer getSeq() {
+        return seq;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setSeq(Integer seq) {
+        this.seq = seq;
     }
 }

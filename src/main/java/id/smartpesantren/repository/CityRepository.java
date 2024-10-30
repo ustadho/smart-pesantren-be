@@ -18,7 +18,11 @@ public interface CityRepository extends JpaRepository<City, Integer> {
     @Query("from City c " +
             "where (coalesce(:pid,0)=0 OR c.province.id=:pid) \n" +
             "and upper(c.code) like :q or upper(c.name) like :q ")
-    List<City> findAllCity(@Param("pid") Integer pid, @Param("q") String q, Pageable p);
+    List<City> findAllCity(@Param("pid") Integer pid, @Param("q") String q);
+
+    @Query("from City c " +
+            "where upper(c.code) like :q or upper(c.name) like :q ")
+    List<City> findAllCity(@Param("q") String q);
 
     Optional<City> findByCode(String code);
 }

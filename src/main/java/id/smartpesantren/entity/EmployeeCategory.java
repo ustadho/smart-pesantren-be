@@ -23,6 +23,13 @@ public class EmployeeCategory {
     @Column(nullable = false)
     private String name;
 
+    public EmployeeCategory() {
+    }
+
+    public EmployeeCategory(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

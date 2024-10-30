@@ -28,7 +28,7 @@ public interface OrganizationRepository extends PagingAndSortingRepository<Organ
 
     @Query(value = "WITH RECURSIVE cte AS (\n" +
             "    SELECT a.id, a.code, a.name, a.parent_id, 0 AS level, a.active, cast(a.code as text) AS path\n" +
-            "    FROM m_organization a\n" +
+            "    FROM hr_organization a\n" +
             "    WHERE a.parent_id IS null\n" +
             "    and a.foundation_id=?#{principal.foundationId}\n" +
             "    \n" +
@@ -38,15 +38,15 @@ public interface OrganizationRepository extends PagingAndSortingRepository<Organ
             "    SELECT o.id, o.code, o.name, o.parent_id, p.level + 1 AS level, p.active,\n" +
             "    (cast(p.code as text) || cast('.000.' as text)) || cast(o.code as text) AS path\n" +
             "    FROM cte p,\n" +
-            "    m_organization o\n" +
+            "    hr_organization o\n" +
             "    WHERE o.parent_id = p.id\n" +
             ")\n" +
             "SELECT c.id, c.code, c.name, c.parent_id \"parentId\", l.level, c.active, l.color, ( SELECT count(1) AS count\n" +
             "FROM cte\n" +
             "WHERE cte.parent_id = c.id) AS \"childCount\", c.path\n" +
             "FROM cte c\n" +
-            "join m_organization o on o.id=c.id\n" +
-            "join m_job_level l on l.id=o.level_id\n" +
+            "join hr_organization o on o.id=c.id\n" +
+            "join hr_job_level l on l.id=o.level_id\n" +
             "ORDER BY c.path;", nativeQuery = true)
     List<OrganizationTreeDTO> findAllOrganizationTree();
 }

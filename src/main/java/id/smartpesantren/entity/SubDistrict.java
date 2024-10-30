@@ -22,6 +22,10 @@ public class SubDistrict extends AbstractAuditingEntity{
     public SubDistrict() {
     }
 
+    public SubDistrict(Integer id) {
+        this.id = id;
+    }
+
     public SubDistrict(Integer id, District district, String code, String name, String description) {
         this.id = id;
         this.district = district;

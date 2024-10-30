@@ -21,15 +21,21 @@ public class ReferalInstitution extends AbstractAuditingEntity implements Serial
     @Column(nullable = false)
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private City city;
+
     private String description;
+
 
     public ReferalInstitution() {
     }
 
-    public ReferalInstitution(String id, Foundation foundation, String name, String description) {
+    public ReferalInstitution(String id, Foundation foundation, String name, City city, String description) {
         this.id = id;
         this.foundation = foundation;
         this.name = name;
+        this.city = city;
         this.description = description;
     }
 
@@ -55,6 +61,14 @@ public class ReferalInstitution extends AbstractAuditingEntity implements Serial
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public String getDescription() {

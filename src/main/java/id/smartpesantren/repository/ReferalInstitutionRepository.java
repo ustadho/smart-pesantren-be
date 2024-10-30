@@ -12,13 +12,16 @@ import java.util.Optional;
 
 public interface ReferalInstitutionRepository extends JpaRepository<ReferalInstitution, String> {
     @Query("select new id.smartpesantren.dto.ReferalInstitutionDTO(a) \n" +
-           "from ReferalInstitution a " +
+           "from ReferalInstitution a \n" +
+            "left join a.city c \n" +
             "where upper(a.name) like :q")
     public Page<ReferalInstitutionDTO> filter(@Param("q") String q, Pageable p);
 
     @Query("select new id.smartpesantren.dto.ReferalInstitutionDTO(a) \n" +
-            "from ReferalInstitution a " +
-            "where upper(a.name) like :q")
+            "from ReferalInstitution a \n" +
+            "left join a.city c \n" +
+            "where upper(a.name) like :q\n" +
+            "order by a.name")
     public Iterable<ReferalInstitutionDTO> findAll(@Param("q") String q);
 
     Optional<ReferalInstitution> findByName(String name);

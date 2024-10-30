@@ -5,7 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "m_job_position")
+@Table(name = "hr_job_position")
 public class JobPosition extends AbstractAuditingEntity {
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -29,6 +29,13 @@ public class JobPosition extends AbstractAuditingEntity {
     @ManyToOne
     @JoinColumn(name = "level_id", nullable = false)
     private JobLevel jobLevel;
+
+    public JobPosition() {
+    }
+
+    public JobPosition(String id) {
+        this.id = id;
+    }
 
     public String getId() {
         return id;

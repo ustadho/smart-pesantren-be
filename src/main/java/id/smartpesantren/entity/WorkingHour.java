@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "working_hour")
+@Table(name = "hr_working_hour")
 public class WorkingHour extends AbstractAuditingEntity implements Serializable {
     @Id
     @GeneratedValue(generator = "system-uuid")

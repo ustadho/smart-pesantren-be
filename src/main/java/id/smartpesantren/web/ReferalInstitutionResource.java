@@ -1,6 +1,7 @@
 package id.smartpesantren.web;
 
 import id.smartpesantren.dto.ReferalInstitutionDTO;
+import id.smartpesantren.entity.City;
 import id.smartpesantren.entity.Foundation;
 import id.smartpesantren.entity.ReferalInstitution;
 import id.smartpesantren.repository.ReferalInstitutionRepository;
@@ -66,6 +67,7 @@ public class ReferalInstitutionResource {
                         null,
                         new Foundation(SecurityUtils.getFoundationId().get()),
                         req.getName(),
+                        req.getCity() == null? null: req.getCity(),
                         req.getDescription()
                     )
             );
@@ -92,6 +94,7 @@ public class ReferalInstitutionResource {
         }
         req.setId(current.getId());
         current.setName(req.getName());
+        current.setCity(req.getCity() == null? null: req.getCity());
         current.setDescription(req.getDescription());
         repository.save(current);
         return ResponseEntity.ok()

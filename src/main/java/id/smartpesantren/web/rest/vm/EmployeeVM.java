@@ -1,20 +1,34 @@
-package id.smartpesantren.dto;
+package id.smartpesantren.web.rest.vm;
 
-import id.smartpesantren.entity.City;
-import id.smartpesantren.entity.PersonData;
+import id.smartpesantren.entity.*;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-public class EmployeeDTO {
+public class EmployeeVM {
     private String id;
+
+    @NotNull
     private String categoryId;
     private String categoryName;
+
+    @NotNull @NotEmpty
     private String employeeNo;
+
+    @NotNull
     private String name;
+
+    @NotNull
     private String sex;
     private String nik;
-    private City pob;
+    private Integer pobId;
+
+    @NotNull
     private Date dob;
+    private Integer maritalStatusId;
     private String organizationId;
     private String organizationName;
     private String sectionId;
@@ -23,6 +37,10 @@ public class EmployeeDTO {
     private String jobPositionName;
     private Integer educationLevelId;
     private String educationLevelName;
+    private String statusId;
+
+    private Date joinDate;
+
     private String permanentAddress;
     private String permanentRT;
     private String permanentRW;
@@ -37,91 +55,75 @@ public class EmployeeDTO {
 
     private String majors;
     private String faculty;
-    private String institutionId;
-    private String institutionName;
+    private String referalInstitutionId;
+    private String referalInstitutionName;
 
-    public Boolean isGuardian;
+    private Boolean isGuardian;
 
-    public Boolean active;
+    private Boolean active;
 
-    public EmployeeDTO() {
+    @NotNull
+    private String managerId;
+    private String phone;
+    private String email;
+    private Set<EmployeeFormalEducationVM> formalEducations = new HashSet<>();
+
+    private Set<EmployeeFormalEducationVM> unorHistories = new HashSet<>();
+
+    public EmployeeVM() {
     }
 
-    public EmployeeDTO(PersonData p) {
-        this(p.getId(),
-                p.getEmployeeCategory().getId(),
-                p.getEmployeeCategory().getName(),
-                p.getEmployeeNo(),
-                p.getName(),
-                p.getSex(),
-                p.getNik(),
-                p.getPob(),
-                p.getDob(),
-                p.getOrganization() == null? null: p.getOrganization().getId(),
-                p.getOrganization() == null? null: p.getOrganization().getName(),
-                p.getSection()==null? null: p.getSection().getId(),
-                p.getSection()==null? null: p.getSection().getName(),
-                p.getJobPosition() == null? null: p.getJobPosition().getId(),
-                p.getJobPosition() == null? null: p.getJobPosition().getName(),
-                p.getEducationLevel() == null? null: p.getEducationLevel().getId(),
-                p.getEducationLevel() == null? null: p.getEducationLevel().getName(),
-                p.getPermanentAddress(),
-                p.getPermanentRT(),
-                p.getPermanentRW(),
-                p.getPermanentSubDistrict() == null? null: p.getPermanentSubDistrict().getId(),
-                p.getPermanentSubDistrict() == null? null: p.getPermanentSubDistrict().getName(),
-                p.getResidentialAddress(),
-                p.getResidentialRT(),
-                p.getResidentialRW(),
-                p.getResidentalSubDistrict() == null? null: p.getResidentalSubDistrict().getId(),
-                p.getResidentalSubDistrict() == null? null: p.getResidentalSubDistrict().getName(),
-                p.getMajors(),
-                p.getFaculty(),
-                p.getReferalInstitution() == null? null: p.getReferalInstitution().getId(),
-                p.getReferalInstitution() == null? null: p.getReferalInstitution().getName(),
-                p.isGuardian(),
-                p.getActive()
-            );
-    }
-
-    public EmployeeDTO(String id, String categoryId, String categoryName, String employeeNo, String name, String sex,
-                       String nik, City pob, Date dob, String organizationId, String organizationName,
-                       String sectionId, String sectionName, String jobPositionId, String jobPositionName,
-                       Integer educationLevelId, String educationLevelName, String permanentAddress, String permanentRT, String permanentRW, Integer permanentSubdistrictId, String permanentSubdistrictName, String residentialAddress, String residentialRT, String residentialRW, Integer residentialSubdistrictId, String residentialSubdistrictName, String majors, String faculty,
-                       String institutionId, String istitutionName, Boolean isGuardian, Boolean active) {
-        this.id = id;
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
-        this.employeeNo = employeeNo;
-        this.name = name;
-        this.sex = sex;
-        this.nik = nik;
-        this.pob = pob;
-        this.dob = dob;
-        this.organizationId = organizationId;
-        this.organizationName = organizationName;
-        this.sectionId = sectionId;
-        this.sectionName = sectionName;
-        this.jobPositionId = jobPositionId;
-        this.jobPositionName = jobPositionName;
-        this.educationLevelId = educationLevelId;
-        this.educationLevelName = educationLevelName;
-        this.permanentAddress = permanentAddress;
-        this.permanentRT = permanentRT;
-        this.permanentRW = permanentRW;
-        this.permanentSubdistrictId = permanentSubdistrictId;
-        this.permanentSubdistrictName = permanentSubdistrictName;
-        this.residentialAddress = residentialAddress;
-        this.residentialRT = residentialRT;
-        this.residentialRW = residentialRW;
-        this.residentialSubdistrictId = residentialSubdistrictId;
-        this.residentialSubdistrictName = residentialSubdistrictName;
-        this.majors = majors;
-        this.faculty = faculty;
-        this.institutionId = institutionId;
-        this.institutionName = institutionName;
-        this.isGuardian = isGuardian;
-        this.active = active;
+    public EmployeeVM(PersonData p) {
+        this.setId(p.getId());
+        this.setCategoryId(p.getEmployeeCategory().getId());
+        this.setCategoryName(p.getEmployeeCategory().getName());
+        this.setEmployeeNo(p.getEmployeeNo());
+        this.setName(p.getName());
+        this.setSex(p.getSex());
+        this.setNik(p.getNik());
+        this.setPobId(p.getPob()==null? null: p.getPob().getId());
+        this.setDob(p.getDob());
+        this.setMaritalStatusId(p.getMaritalStatus()==null? null: p.getMaritalStatus().getId());
+        this.setOrganizationId(p.getOrganization() == null? null: p.getOrganization().getId());
+        this.setOrganizationName(p.getOrganization() == null? null: p.getOrganization().getName());
+        this.setSectionId(p.getSection()==null? null: p.getSection().getId());
+        this.setSectionName(p.getSection()==null? null: p.getSection().getName());
+        this.setJobPositionId(p.getJobPosition() == null? null: p.getJobPosition().getId());
+        this.setJobPositionName(p.getJobPosition() == null? null: p.getJobPosition().getName());
+        this.setEducationLevelId(p.getEducationLevel() == null? null: p.getEducationLevel().getId());
+        this.setEducationLevelName(p.getEducationLevel() == null? null: p.getEducationLevel().getName());
+        this.setPermanentAddress(p.getPermanentAddress());
+        this.setPermanentRT(p.getPermanentRT());
+        this.setPermanentRW(p.getPermanentRW());
+        this.setPermanentSubdistrictId(p.getPermanentSubDistrict() == null? null: p.getPermanentSubDistrict().getId());
+        this.setPermanentSubdistrictName(p.getPermanentSubDistrict() == null? null: p.getPermanentSubDistrict().getName());
+        this.setResidentialAddress(p.getResidentialAddress());
+        this.setResidentialRT(p.getResidentialRT());
+        this.setResidentialRT(p.getResidentialRW());
+        this.setResidentialSubdistrictId(p.getResidentalSubDistrict() == null? null: p.getResidentalSubDistrict().getId());
+        this.setResidentialSubdistrictName(p.getResidentalSubDistrict() == null? null: p.getResidentalSubDistrict().getName());
+        this.setMajors(p.getMajors());
+        this.setFaculty(p.getFaculty());
+        this.setReferalInstitutionId(p.getReferalInstitution() == null? null: p.getReferalInstitution().getId());
+        this.setReferalInstitutionName(p.getReferalInstitution() == null? null: p.getReferalInstitution().getName());
+        this.setGuardian(p.isGuardian);
+        this.setStatusId(p.getEmployeeStatus()==null? null: p.getEmployeeStatus().getId());
+        this.setManagerId(p.getManager()==null? null: p.getManager().getId());
+        this.setActive(p.getActive());
+        for(EmployeeFormalEducaton e: p.getFormalEducations()) {
+            EmployeeFormalEducationVM edu = new EmployeeFormalEducationVM();
+            edu.setId(e.getId());
+            edu.setInstitutionId(e.getInstitution()==null? null: e.getInstitution().getId());
+            edu.setInstitutionName(e.getInstitution()==null? null: e.getInstitution().getName());
+            edu.setEducationLevelId(e.getLevel()==null? null: e.getLevel().getId());
+            edu.setEducationLevelName(e.getLevel()==null? null: e.getLevel().getName());
+            edu.setFaculty(e.getFaculty());
+            edu.setMajors(e.getMajors());
+            edu.setStartYear(e.getStartYear());
+            edu.setEndYear(e.getEndYear());
+            edu.setDescription(e.getDescription());
+            this.getFormalEducations().add(edu);
+        }
     }
 
     public String getId() {
@@ -180,12 +182,12 @@ public class EmployeeDTO {
         this.nik = nik;
     }
 
-    public City getPob() {
-        return pob;
+    public Integer getPobId() {
+        return pobId;
     }
 
-    public void setPob(City pob) {
-        this.pob = pob;
+    public void setPobId(Integer pobId) {
+        this.pobId = pobId;
     }
 
     public Date getDob() {
@@ -242,6 +244,22 @@ public class EmployeeDTO {
 
     public void setEducationLevelName(String educationLevelName) {
         this.educationLevelName = educationLevelName;
+    }
+
+    public String getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(String statusId) {
+        this.statusId = statusId;
+    }
+
+    public Date getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
     }
 
     public String getPermanentAddress() {
@@ -340,20 +358,20 @@ public class EmployeeDTO {
         this.faculty = faculty;
     }
 
-    public String getInstitutionId() {
-        return institutionId;
+    public String getReferalInstitutionId() {
+        return referalInstitutionId;
     }
 
-    public void setInstitutionId(String institutionId) {
-        this.institutionId = institutionId;
+    public void setReferalInstitutionId(String referalInstitutionId) {
+        this.referalInstitutionId = referalInstitutionId;
     }
 
-    public String getInstitutionName() {
-        return institutionName;
+    public String getReferalInstitutionName() {
+        return referalInstitutionName;
     }
 
-    public void setInstitutionName(String institutionName) {
-        this.institutionName = institutionName;
+    public void setReferalInstitutionName(String referalInstitutionName) {
+        this.referalInstitutionName = referalInstitutionName;
     }
 
     public Boolean getGuardian() {
@@ -368,8 +386,48 @@ public class EmployeeDTO {
         return active;
     }
 
+    public Set<EmployeeFormalEducationVM> getFormalEducations() {
+        return formalEducations;
+    }
+
+    public void setFormalEducations(Set<EmployeeFormalEducationVM> formalEducations) {
+        this.formalEducations = formalEducations;
+    }
+
+    public Set<EmployeeFormalEducationVM> getUnorHistories() {
+        return unorHistories;
+    }
+
+    public void setUnorHistories(Set<EmployeeFormalEducationVM> unorHistories) {
+        this.unorHistories = unorHistories;
+    }
+
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public String getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(String managerId) {
+        this.managerId = managerId;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSectionId() {
@@ -386,5 +444,13 @@ public class EmployeeDTO {
 
     public void setSectionName(String sectionName) {
         this.sectionName = sectionName;
+    }
+
+    public Integer getMaritalStatusId() {
+        return maritalStatusId;
+    }
+
+    public void setMaritalStatusId(Integer maritalStatusId) {
+        this.maritalStatusId = maritalStatusId;
     }
 }

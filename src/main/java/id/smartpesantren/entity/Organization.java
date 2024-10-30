@@ -5,7 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "m_organization")
+@Table(name = "hr_organization")
 public class Organization extends AbstractAuditingEntity{
     @Id
     @GeneratedValue(generator = "system-uuid")
