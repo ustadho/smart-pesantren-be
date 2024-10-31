@@ -51,14 +51,6 @@ public class WorkingHourDetail {
         this.workingHour = workingHour;
     }
 
-    public WorkingHour getWorkingDay() {
-        return workingHour;
-    }
-
-    public void setWorkingDay(WorkingHour workingHour) {
-        this.workingHour = workingHour;
-    }
-
     public WorkingTime getWorkingTime() {
         return workingTime;
     }

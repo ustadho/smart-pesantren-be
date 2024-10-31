@@ -27,12 +27,22 @@ public class WorkingHour extends AbstractAuditingEntity implements Serializable 
     @Column(length = 100, nullable = false)
     private String name;
 
+    @Column(length = 10, nullable = false)
+    private String color;
+
     @Column(columnDefinition = "text")
     private String description;
 
     @OneToMany(mappedBy = "workingHour", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<WorkingHourDetail> details = new HashSet<>();
+
+    public WorkingHour() {
+    }
+
+    public WorkingHour(String id) {
+        this.id = id;
+    }
 
     public String getId() {
         return id;
@@ -64,6 +74,14 @@ public class WorkingHour extends AbstractAuditingEntity implements Serializable 
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public String getDescription() {

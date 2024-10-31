@@ -2,13 +2,10 @@ package id.smartpesantren.service;
 
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.PersonDataRepository;
-import id.smartpesantren.web.rest.errors.DataNotFoundException;
 import id.smartpesantren.web.rest.vm.EmployeeVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -46,6 +43,7 @@ public class EmployeeService {
         pd.setMaritalStatus(vm.getMaritalStatusId() == null? null: new MaritalStatus(vm.getMaritalStatusId()));
         pd.setPhone(vm.getPhone());
         pd.setEmail(vm.getEmail());
+        pd.setWorkingHour(vm.getWorkingHourId()==null? null: new WorkingHour(vm.getWorkingHourId()));
         pd.setPermanentAddress(vm.getPermanentAddress());
         pd.setPermanentRT(vm.getPermanentRT());
         pd.setPermanentRW(vm.getPermanentRW());

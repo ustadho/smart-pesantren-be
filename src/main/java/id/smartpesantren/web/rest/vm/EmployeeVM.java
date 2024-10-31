@@ -66,6 +66,7 @@ public class EmployeeVM {
     private String managerId;
     private String phone;
     private String email;
+    private String workingHourId;
     private Set<EmployeeFormalEducationVM> formalEducations = new HashSet<>();
 
     private Set<EmployeeFormalEducationVM> unorHistories = new HashSet<>();
@@ -110,6 +111,7 @@ public class EmployeeVM {
         this.setStatusId(p.getEmployeeStatus()==null? null: p.getEmployeeStatus().getId());
         this.setManagerId(p.getManager()==null? null: p.getManager().getId());
         this.setActive(p.getActive());
+        this.setWorkingHourId(p.getWorkingHour()==null? null: p.getWorkingHour().getId());
         for(EmployeeFormalEducaton e: p.getFormalEducations()) {
             EmployeeFormalEducationVM edu = new EmployeeFormalEducationVM();
             edu.setId(e.getId());
@@ -428,6 +430,14 @@ public class EmployeeVM {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getWorkingHourId() {
+        return workingHourId;
+    }
+
+    public void setWorkingHourId(String workingHourId) {
+        this.workingHourId = workingHourId;
     }
 
     public String getSectionId() {

@@ -66,6 +66,13 @@ public class WorkingTime extends AbstractAuditingEntity implements Serializable 
     @Column(name = "noOfWorkingDays")
     private Integer noOfWorkingDays;
 
+    public WorkingTime() {
+    }
+
+    public WorkingTime(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

@@ -127,6 +127,10 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     @Column(columnDefinition = "boolean default true")
     private Boolean active;
 
+    @ManyToOne
+    @JoinColumn(name = "working_hour_id")
+    private WorkingHour workingHour;
+
     @OneToMany(mappedBy = "person", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<EmployeeFormalEducaton> formalEducations = new HashSet<>();
@@ -400,6 +404,14 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public WorkingHour getWorkingHour() {
+        return workingHour;
+    }
+
+    public void setWorkingHour(WorkingHour workingHour) {
+        this.workingHour = workingHour;
     }
 
     public String getEmail() {

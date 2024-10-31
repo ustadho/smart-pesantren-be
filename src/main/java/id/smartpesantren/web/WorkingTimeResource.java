@@ -35,12 +35,12 @@ public class WorkingTimeResource {
     }
 
     @GetMapping("all")
-    public Iterable<WorkingTimeDTO> findAllWorkHour(@RequestParam String q) {
+    public Iterable<WorkingTimeDTO> findAllWorkTime(@RequestParam String q) {
         return workingTimeRepository.findAll("%"+q+"%");
     }
 
     @PostMapping
-    public WorkingTimeDTO createWorkHour(@RequestBody @Valid WorkingTimeDTO req) {
+    public WorkingTimeDTO createWorkTime(@RequestBody @Valid WorkingTimeDTO req) {
         Optional<WorkingTime> e = workingTimeRepository.findByCode(req.getCode());
         if (e.isPresent()) {
             throw new CodeAlreadyUsedException();
@@ -68,7 +68,7 @@ public class WorkingTimeResource {
     }
 
     @PutMapping("/{id}")
-    public WorkingTimeDTO updateWorkHour(@PathVariable String id, @RequestBody @Valid WorkingTimeDTO req) {
+    public WorkingTimeDTO updateWorkTime(@PathVariable String id, @RequestBody @Valid WorkingTimeDTO req) {
         WorkingTime a = null;
         Optional<WorkingTime> e = workingTimeRepository.findById(id);
         if (!e.isPresent()) {
@@ -104,7 +104,7 @@ public class WorkingTimeResource {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteWorkHour(@PathVariable String id) {
+    public void deleteWorkTime(@PathVariable String id) {
         Optional<WorkingTime> e = workingTimeRepository.findById(id);
         if (!e.isPresent()) {
             throw new InternalServerErrorException("Data dengan id tersebut tidak ditemukan");

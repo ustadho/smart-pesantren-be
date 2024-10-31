@@ -12,7 +12,14 @@ public class Day {
     private Integer id;
 
     @Column(length = 30)
-    private String nama;
+    private String name;
+
+    public Day() {
+    }
+
+    public Day(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -22,11 +29,11 @@ public class Day {
         this.id = id;
     }
 
-    public String getNama() {
-        return nama;
+    public String getName() {
+        return name;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setName(String name) {
+        this.name = name;
     }
 }
