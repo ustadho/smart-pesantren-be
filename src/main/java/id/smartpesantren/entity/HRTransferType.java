@@ -13,6 +13,13 @@ public class HRTransferType {
     @Column(length = 100, nullable = false)
     private String name;
 
+    public HRTransferType() {
+    }
+
+    public HRTransferType(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }
