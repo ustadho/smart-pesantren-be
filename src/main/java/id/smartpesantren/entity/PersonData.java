@@ -135,6 +135,10 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     @JsonManagedReference
     private Set<EmployeeFormalEducaton> formalEducations = new HashSet<>();
 
+    @OneToMany(mappedBy = "employee", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<EmployeeWorkingHour> workingHours = new HashSet<>();
+
     public PersonData() {
     }
 
@@ -164,6 +168,14 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     public void setFormalEducations(Set<EmployeeFormalEducaton> formalEducations) {
         this.formalEducations = formalEducations;
+    }
+
+    public Set<EmployeeWorkingHour> getWorkingHours() {
+        return workingHours;
+    }
+
+    public void setWorkingHours(Set<EmployeeWorkingHour> workingHours) {
+        this.workingHours = workingHours;
     }
 
     public Foundation getFoundation() {

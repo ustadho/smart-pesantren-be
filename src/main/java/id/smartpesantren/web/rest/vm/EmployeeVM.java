@@ -71,6 +71,8 @@ public class EmployeeVM {
 
     private Set<EmployeeFormalEducationVM> unorHistories = new HashSet<>();
 
+    private Set<EmployeeWorkingHourVM> workingHours = new HashSet<>();
+
     public EmployeeVM() {
     }
 
@@ -125,6 +127,16 @@ public class EmployeeVM {
             edu.setEndYear(e.getEndYear());
             edu.setDescription(e.getDescription());
             this.getFormalEducations().add(edu);
+        }
+
+        for(EmployeeWorkingHour e: p.getWorkingHours()) {
+            EmployeeWorkingHourVM wh = new EmployeeWorkingHourVM();
+            wh.setId(e.getId());
+            wh.setEffectiveDate(e.getEffectiveDate());
+            wh.setWorkingHourId(e.getWorkingHour().getId());
+            wh.setWorkingHourName(e.getWorkingHour().getName());
+            wh.setDescription(e.getDescription());
+            this.getWorkingHours().add(wh);
         }
     }
 
@@ -438,6 +450,14 @@ public class EmployeeVM {
 
     public void setWorkingHourId(String workingHourId) {
         this.workingHourId = workingHourId;
+    }
+
+    public Set<EmployeeWorkingHourVM> getWorkingHours() {
+        return workingHours;
+    }
+
+    public void setWorkingHours(Set<EmployeeWorkingHourVM> workingHours) {
+        this.workingHours = workingHours;
     }
 
     public String getSectionId() {
