@@ -3,11 +3,12 @@ package id.smartpesantren.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "hr_employee_transfer")
-public class EmployeeTransfer {
+public class EmployeeTransfer extends AbstractAuditingEntity implements Serializable {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
@@ -16,7 +17,7 @@ public class EmployeeTransfer {
 
     @ManyToOne
     @JoinColumn(name = "foundation_id", nullable = false)
-    PersonData foundation;
+    Foundation foundation;
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
@@ -61,11 +62,11 @@ public class EmployeeTransfer {
         this.id = id;
     }
 
-    public PersonData getFoundation() {
+    public Foundation getFoundation() {
         return foundation;
     }
 
-    public void setFoundation(PersonData foundation) {
+    public void setFoundation(Foundation foundation) {
         this.foundation = foundation;
     }
 

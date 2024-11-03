@@ -2,6 +2,7 @@ package id.smartpesantren.web;
 
 import id.smartpesantren.dto.EmployeeTransferDTO;
 import id.smartpesantren.entity.*;
+import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.errors.DataNotFoundException;
 import id.smartpesantren.web.rest.errors.InternalServerErrorException;
 import id.smartpesantren.web.rest.vm.EmployeeTransferVM;
@@ -27,13 +28,16 @@ public class EmployeeTransferResource {
             throw new InternalServerErrorException("data tersebut sudah pernah dimasukkan");
         }
         EmployeeTransfer et = new EmployeeTransfer();
+        et.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
         et.setEmployee(new PersonData(vm.getEmployeeId()));
         et.setType(new HRTransferType(vm.getTypeId()));
         et.setStatus(new EmployeeStatus(vm.getStatusId()));
         et.setOrganization(new Organization(vm.getOrganizationId()));
         et.setSection(new Section(vm.getSectionId()));
         et.setPosition(new JobPosition(vm.getPositionId()));
+        et.setEffectiveDate(vm.getEffectiveDate());
         et.setManager(vm.getManagerId() == null? null: new PersonData(vm.getManagerId()));
+        et.setDescription(vm.getDescription());
         employeeTransferRepository.save(et);
         vm.setId(et.getId());
         return vm;
@@ -53,7 +57,9 @@ public class EmployeeTransferResource {
         et.setOrganization(new Organization(vm.getOrganizationId()));
         et.setSection(new Section(vm.getSectionId()));
         et.setPosition(new JobPosition(vm.getPositionId()));
+        et.setEffectiveDate(vm.getEffectiveDate());
         et.setManager(vm.getManagerId() == null? null: new PersonData(vm.getManagerId()));
+        et.setDescription(vm.getDescription());
         employeeTransferRepository.save(et);
         vm.setId(et.getId());
     }
@@ -64,9 +70,9 @@ public class EmployeeTransferResource {
     }
 
     @GetMapping("/{id}")
-    public EmployeeTransferDTO findById(@PathVariable("id") String id) {
+    public EmployeeTransferVM findById(@PathVariable("id") String id) {
         return employeeTransferRepository.findById(id)
-                .map(EmployeeTransferDTO::new)
+                .map(EmployeeTransferVM::new)
                 .orElseThrow(()-> new DataNotFoundException("EmployeeTransfer tidak ditemukan"));
     }
 

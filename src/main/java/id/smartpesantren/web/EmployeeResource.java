@@ -53,7 +53,7 @@ public class EmployeeResource {
     @GetMapping("all")
     private List<EmployeeDTO> filterAll(
             @RequestParam(value = "q", required = false, defaultValue = "") String q,
-            @RequestParam(value = "limit", defaultValue = "50") Integer limit) {
+            @RequestParam(value = "limit", defaultValue = "1000") Integer limit) {
         Sort sort = Sort.by("name").ascending();
         PageRequest pageRequest = PageRequest.of(0, limit, sort);
 

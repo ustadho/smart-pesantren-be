@@ -1,5 +1,7 @@
 package id.smartpesantren.web.rest.vm;
 
+import id.smartpesantren.entity.EmployeeTransfer;
+
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -8,6 +10,8 @@ public class EmployeeTransferVM {
 
     @NotNull
     String employeeId;
+
+    String employeeName;
 
     @NotNull
     private Date effectiveDate;
@@ -30,6 +34,24 @@ public class EmployeeTransferVM {
     private String attachment;
     private String description;
 
+    public EmployeeTransferVM() {
+    }
+
+    public EmployeeTransferVM(EmployeeTransfer et) {
+        this.setId(et.getId());
+        this.setEmployeeId(et.getEmployee().getId());
+        this.setEmployeeName(et.getEmployee().getName());
+        this.setTypeId(et.getType().getId());
+        this.setEffectiveDate(et.getEffectiveDate());
+        this.setManagerId(et.getManager() == null? null: et.getManager().getId());
+        this.setOrganizationId(et.getOrganization().getId());
+        this.setSectionId(et.getSection().getId());
+        this.setPositionId(et.getPosition().getId());
+        this.setStatusId(et.getStatus().getId());
+        this.setAttachment(et.getAttachment());
+        this.setDescription(et.getDescription());
+
+    }
     public String getId() {
         return id;
     }
@@ -44,6 +66,14 @@ public class EmployeeTransferVM {
 
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
     public Date getEffectiveDate() {
