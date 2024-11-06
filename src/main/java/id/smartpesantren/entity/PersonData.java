@@ -139,6 +139,9 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     @JsonManagedReference
     private Set<EmployeeWorkingHour> workingHours = new HashSet<>();
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean workingShift;
+
     public PersonData() {
     }
 
@@ -176,6 +179,14 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     public void setWorkingHours(Set<EmployeeWorkingHour> workingHours) {
         this.workingHours = workingHours;
+    }
+
+    public Boolean getWorkingShift() {
+        return workingShift;
+    }
+
+    public void setWorkingShift(Boolean workingShift) {
+        this.workingShift = workingShift;
     }
 
     public Foundation getFoundation() {

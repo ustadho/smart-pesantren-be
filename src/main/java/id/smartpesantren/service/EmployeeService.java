@@ -52,6 +52,7 @@ public class EmployeeService {
         pd.setPhone(vm.getPhone());
         pd.setEmail(vm.getEmail());
         pd.setWorkingHour(vm.getWorkingHourId()==null? null: new WorkingHour(vm.getWorkingHourId()));
+        pd.setWorkingShift(vm.getWorkingShift());
         pd.setPermanentAddress(vm.getPermanentAddress());
         pd.setPermanentRT(vm.getPermanentRT());
         pd.setPermanentRW(vm.getPermanentRW());
