@@ -12,12 +12,19 @@ public class Holiday {
 
     @NotNull
     @Column(nullable = false)
-    private String description;
+    private String name;
 
     @Column(columnDefinition = "boolean default false")
     private Boolean fixDate;
 
     private String type; //N: Libur Nasional, F: Libur Yayasan, S: Special/Khusus
+
+    public Holiday() {
+    }
+
+    public Holiday(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -27,12 +34,12 @@ public class Holiday {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Boolean getFixDate() {

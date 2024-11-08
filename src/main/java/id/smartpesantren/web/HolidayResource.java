@@ -3,12 +3,12 @@ package id.smartpesantren.web;
 import id.smartpesantren.entity.Holiday;
 import id.smartpesantren.repository.HolidayRepository;
 import id.smartpesantren.web.rest.errors.DataNotFoundException;
+import id.smartpesantren.web.rest.vm.HRHolidayVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +22,7 @@ public class HolidayResource {
     @PostMapping
     public Holiday create(@RequestBody @Valid Holiday vm) {
         Holiday h = new Holiday();
-        h.setDescription(vm.getDescription());
+        h.setName(vm.getName());
         h.setFixDate(vm.getFixDate());
         h.setType(vm.getType());
 
@@ -37,7 +37,7 @@ public class HolidayResource {
             throw new DataNotFoundException("data libur dengan id ini tidak ditemukan");
         }
         Holiday h = exist.get();
-        h.setDescription(vm.getDescription());
+        h.setName(vm.getName());
         h.setFixDate(vm.getFixDate());
         h.setType(vm.getType());
 
