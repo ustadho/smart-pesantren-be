@@ -1,10 +1,12 @@
 package id.smartpesantren.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "hr_working_hour")
@@ -21,50 +23,26 @@ public class WorkingHour extends AbstractAuditingEntity implements Serializable 
 
     @Column(length = 4, nullable = false)
     private String code;
+
     @Column(length = 100, nullable = false)
     private String name;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "check_in_time")
-    private Date checkInTime;
-
-    @Temporal(TemporalType.TIME)
-    @Column(name = "check_out_time")
-    private Date checkOutTime;
-
-    @Column(name = "prev_day")
-    private Boolean previousDay = Boolean.FALSE;
-
-    @Column(name = "next_day")
-    private Boolean nextDate = Boolean.FALSE;
-
-    @Column(name = "late_tolerance")
-    private Integer lateTolerance;
-
-    @Column(name = "early_leave_tolerance")
-    private Integer earlyLeaveTolerance;
-
-    @Temporal(TemporalType.TIME)
-    @Column(name = "scan_start_check_in_time")
-    private Date scanStartCheckInTime;
-
-    @Temporal(TemporalType.TIME)
-    @Column(name = "scan_end_check_in_time")
-    private Date scanEndCheckInTime;
-
-    @Temporal(TemporalType.TIME)
-    @Column(name = "scan_start_check_out_time")
-    private Date scanStartCheckOutTime;
-
-    @Temporal(TemporalType.TIME)
-    @Column(name = "scan_end_check_out_time")
-    private Date scanEndCheckOutTime;
-
-    @Column(name = "color", length = 10)
+    @Column(length = 10, nullable = false)
     private String color;
 
-    @Column(name = "noOfWorkingDays")
-    private Integer noOfWorkingDays;
+    @Column(columnDefinition = "text")
+    private String description;
+
+    @OneToMany(mappedBy = "workingHour", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<WorkingHourDetail> details = new HashSet<>();
+
+    public WorkingHour() {
+    }
+
+    public WorkingHour(String id) {
+        this.id = id;
+    }
 
     public String getId() {
         return id;
@@ -98,86 +76,6 @@ public class WorkingHour extends AbstractAuditingEntity implements Serializable 
         this.name = name;
     }
 
-    public Date getCheckInTime() {
-        return checkInTime;
-    }
-
-    public void setCheckInTime(Date checkInTime) {
-        this.checkInTime = checkInTime;
-    }
-
-    public Date getCheckOutTime() {
-        return checkOutTime;
-    }
-
-    public void setCheckOutTime(Date checkOutTime) {
-        this.checkOutTime = checkOutTime;
-    }
-
-    public Boolean getPreviousDay() {
-        return previousDay;
-    }
-
-    public void setPreviousDay(Boolean previousDay) {
-        this.previousDay = previousDay;
-    }
-
-    public Boolean getNextDate() {
-        return nextDate;
-    }
-
-    public void setNextDate(Boolean nextDate) {
-        this.nextDate = nextDate;
-    }
-
-    public Integer getLateTolerance() {
-        return lateTolerance;
-    }
-
-    public void setLateTolerance(Integer lateTolerance) {
-        this.lateTolerance = lateTolerance;
-    }
-
-    public Integer getEarlyLeaveTolerance() {
-        return earlyLeaveTolerance;
-    }
-
-    public void setEarlyLeaveTolerance(Integer earlyLeaveTolerance) {
-        this.earlyLeaveTolerance = earlyLeaveTolerance;
-    }
-
-    public Date getScanStartCheckInTime() {
-        return scanStartCheckInTime;
-    }
-
-    public void setScanStartCheckInTime(Date scanStartCheckInTime) {
-        this.scanStartCheckInTime = scanStartCheckInTime;
-    }
-
-    public Date getScanEndCheckInTime() {
-        return scanEndCheckInTime;
-    }
-
-    public void setScanEndCheckInTime(Date scanEndCheckInTime) {
-        this.scanEndCheckInTime = scanEndCheckInTime;
-    }
-
-    public Date getScanStartCheckOutTime() {
-        return scanStartCheckOutTime;
-    }
-
-    public void setScanStartCheckOutTime(Date scanStartCheckOutTime) {
-        this.scanStartCheckOutTime = scanStartCheckOutTime;
-    }
-
-    public Date getScanEndCheckOutTime() {
-        return scanEndCheckOutTime;
-    }
-
-    public void setScanEndCheckOutTime(Date scanEndCheckOutTime) {
-        this.scanEndCheckOutTime = scanEndCheckOutTime;
-    }
-
     public String getColor() {
         return color;
     }
@@ -186,11 +84,19 @@ public class WorkingHour extends AbstractAuditingEntity implements Serializable 
         this.color = color;
     }
 
-    public Integer getNoOfWorkingDays() {
-        return noOfWorkingDays;
+    public String getDescription() {
+        return description;
     }
 
-    public void setNoOfWorkingDays(Integer noOfWorkingDays) {
-        this.noOfWorkingDays = noOfWorkingDays;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<WorkingHourDetail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(Set<WorkingHourDetail> details) {
+        this.details = details;
     }
 }

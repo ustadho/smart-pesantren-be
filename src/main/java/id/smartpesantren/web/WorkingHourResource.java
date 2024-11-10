@@ -5,6 +5,7 @@ import id.smartpesantren.entity.Foundation;
 import id.smartpesantren.entity.WorkingHour;
 import id.smartpesantren.repository.WorkingHourRepository;
 import id.smartpesantren.security.SecurityUtils;
+import id.smartpesantren.service.WorkingHourService;
 import id.smartpesantren.web.rest.errors.CodeAlreadyUsedException;
 import id.smartpesantren.web.rest.errors.DataNotFoundException;
 import id.smartpesantren.web.rest.errors.InternalServerErrorException;
@@ -21,6 +22,9 @@ import java.util.Optional;
 public class WorkingHourResource {
     @Autowired
     WorkingHourRepository workingHourRepository;
+
+    @Autowired
+    WorkingHourService workingHourService;
 
     @GetMapping
     public Page<WorkingHourDTO> filter(@RequestParam(value = "q", defaultValue = "") String q, Pageable p) {
@@ -41,40 +45,19 @@ public class WorkingHourResource {
 
     @PostMapping
     public WorkingHourDTO createWorkHour(@RequestBody @Valid WorkingHourDTO req) {
-        Optional<WorkingHour> e = workingHourRepository.findByCode(req.getCode());
-        if (e.isPresent()) {
+        Optional<WorkingHour> ec = workingHourRepository.findByCode(req.getCode());
+        if (ec.isPresent()) {
             throw new CodeAlreadyUsedException();
         }
-        WorkingHour a = new WorkingHour();
-        a.setCode(req.getCode());
-        a.setName(req.getName());
-        a.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
-        a.setCheckInTime(req.getCheckInTime());
-        a.setCheckOutTime(req.getCheckOutTime());
-        a.setPreviousDay(req.getPreviousDay());
-        a.setNextDate(req.getNextDate());
-        a.setLateTolerance(req.getLateTolerance());
-        a.setEarlyLeaveTolerance(req.getEarlyLeaveTolerance());
-        a.setScanStartCheckInTime(req.getScanStartCheckInTime());
-        a.setScanEndCheckInTime(req.getScanEndCheckInTime());
-        a.setScanStartCheckOutTime(req.getScanStartCheckOutTime());
-        a.setScanEndCheckOutTime(req.getScanEndCheckOutTime());
-        a.setColor(req.getColor());
-        a.setEarlyLeaveTolerance(req.getEarlyLeaveTolerance());
-        a.setNoOfWorkingDays(req.getNoOfWorkingDays());
-        workingHourRepository.save(a);
-        req.setId(a.getId());
-        return req;
+        return workingHourService.createOrUpdate(req, null);
     }
 
     @PutMapping("/{id}")
     public WorkingHourDTO updateWorkHour(@PathVariable String id, @RequestBody @Valid WorkingHourDTO req) {
-        WorkingHour a = null;
         Optional<WorkingHour> e = workingHourRepository.findById(id);
         if (!e.isPresent()) {
             throw new InternalServerErrorException("Data dengan id tersebut tidak ditemukan");
         }
-        a = e.get();
         if(!e.get().getCode().equalsIgnoreCase(req.getCode())) {
             Optional<WorkingHour> ec = workingHourRepository.findByCode(req.getCode());
             if (ec.isPresent()) {
@@ -82,25 +65,7 @@ public class WorkingHourResource {
             }
         }
 
-        a.setCode(req.getCode());
-        a.setName(req.getName());
-        a.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
-        a.setCheckInTime(req.getCheckInTime());
-        a.setCheckOutTime(req.getCheckOutTime());
-        a.setPreviousDay(req.getPreviousDay());
-        a.setNextDate(req.getNextDate());
-        a.setLateTolerance(req.getLateTolerance());
-        a.setEarlyLeaveTolerance(req.getEarlyLeaveTolerance());
-        a.setScanStartCheckInTime(req.getScanStartCheckInTime());
-        a.setScanEndCheckInTime(req.getScanEndCheckInTime());
-        a.setScanStartCheckOutTime(req.getScanStartCheckOutTime());
-        a.setScanEndCheckOutTime(req.getScanEndCheckOutTime());
-        a.setColor(req.getColor());
-        a.setEarlyLeaveTolerance(req.getEarlyLeaveTolerance());
-        a.setNoOfWorkingDays(req.getNoOfWorkingDays());
-        workingHourRepository.save(a);
-        req.setId(a.getId());
-        return req;
+        return workingHourService.createOrUpdate(req, e.get());
     }
 
     @DeleteMapping("/{id}")

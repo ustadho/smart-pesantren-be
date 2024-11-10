@@ -66,9 +66,13 @@ public class EmployeeVM {
     private String managerId;
     private String phone;
     private String email;
+    private String workingHourId;
+    public Boolean workingShift;
     private Set<EmployeeFormalEducationVM> formalEducations = new HashSet<>();
 
     private Set<EmployeeFormalEducationVM> unorHistories = new HashSet<>();
+
+    private Set<EmployeeWorkingHourVM> workingHours = new HashSet<>();
 
     public EmployeeVM() {
     }
@@ -110,6 +114,10 @@ public class EmployeeVM {
         this.setStatusId(p.getEmployeeStatus()==null? null: p.getEmployeeStatus().getId());
         this.setManagerId(p.getManager()==null? null: p.getManager().getId());
         this.setActive(p.getActive());
+        this.setWorkingHourId(p.getWorkingHour()==null? null: p.getWorkingHour().getId());
+        this.setWorkingShift(p.getWorkingShift());
+        this.setEmail(p.getEmail());
+        this.setPhone(p.getPhone());
         for(EmployeeFormalEducaton e: p.getFormalEducations()) {
             EmployeeFormalEducationVM edu = new EmployeeFormalEducationVM();
             edu.setId(e.getId());
@@ -123,6 +131,16 @@ public class EmployeeVM {
             edu.setEndYear(e.getEndYear());
             edu.setDescription(e.getDescription());
             this.getFormalEducations().add(edu);
+        }
+
+        for(EmployeeWorkingHour e: p.getWorkingHours()) {
+            EmployeeWorkingHourVM wh = new EmployeeWorkingHourVM();
+            wh.setId(e.getId());
+            wh.setEffectiveDate(e.getEffectiveDate());
+            wh.setWorkingHourId(e.getWorkingHour().getId());
+            wh.setWorkingHourName(e.getWorkingHour().getName());
+            wh.setDescription(e.getDescription());
+            this.getWorkingHours().add(wh);
         }
     }
 
@@ -428,6 +446,30 @@ public class EmployeeVM {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getWorkingHourId() {
+        return workingHourId;
+    }
+
+    public void setWorkingHourId(String workingHourId) {
+        this.workingHourId = workingHourId;
+    }
+
+    public Boolean getWorkingShift() {
+        return workingShift;
+    }
+
+    public void setWorkingShift(Boolean workingShift) {
+        this.workingShift = workingShift;
+    }
+
+    public Set<EmployeeWorkingHourVM> getWorkingHours() {
+        return workingHours;
+    }
+
+    public void setWorkingHours(Set<EmployeeWorkingHourVM> workingHours) {
+        this.workingHours = workingHours;
     }
 
     public String getSectionId() {

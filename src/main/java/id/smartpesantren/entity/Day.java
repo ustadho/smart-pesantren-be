@@ -1,22 +1,23 @@
 package id.smartpesantren.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "hr_transfer_type")
-public class HRTransferType {
+@Table(name = "m_day")
+public class Day {
     @Id
     private Integer id;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 30)
     private String name;
 
-    public HRTransferType() {
+    public Day() {
     }
 
-    public HRTransferType(Integer id) {
+    public Day(Integer id) {
         this.id = id;
     }
 

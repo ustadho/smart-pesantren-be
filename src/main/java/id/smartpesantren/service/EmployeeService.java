@@ -1,19 +1,24 @@
 package id.smartpesantren.service;
 
+import id.smartpesantren.dto.WorkingHourDetailDTO;
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.PersonDataRepository;
-import id.smartpesantren.web.rest.errors.DataNotFoundException;
 import id.smartpesantren.web.rest.vm.EmployeeVM;
+import id.smartpesantren.web.rest.vm.EmployeeWorkingHourVM;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.Iterator;
 
 @Service
 public class EmployeeService {
     @Autowired
     PersonDataRepository personDataRepository;
+
+    Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 
     @Transactional
     public EmployeeVM createOrUpdate(EmployeeVM vm, PersonData old) {
@@ -46,6 +51,8 @@ public class EmployeeService {
         pd.setMaritalStatus(vm.getMaritalStatusId() == null? null: new MaritalStatus(vm.getMaritalStatusId()));
         pd.setPhone(vm.getPhone());
         pd.setEmail(vm.getEmail());
+        pd.setWorkingHour(vm.getWorkingHourId()==null? null: new WorkingHour(vm.getWorkingHourId()));
+        pd.setWorkingShift(vm.getWorkingShift());
         pd.setPermanentAddress(vm.getPermanentAddress());
         pd.setPermanentRT(vm.getPermanentRT());
         pd.setPermanentRW(vm.getPermanentRW());
@@ -54,6 +61,58 @@ public class EmployeeService {
         pd.setResidentialRT(vm.getResidentialRT());
         pd.setResidentialRW(vm.getResidentialRW());
         pd.setResidentalSubDistrict(vm.getResidentialSubdistrictId() == null? null: new SubDistrict(vm.getResidentialSubdistrictId()));
+
+        for (Iterator<EmployeeWorkingHour> iterator = pd.getWorkingHours().iterator(); iterator.hasNext();) {
+            EmployeeWorkingHour d = iterator.next();
+            boolean used = false;
+            for(EmployeeWorkingHourVM ri: vm.getWorkingHours()) {
+                if(ri.getId() != null && ri.getId().equalsIgnoreCase(d.getId())) {
+                    used = true;
+                    break;
+                }
+            }
+            if(!used) {
+                iterator.remove();
+            }
+        }
+
+        for(EmployeeWorkingHourVM d: vm.getWorkingHours()){
+            logger.debug("req.getItems ==>[{}]", d.getWorkingHourName());
+            EmployeeWorkingHour det = null;
+
+            if(pd.getId() == null) {
+                det = new EmployeeWorkingHour();
+            } else {
+                if(d.getId() == null) {
+                    det = new EmployeeWorkingHour();
+                } else {
+                    // Check if existing detail needs deletion
+                    boolean existingDetailFound = false;
+                    for (EmployeeWorkingHour existingDetail : pd.getWorkingHours()) {
+                        System.out.println("existingDetail.id: " + existingDetail.getId());
+                        System.out.println("d.getId(): " + d.getId());
+                        if (existingDetail.getId().equals(d.getId())) {
+                            det = existingDetail;
+                            System.out.println("existingDetail.id: " + det.getId());
+                            existingDetailFound = true;
+                            break;
+                        }
+                    }
+                    if(!existingDetailFound) {
+                        System.out.println("detail not exists");
+                    }
+                }
+            }
+            det.setId(d.getId());
+            det.setEffectiveDate(d.getEffectiveDate());
+            det.setWorkingHour(new WorkingHour(d.getWorkingHourId()));
+            det.setEmployee(pd);
+
+            if(det.getId() == null) {
+                pd.getWorkingHours().add(det);
+            }
+        }
+
         return pd;
     }
 

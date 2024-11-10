@@ -127,9 +127,20 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     @Column(columnDefinition = "boolean default true")
     private Boolean active;
 
+    @ManyToOne
+    @JoinColumn(name = "working_hour_id")
+    private WorkingHour workingHour;
+
     @OneToMany(mappedBy = "person", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<EmployeeFormalEducaton> formalEducations = new HashSet<>();
+
+    @OneToMany(mappedBy = "employee", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<EmployeeWorkingHour> workingHours = new HashSet<>();
+
+    @Column(columnDefinition = "boolean default false")
+    private Boolean workingShift;
 
     public PersonData() {
     }
@@ -160,6 +171,22 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     public void setFormalEducations(Set<EmployeeFormalEducaton> formalEducations) {
         this.formalEducations = formalEducations;
+    }
+
+    public Set<EmployeeWorkingHour> getWorkingHours() {
+        return workingHours;
+    }
+
+    public void setWorkingHours(Set<EmployeeWorkingHour> workingHours) {
+        this.workingHours = workingHours;
+    }
+
+    public Boolean getWorkingShift() {
+        return workingShift;
+    }
+
+    public void setWorkingShift(Boolean workingShift) {
+        this.workingShift = workingShift;
     }
 
     public Foundation getFoundation() {
@@ -400,6 +427,14 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public WorkingHour getWorkingHour() {
+        return workingHour;
+    }
+
+    public void setWorkingHour(WorkingHour workingHour) {
+        this.workingHour = workingHour;
     }
 
     public String getEmail() {
