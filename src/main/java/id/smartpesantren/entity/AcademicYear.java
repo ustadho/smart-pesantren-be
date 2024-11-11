@@ -15,6 +15,9 @@ public class AcademicYear extends AbstractAuditingEntity implements Serializable
     @Column(length = 36)
     private String id;
 
+    @ManyToOne
+    @JoinColumn(name = "foundation_id", nullable = false)
+    Foundation foundation;
 
     @Column(length = 4, nullable = false)
     private String code;
@@ -57,6 +60,14 @@ public class AcademicYear extends AbstractAuditingEntity implements Serializable
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Foundation getFoundation() {
+        return foundation;
+    }
+
+    public void setFoundation(Foundation foundation) {
+        this.foundation = foundation;
     }
 
     public String getCode() {
