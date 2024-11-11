@@ -23,7 +23,7 @@ public interface AcademicYearRepository extends JpaRepository<AcademicYear, Stri
     @Query("select new id.smartpesantren.dto.AcademicYearDTO(" +
             "a.id, a.code, a.name, a.description, a.startDate, a.endDate, a.isDefault) " +
             "from AcademicYear a " +
-            "where a.foundation.id=?#{principal.companyId} " +
+            "where a.foundation.id=?#{principal.foundationId} " +
             "and ((upper(a.name) like :q OR upper(coalesce(a.description,'')) like :q)) ")
     public Page<AcademicYearDTO> filter(@Param("q") String q, Pageable p);
 

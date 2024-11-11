@@ -77,12 +77,12 @@ public class AcademicYearResource {
             newData.setName(req.getName());
             newData.setDescription(req.getDescription());
             newData.setStartDate(req.getStartDate());
-            req.setEndDate(req.getEndDate());
-            req.setDefault(req.getDefault());
+            newData.setEndDate(req.getEndDate());
+            newData.setDefault(req.getIsDefault());
 
             newData = repository.saveAndFlush(newData);
             req.setId(newData.getId());
-            if(req.getDefault()) {
+            if(req.getIsDefault()) {
                 repository.resetOtherDefault(newData.getId());
             }
             return ResponseEntity.created(new URI("/api/academic/academic-year/" + newData.getId()))
@@ -116,9 +116,9 @@ public class AcademicYearResource {
         current.setName(req.getName());
         current.setStartDate(req.getStartDate());
         current.setEndDate(req.getEndDate());
-        current.setDefault(req.getDefault());
+        current.setDefault(req.getIsDefault());
         repository.save(current);
-        if(req.getDefault()) {
+        if(req.getIsDefault()) {
             repository.resetOtherDefault(current.getId());
         }
         return ResponseEntity.ok()
