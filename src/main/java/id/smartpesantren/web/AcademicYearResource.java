@@ -1,8 +1,8 @@
 package id.smartpesantren.web;
 
 import id.smartpesantren.entity.AcademicYear;
-import id.smartpesantren.entity.AbstractAuditingEntity;
 import id.smartpesantren.dto.AcademicYearDTO;
+import id.smartpesantren.entity.Foundation;
 import id.smartpesantren.repository.AcademicYearRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.errors.BadRequestAlertException;
@@ -68,23 +68,24 @@ public class AcademicYearResource {
         if (req.getId() != null) {
             throw new BadRequestAlertException("A new academic year cannot already have an ID", "academicYear", "idexists");
             // Lowercase the user login before comparing with database
-        } else if (repository.findByCode(req.getCode()).isPresent()) {
+        } else if (repository.findByFoundationAndCode(new Foundation(SecurityUtils.getFoundationId().get()), req.getCode()).isPresent()) {
             throw new CodeAlreadyUsedException();
         } else {
-            AcademicYear newData = repository.saveAndFlush(new AcademicYear(
-                    null,
-                    req.getCode(),
-                    req.getName(),
-                    req.getDescription(),
-                    req.getStartDate(),
-                    req.getEndDate(),
-                    req.getDefault()
-            ));
+            AcademicYear newData = new AcademicYear();
+            newData.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
+            newData.setCode(req.getCode());
+            newData.setName(req.getName());
+            newData.setDescription(req.getDescription());
+            newData.setStartDate(req.getStartDate());
+            req.setEndDate(req.getEndDate());
+            req.setDefault(req.getDefault());
+
+            newData = repository.saveAndFlush(newData);
             req.setId(newData.getId());
             if(req.getDefault()) {
                 repository.resetOtherDefault(newData.getId());
             }
-            return ResponseEntity.created(new URI("/api/siakad/academic-year/" + newData.getId()))
+            return ResponseEntity.created(new URI("/api/academic/academic-year/" + newData.getId()))
                     .headers(HeaderUtil.createAlert( "academicYear.created", newData.getId()))
                     .body(req);
         }
@@ -104,7 +105,7 @@ public class AcademicYearResource {
             throw new BadRequestAlertException("Academic Year data not found", "academicYear", "notFound");
         }
         if(req.getCode().equalsIgnoreCase(current.getCode())) { //ada perubahan kode
-            AcademicYear otherCode = repository.findByCode(req.getCode()).get();
+            AcademicYear otherCode = repository.findByFoundationAndCode(new Foundation(SecurityUtils.getFoundationId().get()), req.getCode()).get();
             if(otherCode !=null && otherCode.getCode().equalsIgnoreCase(req.getCode()) && !otherCode.getId().equalsIgnoreCase(id)) {
                 throw new BadRequestAlertException("Code alrady used", "academicYear", "alreadyExist");
             }
