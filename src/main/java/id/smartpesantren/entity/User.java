@@ -98,6 +98,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PersistentToken> persistentTokens = new HashSet<>();
 
+    @OneToOne
+    @JoinColumn(name = "person_id", unique = true)
+    private PersonData person;
+
     public String getId() {
         return id;
     }
@@ -225,6 +229,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public boolean isActivated() {
         return activated;
+    }
+
+    public PersonData getPerson() {
+        return person;
+    }
+
+    public void setPerson(PersonData person) {
+        this.person = person;
     }
 
     @Override

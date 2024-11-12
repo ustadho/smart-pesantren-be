@@ -2,6 +2,7 @@ package id.smartpesantren.service;
 
 
 import id.smartpesantren.config.Constants;
+import id.smartpesantren.entity.PersonData;
 import id.smartpesantren.repository.FoundationRepository;
 import id.smartpesantren.repository.AuthorityRepository;
 import id.smartpesantren.repository.UserRepository;
@@ -145,6 +146,7 @@ public class UserService {
     public User createUser(UserDTO userDTO) {
         String cid = SecurityUtils.getFoundationId().get();
         User user = new User();
+        user.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
@@ -166,6 +168,7 @@ public class UserService {
             managedAuthorities.add(new Authority(s));
         });
         user.setAuthorities(managedAuthorities);
+        user.setPerson(userDTO.getPersonId() == null? null: new PersonData(userDTO.getPersonId()));
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
