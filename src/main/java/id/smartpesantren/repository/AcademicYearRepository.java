@@ -13,15 +13,13 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface AcademicYearRepository extends JpaRepository<AcademicYear, String> {
-    @Query("select new id.smartpesantren.dto.AcademicYearDTO(" +
-            "a.id, a.code, a.name, a.description, a.startDate, a.endDate, a.isDefault) \n" +
+    @Query("select new id.smartpesantren.dto.AcademicYearDTO(a) \n" +
             "from AcademicYear a \n" +
             "where a.foundation.id=?#{principal.foundationId} \n" +
             "order by a.name desc")
     public Iterable<AcademicYearDTO> findAllData();
 
-    @Query("select new id.smartpesantren.dto.AcademicYearDTO(" +
-            "a.id, a.code, a.name, a.description, a.startDate, a.endDate, a.isDefault) " +
+    @Query("select new id.smartpesantren.dto.AcademicYearDTO(a) " +
             "from AcademicYear a " +
             "where a.foundation.id=?#{principal.foundationId} " +
             "and ((upper(a.name) like :q OR upper(coalesce(a.description,'')) like :q)) ")
