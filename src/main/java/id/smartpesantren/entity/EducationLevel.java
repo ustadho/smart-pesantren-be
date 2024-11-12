@@ -11,6 +11,13 @@ public class EducationLevel {
     private Integer id;
     private String name;
 
+    public EducationLevel() {
+    }
+
+    public EducationLevel(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }
