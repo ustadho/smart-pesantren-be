@@ -49,7 +49,7 @@ public class UserDTO {
 
     private Set<String> authorities;
 
-    private String company;
+    private String personId;
 
     public UserDTO() {
         // Empty constructor needed for MapStruct.
@@ -59,13 +59,14 @@ public class UserDTO {
         this(user.getId(), user.getLogin(), user.getFirstName(), user.getLastName(),
                 user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(),
                 user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
-                user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()));
+                user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()),
+                user.getPerson()==null? null: user.getPerson().getId());
     }
 
     public UserDTO(String id, String login, String firstName, String lastName,
                    String email, boolean activated, String imageUrl, String langKey,
                    String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-                   Set<String> authorities) {
+                   Set<String> authorities, String personId) {
 
         this.id = id;
         this.login = login;
@@ -80,6 +81,7 @@ public class UserDTO {
         this.lastModifiedBy = lastModifiedBy;
         this.lastModifiedDate = lastModifiedDate;
         this.authorities = authorities;
+        this.personId = personId;
     }
 
     public String getId() {
@@ -186,12 +188,12 @@ public class UserDTO {
         this.authorities = authorities;
     }
 
-    public String getCompany() {
-        return company;
+    public String getPersonId() {
+        return personId;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
 
     @Override
