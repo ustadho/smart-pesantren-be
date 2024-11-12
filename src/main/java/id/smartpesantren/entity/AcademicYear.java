@@ -37,6 +37,10 @@ public class AcademicYear extends AbstractAuditingEntity implements Serializable
     @Column(name = "is_default", columnDefinition = "boolean default false")
     private Boolean isDefault;
 
+    @ManyToOne
+    @JoinColumn(name = "curriculum_id")
+    private Curriculum curriculum;
+
     public AcademicYear() {
     }
 
@@ -116,5 +120,13 @@ public class AcademicYear extends AbstractAuditingEntity implements Serializable
 
     public void setDefault(Boolean aDefault) {
         isDefault = aDefault;
+    }
+
+    public Curriculum getCurriculum() {
+        return curriculum;
+    }
+
+    public void setCurriculum(Curriculum curriculum) {
+        this.curriculum = curriculum;
     }
 }

@@ -1,11 +1,10 @@
-package id.smartpesantren.dto;
+package id.smartpesantren.web.rest.vm;
 
 import id.smartpesantren.entity.AcademicYear;
-import id.smartpesantren.entity.Curriculum;
 
 import java.util.Date;
 
-public class AcademicYearDTO {
+public class AcademicYearVM {
     private String id;
     private String code;
     private String name;
@@ -13,31 +12,18 @@ public class AcademicYearDTO {
     private Date startDate;
     private Date endDate;
     private Boolean isDefault;
-    private String curriculum;
+    private String curriculumId;
 
-    public AcademicYearDTO() {
+    public AcademicYearVM() {
     }
 
-    public AcademicYearDTO(AcademicYear a) {
+    public AcademicYearVM(AcademicYear a) {
         setId(a.getId());
-        setCode(a.getCode());
         setName(a.getName());
-        setDefault(a.getDefault());
+        setCode(a.getCode());
         setDescription(a.getDescription());
-        setStartDate(a.getStartDate());
-        setEndDate(a.getEndDate());
-        setCurriculum(a.getCurriculum() == null? null: a.getCurriculum().getName());
-    }
-
-    public AcademicYearDTO(String id, String code, String name, String description, Date startDate, Date endDate, Boolean isDefault, String curriculum) {
-        this.id = id;
-        this.code = code;
-        this.name = name;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.isDefault = isDefault;
-        this.curriculum = curriculum;
+        setCurriculumId(a.getCurriculum() == null? null: a.getCurriculum().getId());
+        setIsDefault(a.getDefault());
     }
 
     public String getId() {
@@ -96,19 +82,11 @@ public class AcademicYearDTO {
         isDefault = aDefault;
     }
 
-    public Boolean getDefault() {
-        return isDefault;
+    public String getCurriculumId() {
+        return curriculumId;
     }
 
-    public void setDefault(Boolean aDefault) {
-        isDefault = aDefault;
-    }
-
-    public String getCurriculum() {
-        return curriculum;
-    }
-
-    public void setCurriculum(String curriculum) {
-        this.curriculum = curriculum;
+    public void setCurriculumId(String curriculumId) {
+        this.curriculumId = curriculumId;
     }
 }

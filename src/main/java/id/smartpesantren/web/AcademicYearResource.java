@@ -2,12 +2,14 @@ package id.smartpesantren.web;
 
 import id.smartpesantren.entity.AcademicYear;
 import id.smartpesantren.dto.AcademicYearDTO;
+import id.smartpesantren.entity.Curriculum;
 import id.smartpesantren.entity.Foundation;
 import id.smartpesantren.repository.AcademicYearRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.errors.BadRequestAlertException;
 import id.smartpesantren.web.rest.errors.CodeAlreadyUsedException;
 import id.smartpesantren.web.rest.utils.HeaderUtil;
+import id.smartpesantren.web.rest.vm.AcademicYearVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,18 +46,10 @@ public class AcademicYearResource {
     }
 
     @GetMapping("/{id}")
-    public AcademicYearDTO findById(@PathVariable("id") String id) {
+    public AcademicYearVM findById(@PathVariable("id") String id) {
         Optional<AcademicYear> ay =  repository.findById(id);
         if(ay.isPresent()) {
-            return new AcademicYearDTO(
-                    ay.get().getId(),
-                    ay.get().getCode(),
-                    ay.get().getName(),
-                    ay.get().getDescription(),
-                    ay.get().getStartDate(),
-                    ay.get().getEndDate(),
-                    ay.get().getDefault()
-            );
+            return new AcademicYearVM(ay.get());
         }
         return null;
     }
@@ -79,6 +73,7 @@ public class AcademicYearResource {
             newData.setStartDate(req.getStartDate());
             newData.setEndDate(req.getEndDate());
             newData.setDefault(req.getIsDefault());
+            newData.setCurriculum(req.getCurriculum()==null? null: new Curriculum(req.getCurriculum()));
 
             newData = repository.saveAndFlush(newData);
             req.setId(newData.getId());
@@ -94,8 +89,8 @@ public class AcademicYearResource {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<AcademicYearDTO> updateAcademicYear(@PathVariable("id") String id, @RequestBody @Valid AcademicYearDTO req) throws URISyntaxException {
-        log.debug("REST request to Update Academic year : {}", req);
+    public ResponseEntity<AcademicYearVM> updateAcademicYear(@PathVariable("id") String id, @RequestBody @Valid AcademicYearVM vm) throws URISyntaxException {
+        log.debug("REST request to Update Academic year : {}", vm);
 
         if (id == null) {
             throw new BadRequestAlertException("A new academic must be provided", "academicYear", "idNotFound");
@@ -104,26 +99,27 @@ public class AcademicYearResource {
         if (current == null) {
             throw new BadRequestAlertException("Academic Year data not found", "academicYear", "notFound");
         }
-        if(req.getCode().equalsIgnoreCase(current.getCode())) { //ada perubahan kode
-            AcademicYear otherCode = repository.findByFoundationAndCode(new Foundation(SecurityUtils.getFoundationId().get()), req.getCode()).get();
-            if(otherCode !=null && otherCode.getCode().equalsIgnoreCase(req.getCode()) && !otherCode.getId().equalsIgnoreCase(id)) {
+        if(vm.getCode().equalsIgnoreCase(current.getCode())) { //ada perubahan kode
+            AcademicYear otherCode = repository.findByFoundationAndCode(new Foundation(SecurityUtils.getFoundationId().get()), vm.getCode()).get();
+            if(otherCode !=null && otherCode.getCode().equalsIgnoreCase(vm.getCode()) && !otherCode.getId().equalsIgnoreCase(id)) {
                 throw new BadRequestAlertException("Code alrady used", "academicYear", "alreadyExist");
             }
         }
-        req.setId(current.getId());
-        current.setCode(req.getCode());
-        current.setDescription(req.getDescription());
-        current.setName(req.getName());
-        current.setStartDate(req.getStartDate());
-        current.setEndDate(req.getEndDate());
-        current.setDefault(req.getIsDefault());
+        vm.setId(current.getId());
+        current.setCode(vm.getCode());
+        current.setDescription(vm.getDescription());
+        current.setName(vm.getName());
+        current.setStartDate(vm.getStartDate());
+        current.setEndDate(vm.getEndDate());
+        current.setDefault(vm.getIsDefault());
+        current.setCurriculum(vm.getCurriculumId()==null? null: new Curriculum(vm.getCurriculumId()));
         repository.save(current);
-        if(req.getIsDefault()) {
+        if(vm.getIsDefault()) {
             repository.resetOtherDefault(current.getId());
         }
         return ResponseEntity.ok()
                     .headers(HeaderUtil.createAlert( "academicYear.updated", current.getId()))
-                    .body(req);
+                    .body(vm);
     }
 
     @DeleteMapping("/{id}")
