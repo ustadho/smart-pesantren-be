@@ -1,16 +1,13 @@
 package id.smartpesantren.web;
 
-import id.smartpesantren.entity.AcademicYear;
-import id.smartpesantren.entity.ClassLevel;
-import id.smartpesantren.entity.ClassRoom;
-import id.smartpesantren.repository.AuthorityRepository;
-import id.smartpesantren.entity.AbstractAuditingEntity;
+import id.smartpesantren.entity.*;
 import id.smartpesantren.dto.ClassRoomDTO;
 import id.smartpesantren.repository.ClassRoomRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.errors.BadRequestAlertException;
 import id.smartpesantren.web.rest.errors.CodeAlreadyUsedException;
 import id.smartpesantren.web.rest.utils.HeaderUtil;
+import id.smartpesantren.web.rest.vm.ClassRoomVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +23,7 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/siakad/class-room")
+@RequestMapping("/api/academic/class-room")
 public class ClassRoomResource {
     private final Logger log = LoggerFactory.getLogger(ClassRoomResource.class);
 
@@ -43,63 +40,62 @@ public class ClassRoomResource {
     }
 
     @GetMapping("all")
-    public Iterable<ClassRoomDTO> findAll(@RequestParam("year") String year) {
-        return repository.findAll(year);
+    public Iterable<ClassRoomDTO> findAll(
+            @RequestParam(value = "year", required = false, defaultValue = "") String year,
+            @RequestParam(value = "ins", required = false, defaultValue = "") String institutionId) {
+        return repository.findAll(year, institutionId);
     }
 
     @GetMapping("/{id}")
-    public ClassRoomDTO findById(@PathVariable("id") String id) {
+    public ClassRoomVM findById(@PathVariable("id") String id) {
         Optional<ClassRoom> ay =  repository.findById(id);
         if(ay.isPresent()) {
-            return new ClassRoomDTO(
-                    ay.get().getId(),
-                    ay.get().getAcademicYear().getId(),
-                    ay.get().getAcademicYear().getCode(),
-                    ay.get().getLevel().getId(),
-                    ay.get().getLevel().getLevel(),
-                    ay.get().getCode(),
-                    ay.get().getName(),
-                    ay.get().getCapacity(),
-                    ay.get().getDescription()
-            );
+            return new ClassRoomVM(ay.get());
         }
         return null;
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ClassRoomDTO> create(@RequestBody @Valid ClassRoomDTO req) throws URISyntaxException {
-        log.debug("REST request to save class room : {}", req);
-
-        if (req.getId() != null) {
+    public ResponseEntity<ClassRoomVM> create(@RequestBody @Valid ClassRoomVM vm) throws URISyntaxException {
+        log.debug("REST request to save class room : {}", vm);
+        Foundation f = new Foundation(SecurityUtils.getFoundationId().get());
+        if (vm.getId() != null) {
             throw new BadRequestAlertException("A new class room cannot already have an ID", "classLevel", "idexists");
-        } else if (repository.findByAcademicYearAndCode(
-                new AcademicYear(req.getAcademicYearId()),
-                req.getCode()).isPresent()) {
+        } else if (repository.findByFoundationAndAcademicYearAndCode(
+                f,
+                new AcademicYear(vm.getAcademicYearId()),
+                vm.getCode()).isPresent()) {
             throw new CodeAlreadyUsedException();
         } else {
-            ClassRoom newData = repository.saveAndFlush(new ClassRoom(
-                    null,
-                    new AcademicYear(req.getAcademicYearId()),
-                    new ClassLevel(req.getLevelId()),
-                    req.getCode(),
-                    req.getName(),
-                    req.getCapacity(),
-                    req.getDescription()
-            ));
-            req.setId(newData.getId());
+            ClassRoom d = new ClassRoom();
+            d.setAcademicYear(new AcademicYear(vm.getAcademicYearId()));
+            d.setFoundation(f);
+            d.setInstitution(new Institution(vm.getInstitutionId()));
+            d.setClassLevel(new ClassLevel(vm.getClassLevelId()));
+            d.setCode(vm.getCode());
+            d.setName(vm.getName());
+            d.setRoom(vm.getRoom());
+            d.setCapacity(vm.getCapacity());
+            d.setDescription(vm.getDescription());
+            d.setHomeRoomTeacher(new PersonData(vm.getHomeTeacherId()));
+            d.setLocation(new Location(vm.getLocationId()));
+            d.setCurriculum(new Curriculum(vm.getCurriculumId()));
 
-            return ResponseEntity.created(new URI("/api/siakad/class-room/" + newData.getId()))
-                    .headers(HeaderUtil.createAlert( "classRoom.created", newData.getId()))
-                    .body(req);
+            repository.saveAndFlush(d);
+            vm.setId(d.getId());
+
+            return ResponseEntity.created(new URI("/api/siakad/class-room/" + d.getId()))
+                    .headers(HeaderUtil.createAlert( "classRoom.created", d.getId()))
+                    .body(vm);
         }
 
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<ClassRoomDTO> update(@PathVariable("id") String id, @RequestBody @Valid ClassRoomDTO req) throws URISyntaxException {
-        log.debug("REST request to Update ClassRoomDTO : {}", req);
+    public ResponseEntity<ClassRoomVM> update(@PathVariable("id") String id, @RequestBody @Valid ClassRoomVM vm) throws URISyntaxException {
+        log.debug("REST request to Update ClassRoomDTO : {}", vm);
         log.debug("PUT id : {}", id);
 
         if (id == null) {
@@ -111,25 +107,29 @@ public class ClassRoomResource {
             System.out.println("current-tidak-ketemu");
             throw new BadRequestAlertException("ClassRoom data not found", "classRoom", "notFound");
         }
-        Optional<ClassRoom> otherClass = repository.findByAcademicYearAndCode(
-                new AcademicYear(req.getAcademicYearId()),
-                req.getCode());
+        Optional<ClassRoom> otherClass = repository.findByFoundationAndAcademicYearAndCode(
+                new Foundation(SecurityUtils.getFoundationId().get()),
+                new AcademicYear(vm.getAcademicYearId()),
+                vm.getCode());
         log.debug("otherClass : {}", otherClass);
-        if(otherClass.isPresent() && otherClass.get().getCode().equalsIgnoreCase(req.getCode()) && !otherClass.get().getId().equalsIgnoreCase(id)) {
+        if(otherClass.isPresent() && otherClass.get().getCode().equalsIgnoreCase(vm.getCode()) && !otherClass.get().getId().equalsIgnoreCase(id)) {
            throw new CodeAlreadyUsedException();
         }
 
-        req.setId(current.getId());
-        current.setAcademicYear(new AcademicYear(req.getAcademicYearId()));
-        current.setLevel(new ClassLevel(req.getLevelId()));
-        current.setCode(req.getCode());
-        current.setName(req.getName());
-        current.setDescription(req.getDescription());
-        current.setCapacity(req.getCapacity());
+        current.setAcademicYear(new AcademicYear(vm.getAcademicYearId()));
+        current.setClassLevel(new ClassLevel(vm.getClassLevelId()));
+        current.setCode(vm.getCode());
+        current.setName(vm.getName());
+        current.setRoom(vm.getRoom());
+        current.setCapacity(vm.getCapacity());
+        current.setDescription(vm.getDescription());
+        current.setHomeRoomTeacher(new PersonData(vm.getHomeTeacherId()));
+        current.setLocation(new Location(vm.getLocationId()));
+        current.setCurriculum(new Curriculum(vm.getCurriculumId()));
         repository.save(current);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createAlert( "classLevel.updated", current.getId()))
-                .body(req);
+                .body(vm);
     }
 
     @DeleteMapping("/{id}")

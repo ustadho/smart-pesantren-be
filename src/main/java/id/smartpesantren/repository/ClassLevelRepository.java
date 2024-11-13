@@ -15,8 +15,9 @@ public interface ClassLevelRepository extends JpaRepository<ClassLevel, String> 
     @Query("select new id.smartpesantren.dto.ClassLevelDTO(a) " +
             "from ClassLevel a \n" +
             "where a.foundation.id=?#{principal.foundationId} \n" +
-            "order by a.level desc")
-    public Iterable<ClassLevelDTO> findAllClass();
+            "and (coalesce(:eduLevel,0)=0 OR a.educationLevel.id=:eduLevel) \n" +
+            "order by a.level asc")
+    public Iterable<ClassLevelDTO> findAllClass(@Param("eduLevel") Integer educationLevelId);
 
     @Query("select new id.smartpesantren.dto.ClassLevelDTO(a) " +
             "from ClassLevel a \n" +

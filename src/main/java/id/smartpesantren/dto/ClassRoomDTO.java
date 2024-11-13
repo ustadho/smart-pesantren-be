@@ -1,30 +1,40 @@
 package id.smartpesantren.dto;
 
+import id.smartpesantren.entity.ClassRoom;
+
 public class ClassRoomDTO {
     private String id;
     private String academicYearId;
     private String academicYearCode;
-    private String levelId;
-    private Short level;
+    private String institusi;
+    private String educationLevel;
+    private Short classLevel;
     private String code;
     private String name;
     private Short capacity;
     private String description;
+    private String room;
+    private String location;
 
     public ClassRoomDTO() {
     }
 
-    public ClassRoomDTO(String id, String academicYearId, String academicYearCode, String levelId, Short level, String code, String name, Short capacity, String description) {
-        this.id = id;
-        this.academicYearId = academicYearId;
-        this.academicYearCode = academicYearCode;
-        this.levelId = levelId;
-        this.level = level;
-        this.code = code;
-        this.name = name;
-        this.capacity = capacity;
-        this.description = description;
+    public ClassRoomDTO(ClassRoom c) {
+        setId(c.getId());
+        setCode(c.getCode());
+        setName(c.getName());
+        setAcademicYearId(c.getAcademicYear().getId());
+        setAcademicYearCode(c.getAcademicYear().getCode());
+        setInstitusi(c.getInstitution().getName());
+        setEducationLevel(c.getClassLevel().getEducationLevel().getName());
+        setClassLevel(c.getClassLevel().getLevel());
+        setRoom(c.getRoom());
+        setLocation(c.getLocation().getName());
+        setDescription(c.getDescription());
+        setCapacity(c.getCapacity());
     }
+
+
 
     public String getId() {
         return id;
@@ -50,20 +60,28 @@ public class ClassRoomDTO {
         this.academicYearCode = academicYearCode;
     }
 
-    public String getLevelId() {
-        return levelId;
+    public String getInstitusi() {
+        return institusi;
     }
 
-    public void setLevelId(String levelId) {
-        this.levelId = levelId;
+    public void setInstitusi(String institusi) {
+        this.institusi = institusi;
     }
 
-    public Short getLevel() {
-        return level;
+    public String getEducationLevel() {
+        return educationLevel;
     }
 
-    public void setLevel(Short level) {
-        this.level = level;
+    public void setEducationLevel(String educationLevel) {
+        this.educationLevel = educationLevel;
+    }
+
+    public Short getClassLevel() {
+        return classLevel;
+    }
+
+    public void setClassLevel(Short classLevel) {
+        this.classLevel = classLevel;
     }
 
     public String getCode() {
@@ -96,5 +114,21 @@ public class ClassRoomDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

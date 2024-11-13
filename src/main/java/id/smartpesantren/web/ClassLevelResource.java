@@ -42,8 +42,8 @@ public class ClassLevelResource {
     }
 
     @GetMapping("all")
-    public Iterable<ClassLevelDTO> findAll() {
-        return repository.findAllClass();
+    public Iterable<ClassLevelDTO> findAll(@RequestParam(value = "el", required = false, defaultValue = "") Integer educationLevelId) {
+        return repository.findAllClass(educationLevelId);
     }
 
     @GetMapping("/{id}")
