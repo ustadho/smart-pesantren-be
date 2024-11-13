@@ -1,27 +1,36 @@
-package id.smartpesantren.dto;
+package id.smartpesantren.web.rest.vm;
 
 import id.smartpesantren.entity.ClassLevel;
 
-public class ClassLevelDTO {
+import javax.validation.constraints.NotNull;
+
+public class ClassLevelVM {
     private String id;
+
+    @NotNull
     private String code;
+
+    @NotNull
     private String name;
+
+    @NotNull
     private Short level;
     private String description;
-    private String educationLevel;
     private String color;
 
-    public ClassLevelDTO() {
+    @NotNull
+    private Integer educationLevelId;
+
+    public ClassLevelVM() {
     }
 
-    public ClassLevelDTO(ClassLevel c) {
+    public ClassLevelVM(ClassLevel c) {
         setId(c.getId());
         setCode(c.getCode());
         setName(c.getName());
-        setLevel(c.getLevel());
         setDescription(c.getDescription());
-        setEducationLevel(c.getEducationLevel().getName());
         setColor(c.getColor());
+        setEducationLevelId(c.getEducationLevel().getId());
     }
 
     public String getId() {
@@ -30,22 +39,6 @@ public class ClassLevelDTO {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Short getLevel() {
-        return level;
-    }
-
-    public void setLevel(Short level) {
-        this.level = level;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getCode() {
@@ -64,12 +57,20 @@ public class ClassLevelDTO {
         this.name = name;
     }
 
-    public String getEducationLevel() {
-        return educationLevel;
+    public Short getLevel() {
+        return level;
     }
 
-    public void setEducationLevel(String educationLevel) {
-        this.educationLevel = educationLevel;
+    public void setLevel(Short level) {
+        this.level = level;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getColor() {
@@ -78,5 +79,13 @@ public class ClassLevelDTO {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public Integer getEducationLevelId() {
+        return educationLevelId;
+    }
+
+    public void setEducationLevelId(Integer educationLevelId) {
+        this.educationLevelId = educationLevelId;
     }
 }

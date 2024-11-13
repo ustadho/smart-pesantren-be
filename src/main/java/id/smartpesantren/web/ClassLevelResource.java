@@ -3,11 +3,14 @@ package id.smartpesantren.web;
 import id.smartpesantren.entity.AbstractAuditingEntity;
 import id.smartpesantren.dto.ClassLevelDTO;
 import id.smartpesantren.entity.ClassLevel;
+import id.smartpesantren.entity.EducationLevel;
+import id.smartpesantren.entity.Foundation;
 import id.smartpesantren.repository.ClassLevelRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.errors.BadRequestAlertException;
 import id.smartpesantren.web.rest.errors.CodeAlreadyUsedException;
 import id.smartpesantren.web.rest.utils.HeaderUtil;
+import id.smartpesantren.web.rest.vm.ClassLevelVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,7 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/siakad/class-level")
+@RequestMapping("/api/academic/class-level")
 public class ClassLevelResource {
     private final Logger log = LoggerFactory.getLogger(ClassLevelResource.class);
 
@@ -47,42 +50,35 @@ public class ClassLevelResource {
     public ClassLevelDTO findById(@PathVariable("id") String id) {
         Optional<ClassLevel> ay =  repository.findById(id);
         if(ay.isPresent()) {
-            return new ClassLevelDTO(
-                    ay.get().getId(),
-                    ay.get().getLevel(),
-                    ay.get().getDescription()
-            );
+            return new ClassLevelDTO(ay.get());
         }
         return null;
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ClassLevelDTO> createClassLevel(@RequestBody @Valid ClassLevelDTO req) throws URISyntaxException {
-        log.debug("REST request to save class level : {}", req);
+    public ResponseEntity<ClassLevelVM> createClassLevel(@RequestBody @Valid ClassLevelVM vm) throws URISyntaxException {
+        log.debug("REST request to save class level : {}", vm);
 
-        if (req.getId() != null) {
+        if (vm.getId() != null) {
             throw new BadRequestAlertException("A new class level cannot already have an ID", "classLevel", "idexists");
-        } else if (repository.findByLevel(req.getLevel()).isPresent()) {
+        } else if (repository.findByFoundationAndLevel(new Foundation(SecurityUtils.getFoundationId().get()), vm.getLevel()).isPresent()) {
             throw new CodeAlreadyUsedException();
         } else {
-            ClassLevel newData = repository.saveAndFlush(new ClassLevel(
-                    null,
-                    req.getLevel(),
-                    req.getDescription()
-            ));
-            req.setId(newData.getId());
+            ClassLevel d = new ClassLevel().fromVM(vm);
+            repository.saveAndFlush(d);
+            vm.setId(d.getId());
 
-            return ResponseEntity.created(new URI("/api/siakad/class-level/" + newData.getId()))
-                    .headers(HeaderUtil.createAlert( "classLevel.created", newData.getId()))
-                    .body(req);
+            return ResponseEntity.created(new URI("/api/academic/class-level/" + d.getId()))
+                    .headers(HeaderUtil.createAlert( "classLevel.created", d.getId()))
+                    .body(vm);
         }
 
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<ClassLevelDTO> updateClassLevel(@PathVariable("id") String id, @RequestBody @Valid ClassLevelDTO req) throws URISyntaxException {
+    public ResponseEntity<ClassLevelVM> updateClassLevel(@PathVariable("id") String id, @RequestBody @Valid ClassLevelVM req) throws URISyntaxException {
         log.debug("REST request to Update ClassLevelDTO : {}", req);
 
         if (id == null) {
@@ -93,7 +89,7 @@ public class ClassLevelResource {
             throw new BadRequestAlertException("ClassLevel data not found", "classLevel", "notFound");
         }
         if(req.getLevel() == current.getLevel()) { //ada perubahan kode
-            ClassLevel otherLevel = repository.findByLevel(req.getLevel()).get();
+            ClassLevel otherLevel = repository.findByFoundationAndLevel(new Foundation(SecurityUtils.getFoundationId().get()), req.getLevel()).get();
             if(otherLevel !=null && otherLevel.getLevel() == req.getLevel() && !otherLevel.getId().equalsIgnoreCase(id)) {
                 throw new BadRequestAlertException("Level alrady used", "classLevel", "alreadyExist");
             }
@@ -101,6 +97,9 @@ public class ClassLevelResource {
         req.setId(current.getId());
         current.setLevel(req.getLevel());
         current.setDescription(req.getDescription());
+        current.setEducationLevel(new EducationLevel(req.getEducationLevelId()));
+        current.setCode(req.getCode());
+        current.setName(req.getName());
         repository.save(current);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createAlert( "classLevel.updated", current.getId()))
