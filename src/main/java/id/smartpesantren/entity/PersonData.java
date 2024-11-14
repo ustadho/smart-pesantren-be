@@ -142,6 +142,14 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     @Column(columnDefinition = "boolean default false")
     private Boolean workingShift;
 
+    @ManyToOne
+    @JoinColumn(name = "nationality_id")
+    private Country nationality;
+
+    private String monthlyRevenue;
+
+    private String title; // Bapak, Ibu, Sdr., Sdri., Alm. Almh.
+
     public PersonData() {
     }
 

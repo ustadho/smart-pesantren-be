@@ -24,6 +24,9 @@ public class StudentCategory {
 
     private String description;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isDefault;
+
     public StudentCategory() {
     }
 
@@ -63,11 +66,20 @@ public class StudentCategory {
         this.description = description;
     }
 
+    public Boolean getDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(Boolean aDefault) {
+        isDefault = aDefault;
+    }
+
     public StudentCategory fromVM(StudentCategoryVM vm) {
         setId(vm.getId());
         setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
         setName(vm.getName());
         setDescription(vm.getDescription());
+        setDefault(vm.getDefault());
         return this;
     }
 }

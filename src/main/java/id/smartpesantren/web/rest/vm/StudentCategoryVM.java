@@ -10,6 +10,7 @@ public class StudentCategoryVM {
     @NotNull
     private String name;
     private String description;
+    private Boolean isDefault;
 
     public StudentCategoryVM() {
     }
@@ -18,6 +19,7 @@ public class StudentCategoryVM {
         setId(s.getId());
         setName(s.getName());
         setDescription(s.getDescription());
+        setDefault(s.getDefault());
     }
 
 
@@ -43,5 +45,13 @@ public class StudentCategoryVM {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(Boolean aDefault) {
+        isDefault = aDefault;
     }
 }

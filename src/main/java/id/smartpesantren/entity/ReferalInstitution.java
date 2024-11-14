@@ -31,6 +31,10 @@ public class ReferalInstitution extends AbstractAuditingEntity implements Serial
     public ReferalInstitution() {
     }
 
+    public ReferalInstitution(String id) {
+        this.id = id;
+    }
+
     public ReferalInstitution(String id, Foundation foundation, String name, City city, String description) {
         this.id = id;
         this.foundation = foundation;

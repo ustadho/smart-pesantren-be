@@ -6,6 +6,7 @@ import id.smartpesantren.web.rest.vm.StudentCategoryVM;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -26,4 +27,8 @@ public interface StudentCategoryRepository extends JpaRepository<StudentCategory
     List<StudentCategoryVM> findAllTypes();
 
     public Optional<StudentCategory> findByFoundationAndName(Foundation foundation, String name);
+
+    @Modifying
+    @Query(value = "update ac_student_category set is_default = (id=:id)", nativeQuery = true)
+    public void updateDefault(@Param("id") String id);
 }

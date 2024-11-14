@@ -65,7 +65,9 @@ public class StudentCategoryResource {
             StudentCategory d = new StudentCategory().fromVM(vm);
             repository.saveAndFlush(d);
             vm.setId(d.getId());
-
+            if(vm.getDefault() == true) {
+                repository.updateDefault(d.getId());
+            }
             return ResponseEntity.created(new URI("/api/academic/student-category/" + d.getId()))
                     .headers(HeaderUtil.createAlert( "studentCategory.created", d.getId()))
                     .body(vm);
@@ -94,7 +96,11 @@ public class StudentCategoryResource {
         vm.setId(current.getId());
         current.setDescription(vm.getDescription());
         current.setName(vm.getName());
+        current.setDefault(vm.getDefault());
         repository.save(current);
+        if(vm.getDefault() == true) {
+            repository.updateDefault(vm.getId());
+        }
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createAlert( "student category.updated", current.getId()))
                 .body(vm);
