@@ -9,7 +9,10 @@ public class StudentDTO {
     private String nis;
     private String nisn;
     private String name;
+    private String sex;
     private Date dob;
+    private String joinYear;
+    private String institution;
 
     public StudentDTO() {
     }
@@ -20,6 +23,9 @@ public class StudentDTO {
         setDob(s.getDob());
         setNis(s.getNis());
         setNisn(s.getNisn());
+        setSex(s.getSex().equalsIgnoreCase("M")? "Putra": "Putri");
+        setJoinYear(s.getJoinYear().getCode());
+        setInstitution(s.getInstitution().getName());
     }
 
     public String getId() {
@@ -60,5 +66,29 @@ public class StudentDTO {
 
     public void setDob(Date dob) {
         this.dob = dob;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getJoinYear() {
+        return joinYear;
+    }
+
+    public void setJoinYear(String joinYear) {
+        this.joinYear = joinYear;
+    }
+
+    public String getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(String institution) {
+        this.institution = institution;
     }
 }

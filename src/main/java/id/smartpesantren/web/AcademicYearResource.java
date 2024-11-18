@@ -56,33 +56,33 @@ public class AcademicYearResource {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<AcademicYearDTO> createAcademicYear(@RequestBody @Valid AcademicYearDTO req) throws URISyntaxException {
-        log.debug("REST request to save Academic year : {}", req);
+    public ResponseEntity<AcademicYearVM> createAcademicYear(@RequestBody @Valid AcademicYearVM vm) throws URISyntaxException {
+        log.debug("REST request to save Academic year : {}", vm);
 
-        if (req.getId() != null) {
+        if (vm.getId() != null) {
             throw new BadRequestAlertException("A new academic year cannot already have an ID", "academicYear", "idexists");
             // Lowercase the user login before comparing with database
-        } else if (repository.findByFoundationAndCode(new Foundation(SecurityUtils.getFoundationId().get()), req.getCode()).isPresent()) {
+        } else if (repository.findByFoundationAndCode(new Foundation(SecurityUtils.getFoundationId().get()), vm.getCode()).isPresent()) {
             throw new CodeAlreadyUsedException();
         } else {
             AcademicYear newData = new AcademicYear();
             newData.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
-            newData.setCode(req.getCode());
-            newData.setName(req.getName());
-            newData.setDescription(req.getDescription());
-            newData.setStartDate(req.getStartDate());
-            newData.setEndDate(req.getEndDate());
-            newData.setDefault(req.getIsDefault());
-            newData.setCurriculum(req.getCurriculum()==null? null: new Curriculum(req.getCurriculum()));
+            newData.setCode(vm.getCode());
+            newData.setName(vm.getName());
+            newData.setDescription(vm.getDescription());
+            newData.setStartDate(vm.getStartDate());
+            newData.setEndDate(vm.getEndDate());
+            newData.setDefault(vm.getIsDefault());
+            newData.setCurriculum(vm.getCurriculumId()==null? null: new Curriculum(vm.getCurriculumId()));
 
             newData = repository.saveAndFlush(newData);
-            req.setId(newData.getId());
-            if(req.getIsDefault()) {
+            vm.setId(newData.getId());
+            if(vm.getIsDefault()) {
                 repository.resetOtherDefault(newData.getId());
             }
             return ResponseEntity.created(new URI("/api/academic/academic-year/" + newData.getId()))
                     .headers(HeaderUtil.createAlert( "academicYear.created", newData.getId()))
-                    .body(req);
+                    .body(vm);
         }
 
     }

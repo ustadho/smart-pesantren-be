@@ -19,7 +19,7 @@ public class AcademicYear extends AbstractAuditingEntity implements Serializable
     @JoinColumn(name = "foundation_id", nullable = false)
     Foundation foundation;
 
-    @Column(length = 4, nullable = false)
+    @Column(length = 5, nullable = false)
     private String code;
 
     @Column(length = 30, nullable = false)

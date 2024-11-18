@@ -24,6 +24,10 @@ public class Student extends AbstractAuditingEntity implements Serializable {
     AcademicYear joinYear;
 
     @ManyToOne
+    @JoinColumn(name = "institution_id", nullable = false)
+    Institution institution;
+
+    @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     StudentCategory category;
 
@@ -140,6 +144,14 @@ public class Student extends AbstractAuditingEntity implements Serializable {
 
     public void setJoinYear(AcademicYear joinYear) {
         this.joinYear = joinYear;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
     }
 
     public StudentCategory getCategory() {

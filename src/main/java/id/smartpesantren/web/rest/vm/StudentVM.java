@@ -7,6 +7,7 @@ public class StudentVM {
     private String id;
 
     private String joinYearId;
+    private String institutionId;
     private String categoryId;
     @NotNull
     private String nis;
@@ -86,6 +87,14 @@ public class StudentVM {
 
     public void setJoinYearId(String joinYearId) {
         this.joinYearId = joinYearId;
+    }
+
+    public String getInstitutionId() {
+        return institutionId;
+    }
+
+    public void setInstitutionId(String institutionId) {
+        this.institutionId = institutionId;
     }
 
     public String getCategoryId() {

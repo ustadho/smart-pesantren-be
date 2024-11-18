@@ -36,6 +36,7 @@ public class StudentService {
         }
 
         s.setId(vm.getId());
+        s.setInstitution(new Institution(vm.getInstitutionId()));
         s.setJoinYear(new AcademicYear(vm.getJoinYearId()));
         s.setCategory(new StudentCategory(vm.getCategoryId()));
         s.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
