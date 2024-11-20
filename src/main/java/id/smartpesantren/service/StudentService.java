@@ -44,6 +44,7 @@ public class StudentService {
         s.setNisn(vm.getNisn());
         s.setNik(vm.getNik());
         s.setName(vm.getName());
+        s.setPhone(vm.getPhone());
         s.setEmail(vm.getEmail());
         s.setSex(vm.getSex());
         s.setPob(vm.getPobId()==null? null: new City(vm.getPobId()));
@@ -81,6 +82,7 @@ public class StudentService {
 
     public StudentVM fromStudent(Student st) {
         StudentVM vm = new StudentVM();
+        vm.setInstitutionId(st.getInstitution().getId());
         vm.setId(st.getId());
         vm.setJoinYearId(st.getJoinYear() == null? null: st.getJoinYear().getId());
         vm.setCategoryId(st.getCategory() == null? null: st.getCategory().getId());
@@ -88,6 +90,7 @@ public class StudentService {
         vm.setNisn(st.getNisn());
         vm.setNik(st.getNik());
         vm.setName(st.getName());
+        vm.setPhone(st.getPhone());
         vm.setEmail(st.getEmail());
         vm.setSex(st.getSex());
         vm.setPobId(st.getPob()==null? null: st.getPob().getId());

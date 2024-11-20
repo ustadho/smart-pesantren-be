@@ -12,6 +12,13 @@ public class EmployementType {
 
     private String name;
 
+    public EmployementType() {
+    }
+
+    public EmployementType(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

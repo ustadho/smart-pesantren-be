@@ -1,6 +1,7 @@
 package id.smartpesantren.repository;
 
 import id.smartpesantren.dto.EmployeeDTO;
+import id.smartpesantren.dto.GuardianDTO;
 import id.smartpesantren.entity.PersonData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,25 @@ public interface PersonDataRepository extends JpaRepository<PersonData, String> 
             "left join a.referalInstitution ri \n" +
             "where a.foundation.id=?#{principal.foundationId} \n" +
             "and (coalesce(:unor,'')='' OR o.id=:unor) \n" +
+            "and a.isEmployee = true \n" +
             "and upper(a.name) like :q ")
     Page<EmployeeDTO> filterEmployee(@Param("unor") String unor, @Param("q") String q, Pageable p);
+
+    @Query("select new id.smartpesantren.dto.GuardianDTO(a) \n" +
+            "from PersonData a \n" +
+            "left join a.organization o \n" +
+            "left join a.section s \n" +
+            "left join a.jobPosition jp \n" +
+            "left join a.employeeCategory ec \n" +
+            "left join a.educationLevel el \n" +
+            "left join a.pob pob \n" +
+            "left join a.permanentSubDistrict psd \n" +
+            "left join a.residentalSubDistrict rsd \n" +
+            "left join a.referalInstitution ri \n" +
+            "where a.foundation.id=?#{principal.foundationId} \n" +
+            "and a.isGuardian = true \n"+
+            "and upper(a.name) like :q \n"+
+            "and (coalesce(:sex,'')='' OR a.sex=:sex) "
+    )
+    Page<GuardianDTO> filterGuardian(@Param("q") String q, @Param("sex") String sex, Pageable p);
 }

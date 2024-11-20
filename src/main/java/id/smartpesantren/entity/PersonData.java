@@ -2,6 +2,8 @@ package id.smartpesantren.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import id.smartpesantren.repository.EmploymentTypeRepository;
+import id.smartpesantren.web.EmployementType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -82,6 +84,10 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "education_level_id")
     private EducationLevel educationLevel; //Pendidikan terakhir
 
+    @ManyToOne
+    @JoinColumn(name = "religion_id")
+    private Religion religion;
+
     private String permanentAddress;
 
     @Column(name = "permanent_rt")
@@ -89,6 +95,9 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     @Column(name = "permanent_rw")
     private String permanentRW;
+
+    @Column(name = "permanent_postal_code")
+    private String permanentPostalCode;
 
     @ManyToOne
     @JoinColumn(name = "permanent_subdistrict_id")
@@ -105,6 +114,9 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "residental_subdistrict_id")
     private SubDistrict residentalSubDistrict;
+
+    @Column(name = "residental_postal_code")
+    private String residentalPostalCode;
 
     @Column(name = "majors")
     private String majors;
@@ -149,6 +161,10 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     private String monthlyRevenue;
 
     private String title; // Bapak, Ibu, Sdr., Sdri., Alm. Almh.
+
+    @ManyToOne
+    @JoinColumn(name = "employement_type_id")
+    EmployementType employementType;
 
     public PersonData() {
     }
@@ -301,6 +317,14 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
         this.educationLevel = educationLevel;
     }
 
+    public Religion getReligion() {
+        return religion;
+    }
+
+    public void setReligion(Religion religion) {
+        this.religion = religion;
+    }
+
     public String getPermanentAddress() {
         return permanentAddress;
     }
@@ -323,6 +347,14 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     public void setPermanentRW(String permanentRW) {
         this.permanentRW = permanentRW;
+    }
+
+    public String getPermanentPostalCode() {
+        return permanentPostalCode;
+    }
+
+    public void setPermanentPostalCode(String permanentPostalCode) {
+        this.permanentPostalCode = permanentPostalCode;
     }
 
     public SubDistrict getPermanentSubDistrict() {
@@ -363,6 +395,14 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     public void setResidentalSubDistrict(SubDistrict residentalSubDistrict) {
         this.residentalSubDistrict = residentalSubDistrict;
+    }
+
+    public String getResidentalPostalCode() {
+        return residentalPostalCode;
+    }
+
+    public void setResidentalPostalCode(String residentalPostalCode) {
+        this.residentalPostalCode = residentalPostalCode;
     }
 
     public String getMajors() {
@@ -477,4 +517,35 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
         this.joinDate = joinDate;
     }
 
+    public Country getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(Country nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getMonthlyRevenue() {
+        return monthlyRevenue;
+    }
+
+    public void setMonthlyRevenue(String monthlyRevenue) {
+        this.monthlyRevenue = monthlyRevenue;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public EmployementType getEmployementType() {
+        return employementType;
+    }
+
+    public void setEmployementType(EmployementType employementType) {
+        this.employementType = employementType;
+    }
 }

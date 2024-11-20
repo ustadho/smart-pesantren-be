@@ -13,6 +13,10 @@ public class EmployeeVM {
 
     @NotNull
     private String categoryId;
+
+    @NotNull
+    private Integer religionId;
+
     private String categoryName;
 
     @NotNull @NotEmpty
@@ -158,6 +162,14 @@ public class EmployeeVM {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Integer getReligionId() {
+        return religionId;
+    }
+
+    public void setReligionId(Integer religionId) {
+        this.religionId = religionId;
     }
 
     public String getCategoryName() {

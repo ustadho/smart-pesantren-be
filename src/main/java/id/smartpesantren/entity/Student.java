@@ -43,6 +43,7 @@ public class Student extends AbstractAuditingEntity implements Serializable {
     @Column(length = 100, nullable = false)
     private String name;
 
+    private String phone;
     private String email;
 
     @Column(nullable = false)
@@ -192,6 +193,14 @@ public class Student extends AbstractAuditingEntity implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {

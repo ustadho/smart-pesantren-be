@@ -18,6 +18,7 @@ public class StudentVM {
     @NotNull
     private String name;
 
+    private String phone;
     private String email;
 
     @NotNull
@@ -135,6 +136,14 @@ public class StudentVM {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {

@@ -4,6 +4,7 @@ import id.smartpesantren.dto.StudentDTO;
 import id.smartpesantren.entity.Student;
 import id.smartpesantren.repository.StudentRepository;
 import id.smartpesantren.service.StudentService;
+import id.smartpesantren.web.rest.errors.DataNotFoundException;
 import id.smartpesantren.web.rest.utils.HeaderUtil;
 import id.smartpesantren.web.rest.vm.StudentVM;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,16 @@ public class StudentResource {
 
     @PostMapping
     public StudentVM create(@RequestBody @Valid StudentVM vm) {
+        return service.saveOrUpdate(vm);
+    }
+
+    @PutMapping("/{id}")
+    public StudentVM update(@PathVariable("id") String id, @RequestBody @Valid StudentVM vm) {
+        Optional<Student> exist = repository.findById(id);
+        if(!exist.isPresent()) {
+            throw new DataNotFoundException("data santri tidak ditemukan!");
+        }
+        vm.setId(id);
         return service.saveOrUpdate(vm);
     }
 

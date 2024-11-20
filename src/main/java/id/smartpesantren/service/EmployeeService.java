@@ -42,6 +42,7 @@ public class EmployeeService {
         pd.setNik(vm.getNik());
         pd.setPob(vm.getPobId()==null? null: new City(vm.getPobId()));
         pd.setDob(vm.getDob());
+        pd.setReligion(vm.getReligionId() == null? null: new Religion(vm.getReligionId()));
         pd.setJoinDate(vm.getJoinDate());
         pd.setEmployeeStatus(vm.getStatusId() == null? null: new EmployeeStatus(vm.getStatusId()));
         pd.setOrganization(vm.getOrganizationId() == null? null: new Organization(vm.getOrganizationId()));
