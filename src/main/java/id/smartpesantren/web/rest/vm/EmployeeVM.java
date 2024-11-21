@@ -108,8 +108,8 @@ public class EmployeeVM {
         this.setResidentialAddress(p.getResidentialAddress());
         this.setResidentialRT(p.getResidentialRT());
         this.setResidentialRT(p.getResidentialRW());
-        this.setResidentialSubdistrictId(p.getResidentalSubDistrict() == null? null: p.getResidentalSubDistrict().getId());
-        this.setResidentialSubdistrictName(p.getResidentalSubDistrict() == null? null: p.getResidentalSubDistrict().getName());
+        this.setResidentialSubdistrictId(p.getResidentialSubDistrict() == null? null: p.getResidentialSubDistrict().getId());
+        this.setResidentialSubdistrictName(p.getResidentialSubDistrict() == null? null: p.getResidentialSubDistrict().getName());
         this.setMajors(p.getMajors());
         this.setFaculty(p.getFaculty());
         this.setReferalInstitutionId(p.getReferalInstitution() == null? null: p.getReferalInstitution().getId());

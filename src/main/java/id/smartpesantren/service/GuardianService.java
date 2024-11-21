@@ -1,8 +1,10 @@
 package id.smartpesantren.service;
 
+import id.smartpesantren.constant.PersonType;
 import id.smartpesantren.dto.GuardianDTO;
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.PersonDataRepository;
+import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.EmployementType;
 import id.smartpesantren.web.rest.errors.InternalServerErrorException;
 import id.smartpesantren.web.rest.vm.GuardianVM;
@@ -18,11 +20,11 @@ public class GuardianService {
     @Autowired
     PersonDataRepository personDataRepository;
 
-    public GuardianVM createOrUpdate(GuardianVM vm) {
+    public PersonData createOrUpdate(GuardianVM vm) {
         PersonData pd = fromVM(vm);
         personDataRepository.saveAndFlush(pd);
         vm.setId(pd.getId());
-        return vm;
+        return pd;
     }
 
     public Page<GuardianDTO> filter(String q, String sex, Pageable p) {
@@ -41,9 +43,11 @@ public class GuardianService {
         } else {
             p = new PersonData();
         }
+        p.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
+        p.setPersonType(PersonType.GUARDIAN);
         p.setName(vm.getName());
         p.setNik(vm.getNik());
-        p.setTitle(vm.getTitle());
+        p.setPersonTitle(vm.getTitleId() == null? null: new PersonTitle(vm.getTitleId()));
         p.setGuardian(true);
         p.setSex(vm.getSex());
         p.setDob(vm.getDob());
@@ -54,14 +58,49 @@ public class GuardianService {
         p.setMonthlyRevenue(vm.getMonthlyRevenue());
         p.setMaritalStatus(vm.getMaritalStatusId() == null? null: new MaritalStatus(vm.getMaritalStatusId()));
         p.setEducationLevel(vm.getEducationLevelId() == null? null: new EducationLevel(vm.getEducationLevelId()));
+        p.setPhone(vm.getPhone());
+        p.setEmail(vm.getEmail());
         p.setPermanentAddress(vm.getPermanentAddress());
+        p.setPermanentRT(vm.getPermanentRT());
+        p.setPermanentRW(vm.getPermanentRW());
         p.setPermanentSubDistrict(vm.getPermanentSubdistrictId() == null? null: new SubDistrict(vm.getPermanentSubdistrictId()));
         p.setPermanentPostalCode(vm.getPermanentPostalCode());
-        p.setResidentialAddress(vm.getResidentalAddress());
-        p.setResidentialRT(vm.getResidentalRT());
-        p.setResidentialRW(vm.getResidentalRW());
-        p.setResidentalSubDistrict(vm.getResidentalSubdistrictId() == null? null: new SubDistrict(vm.getResidentalSubdistrictId()));
-        p.setResidentalPostalCode(vm.getResidentalPostalCode());
+        p.setResidentialAddress(vm.getResidentialAddress());
+        p.setResidentialRT(vm.getResidentialRT());
+        p.setResidentialRW(vm.getResidentialRW());
+        p.setResidentialSubDistrict(vm.getResidentialSubdistrictId() == null? null: new SubDistrict(vm.getResidentialSubdistrictId()));
+        p.setResidentialPostalCode(vm.getResidentialPostalCode());
         return p;
+    }
+
+    public GuardianVM fromPersonData(PersonData p) {
+        GuardianVM vm = new GuardianVM();
+        vm.setId(p.getId());
+        vm.setName(p.getName());
+        vm.setSex(p.getSex());
+        vm.setTitleId(p.getPersonTitle() == null ? null: p.getPersonTitle().getId());
+        vm.setNik(p.getNik());
+        vm.setDob(p.getDob());
+        vm.setPobId(p.getPob() == null? null: p.getPob().getId());
+        vm.setNationalityId(p.getNationality() == null? null: p.getNationality().getId());
+        vm.setEmploymentTypeId(p.getEmployementType() == null? null: p.getEmployementType().getId());
+        vm.setMonthlyRevenue(p.getMonthlyRevenue());
+        vm.setMaritalStatusId(p.getMaritalStatus() == null? null: p.getMaritalStatus().getId());
+        vm.setEducationLevelId(p.getEducationLevel() == null? null: p.getEducationLevel().getId());
+        vm.setReligionId(p.getReligion() == null? null: p.getReligion().getId());
+        vm.setPhone(p.getPhone());
+        vm.setEmail(p.getEmail());
+        vm.setPermanentAddress(p.getPermanentAddress());
+        vm.setPermanentRT(p.getPermanentRT());
+        vm.setPermanentRW(p.getPermanentRW());
+        vm.setPermanentSubdistrictId(p.getPermanentSubDistrict() ==null ? null: p.getPermanentSubDistrict().getId());
+        vm.setPermanentPostalCode(p.getPermanentPostalCode());
+
+        vm.setResidentialAddress(p.getResidentialAddress());
+        vm.setResidentialRT(p.getResidentialRT());
+        vm.setResidentialRW(p.getResidentialRW());
+        vm.setResidentialSubdistrictId(p.getResidentialSubDistrict() ==null ? null: p.getResidentialSubDistrict().getId());
+        vm.setResidentialPostalCode(p.getResidentialPostalCode());
+        return vm;
     }
 }

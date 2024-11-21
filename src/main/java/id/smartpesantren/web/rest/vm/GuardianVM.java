@@ -7,7 +7,7 @@ public class GuardianVM {
     private String id;
     private String name;
     private String sex;
-    private String title;
+    private String titleId;
     private String nik;
     private Date dob;
     private Integer religionId;
@@ -23,11 +23,11 @@ public class GuardianVM {
     private Integer permanentSubdistrictId;
     private String permanentPostalCode;
 
-    private String residentalAddress;
-    private String residentalRT;
-    private String residentalRW;
-    private Integer residentalSubdistrictId;
-    private String residentalPostalCode;
+    private String residentialAddress;
+    private String residentialRT;
+    private String residentialRW;
+    private Integer residentialSubdistrictId;
+    private String residentialPostalCode;
     private String email;
     private String phone;
     private String status; //Ayah Kandung, Ibu Kandung, Kakak, Ayah Tiri, Ibu Tiri
@@ -64,12 +64,12 @@ public class GuardianVM {
         this.sex = sex;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitleId() {
+        return titleId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitleId(String titleId) {
+        this.titleId = titleId;
     }
 
     public String getNik() {
@@ -208,43 +208,43 @@ public class GuardianVM {
         this.status = status;
     }
 
-    public String getResidentalAddress() {
-        return residentalAddress;
+    public String getResidentialAddress() {
+        return residentialAddress;
     }
 
-    public void setResidentalAddress(String residentalAddress) {
-        this.residentalAddress = residentalAddress;
+    public void setResidentialAddress(String residentialAddress) {
+        this.residentialAddress = residentialAddress;
     }
 
-    public String getResidentalRT() {
-        return residentalRT;
+    public String getResidentialRT() {
+        return residentialRT;
     }
 
-    public void setResidentalRT(String residentalRT) {
-        this.residentalRT = residentalRT;
+    public void setResidentialRT(String residentialRT) {
+        this.residentialRT = residentialRT;
     }
 
-    public String getResidentalRW() {
-        return residentalRW;
+    public String getResidentialRW() {
+        return residentialRW;
     }
 
-    public void setResidentalRW(String residentalRW) {
-        this.residentalRW = residentalRW;
+    public void setResidentialRW(String residentialRW) {
+        this.residentialRW = residentialRW;
     }
 
-    public Integer getResidentalSubdistrictId() {
-        return residentalSubdistrictId;
+    public Integer getResidentialSubdistrictId() {
+        return residentialSubdistrictId;
     }
 
-    public void setResidentalSubdistrictId(Integer residentalSubdistrictId) {
-        this.residentalSubdistrictId = residentalSubdistrictId;
+    public void setResidentialSubdistrictId(Integer residentialSubdistrictId) {
+        this.residentialSubdistrictId = residentialSubdistrictId;
     }
 
-    public String getResidentalPostalCode() {
-        return residentalPostalCode;
+    public String getResidentialPostalCode() {
+        return residentialPostalCode;
     }
 
-    public void setResidentalPostalCode(String residentalPostalCode) {
-        this.residentalPostalCode = residentalPostalCode;
+    public void setResidentialPostalCode(String residentialPostalCode) {
+        this.residentialPostalCode = residentialPostalCode;
     }
 }

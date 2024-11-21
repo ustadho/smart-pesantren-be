@@ -20,6 +20,16 @@ public class PersonTitle {
 
     private Boolean active;
 
+    @Column(columnDefinition = "smallint default 0")
+    private Integer seq;
+
+    public PersonTitle() {
+    }
+
+    public PersonTitle(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }
@@ -50,5 +60,13 @@ public class PersonTitle {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public Integer getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Integer seq) {
+        this.seq = seq;
     }
 }

@@ -2,7 +2,6 @@ package id.smartpesantren.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import id.smartpesantren.repository.EmploymentTypeRepository;
 import id.smartpesantren.web.EmployementType;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -112,11 +111,11 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     private String residentialRW;
 
     @ManyToOne
-    @JoinColumn(name = "residental_subdistrict_id")
-    private SubDistrict residentalSubDistrict;
+    @JoinColumn(name = "residential_subdistrict_id")
+    private SubDistrict residentialSubDistrict;
 
-    @Column(name = "residental_postal_code")
-    private String residentalPostalCode;
+    @Column(name = "residential_postal_code")
+    private String residentialPostalCode;
 
     @Column(name = "majors")
     private String majors;
@@ -160,7 +159,9 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     private String monthlyRevenue;
 
-    private String title; // Bapak, Ibu, Sdr., Sdri., Alm. Almh.
+    @ManyToOne
+    @JoinColumn(name = "title_id")
+    private PersonTitle PersonTitle; // Bapak, Ibu, Sdr., Sdri., Alm. Almh.
 
     @ManyToOne
     @JoinColumn(name = "employement_type_id")
@@ -389,20 +390,20 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
         this.residentialRW = residentialRW;
     }
 
-    public SubDistrict getResidentalSubDistrict() {
-        return residentalSubDistrict;
+    public SubDistrict getResidentialSubDistrict() {
+        return residentialSubDistrict;
     }
 
-    public void setResidentalSubDistrict(SubDistrict residentalSubDistrict) {
-        this.residentalSubDistrict = residentalSubDistrict;
+    public void setResidentialSubDistrict(SubDistrict residentialSubDistrict) {
+        this.residentialSubDistrict = residentialSubDistrict;
     }
 
-    public String getResidentalPostalCode() {
-        return residentalPostalCode;
+    public String getResidentialPostalCode() {
+        return residentialPostalCode;
     }
 
-    public void setResidentalPostalCode(String residentalPostalCode) {
-        this.residentalPostalCode = residentalPostalCode;
+    public void setResidentialPostalCode(String residentialPostalCode) {
+        this.residentialPostalCode = residentialPostalCode;
     }
 
     public String getMajors() {
@@ -439,10 +440,6 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     public Boolean isGuardian() {
         return isGuardian;
-    }
-
-    public void setIsGuardian(Boolean guardian) {
-        isGuardian = guardian;
     }
 
     public String getPersonType() {
@@ -533,12 +530,12 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
         this.monthlyRevenue = monthlyRevenue;
     }
 
-    public String getTitle() {
-        return title;
+    public PersonTitle getPersonTitle() {
+        return PersonTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPersonTitle(PersonTitle personTitle) {
+        PersonTitle = personTitle;
     }
 
     public EmployementType getEmployementType() {

@@ -1,12 +1,15 @@
 package id.smartpesantren.service;
 
+import id.smartpesantren.constant.Sex;
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.StudentRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.errors.InternalServerErrorException;
+import id.smartpesantren.web.rest.vm.GuardianVM;
 import id.smartpesantren.web.rest.vm.StudentVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -15,10 +18,29 @@ public class StudentService {
     @Autowired
     StudentRepository repository;
 
+    @Autowired
+    StudentService studentService;
+
+    @Autowired
+    GuardianService guardianService;
+
+    @Transactional
     public StudentVM saveOrUpdate(StudentVM vm) {
         Student s = fromVM(vm);
         repository.save(s);
         vm.setId(s.getId());
+
+        if(vm.getFather() != null) {
+            GuardianVM f = vm.getFather();
+            f.setSex(Sex.MALE);
+            guardianService.createOrUpdate(f);
+        }
+        if(vm.getMother() != null) {
+            GuardianVM m = vm.getFather();
+            m.setSex(Sex.FEMALE);
+            guardianService.createOrUpdate(m);
+        }
+
         return vm;
     }
 
@@ -70,10 +92,27 @@ public class StudentService {
         s.setExamParticipantNo(vm.getExamParticipantNo());
         s.setCertificateNo(vm.getCertificateNo());
         s.setSkhunNo(vm.getSkhunNo());
-        s.setFather(vm.getFatherId() == null? null: new PersonData(vm.getFatherId()));
-        s.setMother(vm.getMotherId() == null? null: new PersonData(vm.getMotherId()));
-        s.setFatherGuardian(vm.getFatherGuardianId() == null? null: new PersonData(vm.getFatherGuardianId()));
-        s.setMotherGuardian(vm.getMotherGuardianId() == null? null: new PersonData(vm.getMotherGuardianId()));
+
+        PersonData father = guardianService.createOrUpdate(vm.getFather());
+        s.setFather(father);
+
+        PersonData mother = guardianService.createOrUpdate(vm.getMother());
+        s.setMother(mother);
+
+        if(vm.getFatherGuardian() != null) {
+            PersonData fg = guardianService.createOrUpdate(vm.getFatherGuardian());
+            s.setFatherGuardian(fg);
+        } else {
+            s.setFatherGuardian(null);
+        }
+
+        if(vm.getMotherGuardian() != null) {
+            PersonData mg = guardianService.createOrUpdate(vm.getMotherGuardian());
+            s.setFatherGuardian(mg);
+        } else {
+            s.setFatherGuardian(null);
+        }
+
         s.setStatus(vm.getStatus());
         s.setPhoto(vm.getPhoto());
         s.setNotes(vm.getNotes());
@@ -116,10 +155,12 @@ public class StudentService {
         vm.setExamParticipantNo(st.getExamParticipantNo());
         vm.setCertificateNo(st.getCertificateNo());
         vm.setSkhunNo(st.getSkhunNo());
-        vm.setFatherId(st.getFather() == null? null: st.getFather().getId());
-        vm.setMotherId(st.getMother() == null? null: st.getMother().getId());
-        vm.setFatherGuardianId(st.getFatherGuardian() == null? null: st.getFatherGuardian().getId());
-        vm.setMotherGuardianId(st.getMotherGuardian() == null? null: st.getMotherGuardian().getId());
+
+        vm.setFather(st.getFather() == null? null: guardianService.fromPersonData(st.getFather()));
+        vm.setMother(st.getMother() == null? null: guardianService.fromPersonData(st.getMother()));
+        vm.setFatherGuardian(st.getFatherGuardian() == null? null: guardianService.fromPersonData(st.getFatherGuardian()));
+        vm.setMotherGuardian(st.getMotherGuardian() == null? null: guardianService.fromPersonData(st.getMotherGuardian()));
+
         vm.setStatus(st.getStatus());
         vm.setPhoto(st.getPhoto());
         vm.setNotes(st.getNotes());

@@ -63,10 +63,10 @@ public class StudentVM {
     private String certificateNo; //No. Seri Ijazah (Jika Sudah Memiliki)
     private String skhunNo; //No. Seri SKHUN (Jika Memiliki)
 
-    private String fatherId;
-    private String motherId;
-    private String fatherGuardianId;
-    private String motherGuardianId;
+    private GuardianVM father;
+    private GuardianVM mother;
+    private GuardianVM fatherGuardian;
+    private GuardianVM motherGuardian;
     private String status;
     private String photo;
     private String notes;
@@ -346,36 +346,36 @@ public class StudentVM {
         this.skhunNo = skhunNo;
     }
 
-    public String getFatherId() {
-        return fatherId;
+    public GuardianVM getFather() {
+        return father;
     }
 
-    public void setFatherId(String fatherId) {
-        this.fatherId = fatherId;
+    public void setFather(GuardianVM father) {
+        this.father = father;
     }
 
-    public String getMotherId() {
-        return motherId;
+    public GuardianVM getMother() {
+        return mother;
     }
 
-    public void setMotherId(String motherId) {
-        this.motherId = motherId;
+    public void setMother(GuardianVM mother) {
+        this.mother = mother;
     }
 
-    public String getFatherGuardianId() {
-        return fatherGuardianId;
+    public GuardianVM getFatherGuardian() {
+        return fatherGuardian;
     }
 
-    public void setFatherGuardianId(String fatherGuardianId) {
-        this.fatherGuardianId = fatherGuardianId;
+    public void setFatherGuardian(GuardianVM fatherGuardian) {
+        this.fatherGuardian = fatherGuardian;
     }
 
-    public String getMotherGuardianId() {
-        return motherGuardianId;
+    public GuardianVM getMotherGuardian() {
+        return motherGuardian;
     }
 
-    public void setMotherGuardianId(String motherGuardianId) {
-        this.motherGuardianId = motherGuardianId;
+    public void setMotherGuardian(GuardianVM motherGuardian) {
+        this.motherGuardian = motherGuardian;
     }
 
     public String getStatus() {
