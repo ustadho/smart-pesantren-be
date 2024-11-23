@@ -2,42 +2,33 @@ package id.smartpesantren;
 
 import id.smartpesantren.config.ApplicationProperties;
 import id.smartpesantren.config.DefaultProfileUtil;
-import io.github.cdimascio.dotenv.Dotenv;
-import io.github.cdimascio.dotenv.DotenvEntry;
 import io.github.jhipster.config.JHipsterConstants;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.StandardEnvironment;
 
 import javax.annotation.PostConstruct;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
-public class AkuntingApplication {
+public class SmartPesantrenApplication {
 
-    private static final Logger log = LoggerFactory.getLogger(AkuntingApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(SmartPesantrenApplication.class);
 
     private final Environment env;
-    private final Logger logger = LoggerFactory.getLogger(AkuntingApplication.class);
+    private final Logger logger = LoggerFactory.getLogger(SmartPesantrenApplication.class);
 
-    public AkuntingApplication(Environment env) {
+    public SmartPesantrenApplication(Environment env) {
         this.env = env;
     }
 
@@ -67,7 +58,7 @@ public class AkuntingApplication {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(AkuntingApplication.class);
+        SpringApplication app = new SpringApplication(SmartPesantrenApplication.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         logApplicationStartup(env);

@@ -1,6 +1,5 @@
 package id.smartpesantren.service;
 
-import id.smartpesantren.dto.WorkingHourDetailDTO;
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.PersonDataRepository;
 import id.smartpesantren.web.rest.vm.EmployeeVM;
@@ -42,6 +41,7 @@ public class EmployeeService {
         pd.setNik(vm.getNik());
         pd.setPob(vm.getPobId()==null? null: new City(vm.getPobId()));
         pd.setDob(vm.getDob());
+        pd.setReligion(vm.getReligionId() == null? null: new Religion(vm.getReligionId()));
         pd.setJoinDate(vm.getJoinDate());
         pd.setEmployeeStatus(vm.getStatusId() == null? null: new EmployeeStatus(vm.getStatusId()));
         pd.setOrganization(vm.getOrganizationId() == null? null: new Organization(vm.getOrganizationId()));
@@ -60,7 +60,7 @@ public class EmployeeService {
         pd.setResidentialAddress(vm.getResidentialAddress());
         pd.setResidentialRT(vm.getResidentialRT());
         pd.setResidentialRW(vm.getResidentialRW());
-        pd.setResidentalSubDistrict(vm.getResidentialSubdistrictId() == null? null: new SubDistrict(vm.getResidentialSubdistrictId()));
+        pd.setResidentialSubDistrict(vm.getResidentialSubdistrictId() == null? null: new SubDistrict(vm.getResidentialSubdistrictId()));
 
         for (Iterator<EmployeeWorkingHour> iterator = pd.getWorkingHours().iterator(); iterator.hasNext();) {
             EmployeeWorkingHour d = iterator.next();

@@ -1,13 +1,14 @@
 package id.smartpesantren.entity;
 
+import id.smartpesantren.security.SecurityUtils;
+import id.smartpesantren.web.rest.vm.StudentCategoryVM;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
-@Table(name = "referal_institution")
-public class ReferalInstitution extends AbstractAuditingEntity implements Serializable {
+@Table(name = "ac_student_category")
+public class StudentCategory {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
@@ -21,34 +22,20 @@ public class ReferalInstitution extends AbstractAuditingEntity implements Serial
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
-
     private String description;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isDefault;
 
-    public ReferalInstitution() {
+    public StudentCategory() {
     }
 
-    public ReferalInstitution(String id) {
+    public StudentCategory(String id) {
         this.id = id;
-    }
-
-    public ReferalInstitution(String id, Foundation foundation, String name, City city, String description) {
-        this.id = id;
-        this.foundation = foundation;
-        this.name = name;
-        this.city = city;
-        this.description = description;
     }
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public Foundation getFoundation() {
@@ -59,6 +46,10 @@ public class ReferalInstitution extends AbstractAuditingEntity implements Serial
         this.foundation = foundation;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -67,19 +58,28 @@ public class ReferalInstitution extends AbstractAuditingEntity implements Serial
         this.name = name;
     }
 
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(Boolean aDefault) {
+        isDefault = aDefault;
+    }
+
+    public StudentCategory fromVM(StudentCategoryVM vm) {
+        setId(vm.getId());
+        setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
+        setName(vm.getName());
+        setDescription(vm.getDescription());
+        setDefault(vm.getDefault());
+        return this;
     }
 }
