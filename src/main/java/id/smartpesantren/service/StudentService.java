@@ -30,16 +30,26 @@ public class StudentService {
         repository.save(s);
         vm.setId(s.getId());
 
-        if(vm.getFather() != null) {
-            GuardianVM f = vm.getFather();
-            f.setSex(Sex.MALE);
-            guardianService.createOrUpdate(f);
-        }
-        if(vm.getMother() != null) {
-            GuardianVM m = vm.getFather();
-            m.setSex(Sex.FEMALE);
-            guardianService.createOrUpdate(m);
-        }
+//        if(vm.getFather() != null) {
+//            GuardianVM f = vm.getFather();
+//            f.setSex(Sex.MALE);
+//            guardianService.createOrUpdate(f);
+//        }
+//        if(vm.getMother() != null) {
+//            GuardianVM m = vm.getMother();
+//            m.setSex(Sex.FEMALE);
+//            guardianService.createOrUpdate(m);
+//        }
+//        if(vm.getFatherGuardian() != null) {
+//            GuardianVM f = vm.getFatherGuardian();
+//            f.setSex(Sex.MALE);
+//            guardianService.createOrUpdate(f);
+//        }
+//        if(vm.getMotherGuardian() != null) {
+//            GuardianVM m = vm.getMotherGuardian();
+//            m.setSex(Sex.FEMALE);
+//            guardianService.createOrUpdate(m);
+//        }
 
         return vm;
     }
@@ -108,9 +118,9 @@ public class StudentService {
 
         if(vm.getMotherGuardian() != null) {
             PersonData mg = guardianService.createOrUpdate(vm.getMotherGuardian());
-            s.setFatherGuardian(mg);
+            s.setMotherGuardian(mg);
         } else {
-            s.setFatherGuardian(null);
+            s.setMotherGuardian(null);
         }
 
         s.setStatus(vm.getStatus());

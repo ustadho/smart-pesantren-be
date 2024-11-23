@@ -23,7 +23,8 @@ public class GuardianDTO {
         setName(p.getName());
         String address = p.getPermanentAddress()==null? "": p.getPermanentAddress();
         if(p.getPermanentSubDistrict() != null) {
-            address += " - "+ p.getPermanentSubDistrict().getName()+" - "+ p.getPermanentSubDistrict().getDistrict().getName()+" - "+ p.getPermanentSubDistrict().getDistrict().getCity().getName();
+//            address += " - "+ p.getPermanentSubDistrict().getName()+" - "+ p.getPermanentSubDistrict().getDistrict().getName()+" - "+ p.getPermanentSubDistrict().getDistrict().getCity().getName();
+            address += " - "+ p.getPermanentSubDistrict().getDistrict().getCity().getName();
         }
         setAddress(address);
         setPhone(p.getPhone());
