@@ -26,8 +26,14 @@ public class StudentResource {
     StudentRepository repository;
 
     @GetMapping
-    public Page<StudentDTO> filter(@RequestParam("q") String q, Pageable p) {
-        return repository.filter("%"+q+"%", p);
+    public Page<StudentDTO> filter(@RequestParam(value = "q", defaultValue = "") String q,
+                                   @RequestParam(value = "iid", defaultValue = "") String institutionId,
+                                   @RequestParam(value = "y", defaultValue = "") String academicYearId,
+                                   Pageable p) {
+        return repository.filter("%"+q.toUpperCase()+"%",
+                institutionId == ""? null: institutionId,
+                academicYearId == ""? null: academicYearId,
+                p);
     }
 
     @PostMapping
