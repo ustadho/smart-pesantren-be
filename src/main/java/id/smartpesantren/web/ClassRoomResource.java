@@ -31,9 +31,13 @@ public class ClassRoomResource {
     ClassRoomRepository repository;
 
     @GetMapping("")
-    public Page<ClassRoomDTO> filter(@RequestParam("year") String year, @RequestParam("q") String q, Pageable pageable) {
+    public Page<ClassRoomDTO> filter(@RequestParam(value = "y", defaultValue = "") String year,
+                                     @RequestParam(value = "i", defaultValue = "") String institutionId,
+                                     @RequestParam(value = "q", defaultValue = "") String q,
+                                     Pageable pageable) {
         return repository.filter(
                 year,
+                institutionId,
                 "%"+q.toUpperCase()+"%",
                 pageable
         );

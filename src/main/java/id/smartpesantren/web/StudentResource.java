@@ -29,10 +29,12 @@ public class StudentResource {
     public Page<StudentDTO> filter(@RequestParam(value = "q", defaultValue = "") String q,
                                    @RequestParam(value = "iid", defaultValue = "") String institutionId,
                                    @RequestParam(value = "y", defaultValue = "") String academicYearId,
+                                   @RequestParam(value = "c", defaultValue = "") String categoryId,
                                    Pageable p) {
         return repository.filter("%"+q.toUpperCase()+"%",
                 institutionId == ""? null: institutionId,
                 academicYearId == ""? null: academicYearId,
+                categoryId == ""? null: categoryId,
                 p);
     }
 

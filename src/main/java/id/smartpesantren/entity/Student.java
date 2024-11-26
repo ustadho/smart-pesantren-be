@@ -121,7 +121,8 @@ public class Student extends AbstractAuditingEntity implements Serializable {
     @Column(columnDefinition = "text")
     private String notes;
 
-    private String status; //0: NOT ACTIVE, 1: ACTIVE, 2: LULUS, 3: KELUAR
+    @Column(columnDefinition = "integer default 1")
+    private Integer status; //0: NOT ACTIVE, 1: ACTIVE, 2: LULUS, 3: PINDAH
 
     public String getId() {
         return id;
@@ -443,11 +444,11 @@ public class Student extends AbstractAuditingEntity implements Serializable {
         this.photo = photo;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
