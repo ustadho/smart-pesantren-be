@@ -30,11 +30,13 @@ public class StudentResource {
                                    @RequestParam(value = "iid", defaultValue = "") String institutionId,
                                    @RequestParam(value = "y", defaultValue = "") String academicYearId,
                                    @RequestParam(value = "c", defaultValue = "") String categoryId,
+                                   @RequestParam(value = "sex", defaultValue = "") String sex,
                                    Pageable p) {
         return repository.filter("%"+q.toUpperCase()+"%",
                 institutionId == ""? null: institutionId,
                 academicYearId == ""? null: academicYearId,
                 categoryId == ""? null: categoryId,
+                sex,
                 p);
     }
 

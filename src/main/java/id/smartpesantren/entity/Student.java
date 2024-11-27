@@ -121,9 +121,19 @@ public class Student extends AbstractAuditingEntity implements Serializable {
     @Column(columnDefinition = "text")
     private String notes;
 
+    @ManyToOne
+    @JoinColumn(name = "class_room_id")
+    private ClassRoom classRoom;
+
     @Column(columnDefinition = "integer default 1")
     private Integer status; //0: NOT ACTIVE, 1: ACTIVE, 2: LULUS, 3: PINDAH
 
+    public Student() {
+    }
+
+    public Student(String id) {
+        setId(id);
+    }
     public String getId() {
         return id;
     }
@@ -458,5 +468,13 @@ public class Student extends AbstractAuditingEntity implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public ClassRoom getClassRoom() {
+        return classRoom;
+    }
+
+    public void setClassRoom(ClassRoom classRoom) {
+        this.classRoom = classRoom;
     }
 }

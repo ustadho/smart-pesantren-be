@@ -1,5 +1,6 @@
 package id.smartpesantren.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -14,15 +15,16 @@ public class ClassRoomStudent extends AbstractAuditingEntity implements Serializ
     @Column(length = 36)
     private String id;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "class_room_id", nullable = false)
+    @JsonBackReference
     private ClassRoom classRoom;
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "text")
     private String notes;
 
     public String getId() {

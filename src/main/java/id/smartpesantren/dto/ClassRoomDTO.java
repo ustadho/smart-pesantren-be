@@ -11,6 +11,8 @@ public class ClassRoomDTO {
     private Short classLevel;
     private String code;
     private String name;
+    private String sex;
+    private String sexLabel;
     private Short capacity;
     private String description;
     private String room;
@@ -32,6 +34,8 @@ public class ClassRoomDTO {
         setLocation(c.getLocation().getName());
         setDescription(c.getDescription());
         setCapacity(c.getCapacity());
+        setSex(c.getSex());
+        setSexLabel(c.getSex() == null? "": (c.getSex().equalsIgnoreCase("M")? "Putra": "Putri"));
     }
 
 
@@ -90,6 +94,22 @@ public class ClassRoomDTO {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getSexLabel() {
+        return sexLabel;
+    }
+
+    public void setSexLabel(String sexLabel) {
+        this.sexLabel = sexLabel;
     }
 
     public String getName() {

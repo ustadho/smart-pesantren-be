@@ -13,8 +13,14 @@ public class ClassRoomVM {
     @NotNull
     private String classLevelId;
     private String code;
+    @NotNull
     private String name;
+
     private String room;
+
+    @NotNull
+    private String sex;
+    @NotNull
     private Short capacity;
     private String description;
     private String locationId;
@@ -32,6 +38,7 @@ public class ClassRoomVM {
         setCode(c.getCode());
         setName(c.getName());
         setRoom(c.getRoom());
+        setSex(c.getSex());
         setCapacity(c.getCapacity());
         setDescription(c.getDescription());
         setCurriculumId(c.getCurriculum().getId());
@@ -85,6 +92,14 @@ public class ClassRoomVM {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public String getRoom() {

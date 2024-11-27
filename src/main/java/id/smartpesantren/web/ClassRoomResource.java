@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -59,6 +60,11 @@ public class ClassRoomResource {
         return null;
     }
 
+    @GetMapping("/by-academic-year/{institutionId}/{ayid}")
+    public List<ClassRoomDTO> findAllByAcademicYearId(@PathVariable("institutionId") String institutionId, @PathVariable("ayid") String academicYearId) {
+        return repository.findAllByAcademicYear(institutionId, academicYearId);
+    }
+
     @PostMapping
     @Transactional
     public ResponseEntity<ClassRoomVM> create(@RequestBody @Valid ClassRoomVM vm) throws URISyntaxException {
@@ -80,6 +86,7 @@ public class ClassRoomResource {
             d.setCode(vm.getCode());
             d.setName(vm.getName());
             d.setRoom(vm.getRoom());
+            d.setSex(vm.getSex());
             d.setCapacity(vm.getCapacity());
             d.setDescription(vm.getDescription());
             d.setHomeRoomTeacher(new PersonData(vm.getHomeTeacherId()));
@@ -125,6 +132,7 @@ public class ClassRoomResource {
         current.setCode(vm.getCode());
         current.setName(vm.getName());
         current.setRoom(vm.getRoom());
+        current.setSex(vm.getSex());
         current.setCapacity(vm.getCapacity());
         current.setDescription(vm.getDescription());
         current.setHomeRoomTeacher(new PersonData(vm.getHomeTeacherId()));

@@ -15,11 +15,13 @@ public interface StudentRepository extends JpaRepository<Student, String> {
             "and (coalesce(:iid,'')='' OR a.institution.id=:iid) \n"+
             "and (coalesce(:academicYear,'')='' OR a.joinYear.id=:academicYear) \n"+
             "and (coalesce(:categoryId,'')='' OR a.category.id=:categoryId) \n"+
+            "and (coalesce(:sex,'')='' OR a.sex=:sex) \n"+
             "and (upper(coalesce(a.name,'')) like :q) \n"
     )
     public Page<StudentDTO> filter(@Param("q") String q,
                                    @Param("iid") String institutionId,
                                    @Param("academicYear") String academicYear,
                                    @Param("categoryId") String categoryId,
+                                   @Param("sex") String sex,
                                    Pageable p);
 }
