@@ -13,6 +13,7 @@ import id.smartpesantren.web.rest.vm.ClassRoomStudentVMDetail;
 import id.smartpesantren.web.rest.vm.ClassRoomVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,6 +38,7 @@ public class ClassRoomStudentResource {
     }
 
     @PutMapping
+    @Transactional
     public void save(@RequestBody @Valid ClassRoomStudentVM vm) {
         //Cek dulu sebelum diinsert
         Optional<ClassRoom> cr = classRoomRepository.findById(vm.getClassRoomId());
@@ -44,12 +46,19 @@ public class ClassRoomStudentResource {
             throw new DataNotFoundException("Tahun akademik tidak dikenal");
         }
         for (ClassRoomStudentVMDetail d: vm.getStudents()) {
-            ClassRoomStudent cs = repository.findByStudentAndAcademicYear(d.getStudentId(), cr.get().getAcademicYear().getId());
-            if(cs != null) {
-                throw new DuplicateKeyException("Santri tersebut sudah dimasukkan di kelas: "+ cs.getClassRoom().getName());
+            if(d.getId() == null) {
+                ClassRoomStudent cs = repository.findByStudentAndAcademicYear(d.getStudentId(), cr.get().getAcademicYear().getId());
+                if (cs != null) {
+                    throw new DuplicateKeyException("Santri tersebut sudah dimasukkan di kelas: " + cs.getClassRoom().getName());
+                }
             }
         }
         service.save(vm);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable("id") String id) {
+        repository.deleteById(id);
     }
 
 }
