@@ -167,6 +167,8 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "employement_type_id")
     EmployementType employementType;
 
+    private String photo;
+
     public PersonData() {
     }
 
@@ -544,5 +546,13 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     public void setEmployementType(EmployementType employementType) {
         this.employementType = employementType;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

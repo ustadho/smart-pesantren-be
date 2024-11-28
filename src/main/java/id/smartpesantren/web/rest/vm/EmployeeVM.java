@@ -72,6 +72,7 @@ public class EmployeeVM {
     private String email;
     private String workingHourId;
     public Boolean workingShift;
+    private String photo;
     private Set<EmployeeFormalEducationVM> formalEducations = new HashSet<>();
 
     private Set<EmployeeFormalEducationVM> unorHistories = new HashSet<>();
@@ -89,6 +90,7 @@ public class EmployeeVM {
         this.setName(p.getName());
         this.setSex(p.getSex());
         this.setNik(p.getNik());
+        this.setReligionId(p.getReligion() == null? null: p.getReligion().getId());
         this.setPobId(p.getPob()==null? null: p.getPob().getId());
         this.setDob(p.getDob());
         this.setMaritalStatusId(p.getMaritalStatus()==null? null: p.getMaritalStatus().getId());
@@ -122,6 +124,7 @@ public class EmployeeVM {
         this.setWorkingShift(p.getWorkingShift());
         this.setEmail(p.getEmail());
         this.setPhone(p.getPhone());
+        this.setPhoto(p.getPhoto());
         for(EmployeeFormalEducaton e: p.getFormalEducations()) {
             EmployeeFormalEducationVM edu = new EmployeeFormalEducationVM();
             edu.setId(e.getId());
@@ -474,6 +477,14 @@ public class EmployeeVM {
 
     public void setWorkingShift(Boolean workingShift) {
         this.workingShift = workingShift;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public Set<EmployeeWorkingHourVM> getWorkingHours() {
