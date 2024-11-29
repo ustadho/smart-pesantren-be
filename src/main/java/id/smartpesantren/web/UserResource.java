@@ -164,7 +164,7 @@ public class UserResource {
      */
     @GetMapping("/users/authorities")
     @Timed
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.SUPERADMIN + "\")")
+//    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.SUPERADMIN + "\")")
     public List<String> getAuthorities() {
         return userService.getAuthorities();
     }
