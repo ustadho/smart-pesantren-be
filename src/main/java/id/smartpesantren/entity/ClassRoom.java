@@ -1,9 +1,12 @@
 package id.smartpesantren.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "ac_class_room")
@@ -39,6 +42,9 @@ public class ClassRoom extends AbstractAuditingEntity implements Serializable {
     @Column(nullable = false)
     private String room;
 
+    @Column(length = 1, columnDefinition = "varchar(1) default 'M'")
+    private String sex;
+
     private Short capacity;
 
     private String description;
@@ -54,6 +60,10 @@ public class ClassRoom extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "curriculum_id")
     private Curriculum curriculum;
+
+    @OneToMany(mappedBy = "classRoom", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<ClassRoomStudent> students = new HashSet<>();
 
     public ClassRoom(String id) {
         this.id = id;
@@ -110,6 +120,14 @@ public class ClassRoom extends AbstractAuditingEntity implements Serializable {
         this.name = name;
     }
 
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
     public Short getCapacity() {
         return capacity;
     }
@@ -164,5 +182,13 @@ public class ClassRoom extends AbstractAuditingEntity implements Serializable {
 
     public void setCurriculum(Curriculum curriculum) {
         this.curriculum = curriculum;
+    }
+
+    public Set<ClassRoomStudent> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<ClassRoomStudent> students) {
+        this.students = students;
     }
 }

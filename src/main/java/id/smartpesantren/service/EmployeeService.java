@@ -61,6 +61,7 @@ public class EmployeeService {
         pd.setResidentialRT(vm.getResidentialRT());
         pd.setResidentialRW(vm.getResidentialRW());
         pd.setResidentialSubDistrict(vm.getResidentialSubdistrictId() == null? null: new SubDistrict(vm.getResidentialSubdistrictId()));
+        pd.setPhoto(vm.getPhoto());
 
         for (Iterator<EmployeeWorkingHour> iterator = pd.getWorkingHours().iterator(); iterator.hasNext();) {
             EmployeeWorkingHour d = iterator.next();

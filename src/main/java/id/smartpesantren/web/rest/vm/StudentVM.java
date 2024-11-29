@@ -67,7 +67,7 @@ public class StudentVM {
     private GuardianVM mother;
     private GuardianVM fatherGuardian;
     private GuardianVM motherGuardian;
-    private String status;
+    private Integer status;
     private String photo;
     private String notes;
 
@@ -378,11 +378,11 @@ public class StudentVM {
         this.motherGuardian = motherGuardian;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

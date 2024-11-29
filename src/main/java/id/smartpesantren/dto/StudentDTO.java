@@ -1,5 +1,6 @@
 package id.smartpesantren.dto;
 
+import id.smartpesantren.constant.StudentStatus;
 import id.smartpesantren.entity.Student;
 
 import java.util.Date;
@@ -13,6 +14,8 @@ public class StudentDTO {
     private Date dob;
     private String joinYear;
     private String institution;
+    private String category;
+    private String status;
 
     public StudentDTO() {
     }
@@ -26,6 +29,22 @@ public class StudentDTO {
         setSex(s.getSex().equalsIgnoreCase("M")? "Putra": "Putri");
         setJoinYear(s.getJoinYear().getCode());
         setInstitution(s.getInstitution().getName());
+        setCategory(s.getCategory()== null? "": s.getCategory().getName());
+
+        String status = "";
+        if(s.getStatus() != null && s.getStatus() == StudentStatus.NOT_ACTIVE) {
+            status = "Tidak Aktif";
+        }
+        if(s.getStatus() != null && s.getStatus() == StudentStatus.ACTIVE) {
+            status = "Aktif";
+        }
+        if(s.getStatus() != null && s.getStatus() == StudentStatus.PASSED) {
+            status = "Lulus";
+        }
+        if(s.getStatus() != null && s.getStatus() == StudentStatus.MUTATION) {
+            status = "Pindah";
+        }
+        setStatus(status);
     }
 
     public String getId() {
@@ -90,5 +109,21 @@ public class StudentDTO {
 
     public void setInstitution(String institution) {
         this.institution = institution;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

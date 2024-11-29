@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -31,9 +32,13 @@ public class ClassRoomResource {
     ClassRoomRepository repository;
 
     @GetMapping("")
-    public Page<ClassRoomDTO> filter(@RequestParam("year") String year, @RequestParam("q") String q, Pageable pageable) {
+    public Page<ClassRoomDTO> filter(@RequestParam(value = "y", defaultValue = "") String year,
+                                     @RequestParam(value = "i", defaultValue = "") String institutionId,
+                                     @RequestParam(value = "q", defaultValue = "") String q,
+                                     Pageable pageable) {
         return repository.filter(
                 year,
+                institutionId,
                 "%"+q.toUpperCase()+"%",
                 pageable
         );
@@ -53,6 +58,11 @@ public class ClassRoomResource {
             return new ClassRoomVM(ay.get());
         }
         return null;
+    }
+
+    @GetMapping("/by-academic-year/{institutionId}/{ayid}")
+    public List<ClassRoomDTO> findAllByAcademicYearId(@PathVariable("institutionId") String institutionId, @PathVariable("ayid") String academicYearId) {
+        return repository.findAllByAcademicYear(institutionId, academicYearId);
     }
 
     @PostMapping
@@ -76,6 +86,7 @@ public class ClassRoomResource {
             d.setCode(vm.getCode());
             d.setName(vm.getName());
             d.setRoom(vm.getRoom());
+            d.setSex(vm.getSex());
             d.setCapacity(vm.getCapacity());
             d.setDescription(vm.getDescription());
             d.setHomeRoomTeacher(new PersonData(vm.getHomeTeacherId()));
@@ -121,6 +132,7 @@ public class ClassRoomResource {
         current.setCode(vm.getCode());
         current.setName(vm.getName());
         current.setRoom(vm.getRoom());
+        current.setSex(vm.getSex());
         current.setCapacity(vm.getCapacity());
         current.setDescription(vm.getDescription());
         current.setHomeRoomTeacher(new PersonData(vm.getHomeTeacherId()));
