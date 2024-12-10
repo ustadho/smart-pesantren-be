@@ -34,6 +34,13 @@ public class AcademicActivityTime extends AbstractAuditingEntity implements Seri
 
     private String description;
 
+    public AcademicActivityTime() {
+    }
+
+    public AcademicActivityTime(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

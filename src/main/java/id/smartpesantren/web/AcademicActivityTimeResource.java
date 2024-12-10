@@ -11,7 +11,6 @@ import id.smartpesantren.web.rest.errors.InternalServerErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,21 +24,21 @@ public class AcademicActivityTimeResource {
     AcademicActivityTimeService service;
 
     @Autowired
-    AcademicActivityTimeRepository repository;
+    AcademicActivityTimeRepository academicActivityTimeRepository;
 
     @GetMapping
     public Page<AcademicActivityTimeDTO> filter(@RequestParam("iid") String institutionId, Pageable p) {
-        return repository.filter(institutionId, p);
+        return academicActivityTimeRepository.filter(institutionId, p);
     }
 
     @GetMapping("/all")
     public List<AcademicActivityTimeDTO> findAll(@RequestParam("iid") String institutionId) {
-        return repository.findAllActivityTime(institutionId == null? null: institutionId);
+        return academicActivityTimeRepository.findAllActivityTime(institutionId == null? null: institutionId);
     }
 
     @PostMapping
     public AcademicActivityTimeDTO create(@RequestBody @Valid AcademicActivityTimeDTO dto) {
-        Optional<AcademicActivityTime> existSeq = repository.findByFoundationAndInstitutionAndSeq(
+        Optional<AcademicActivityTime> existSeq = academicActivityTimeRepository.findByFoundationAndInstitutionAndSeq(
             new Foundation(SecurityUtils.getFoundationId().get()),
             new Institution(dto.getInstitutionId()),
             dto.getSeq()
@@ -68,11 +67,11 @@ public class AcademicActivityTimeResource {
     @PutMapping("/{id}")
     public AcademicActivityTimeDTO update(@PathVariable String id, @RequestBody @Valid AcademicActivityTimeDTO dto) {
         dto.setId(id);
-        Optional<AcademicActivityTime> ct = repository.findById(id);
+        Optional<AcademicActivityTime> ct = academicActivityTimeRepository.findById(id);
         if(!ct.isPresent()) {
             throw new InternalServerErrorException("Data tidak ditemukan!");
         }
-        Optional<AcademicActivityTime> existSeq = repository.findByFoundationAndInstitutionAndSeq(
+        Optional<AcademicActivityTime> existSeq = academicActivityTimeRepository.findByFoundationAndInstitutionAndSeq(
             new Foundation(SecurityUtils.getFoundationId().get()),
             new Institution(dto.getInstitutionId()),
             dto.getSeq()
@@ -85,7 +84,7 @@ public class AcademicActivityTimeResource {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id) {
-        repository.deleteById(id);
+        academicActivityTimeRepository.deleteById(id);
     }
 
 }

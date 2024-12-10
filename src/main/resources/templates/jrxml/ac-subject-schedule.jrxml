@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ac-subject-schedule" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cc122cf9-a3f2-4d41-ab12-76cee4b7d407">
+	<property name="ireport.zoom" value="1.0000000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="institutionId" class="java.lang.String"/>
+	<parameter name="classRoomId" class="java.lang.String"/>
+	<parameter name="timezone" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Asia/Jakarta"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	i.name institution_name, cr.name class_room, a.name academic_year,
+    aat.id AS activity_id,
+    TO_CHAR((CURRENT_DATE + aat.start_time):: timestamp without time zone AT TIME ZONE $P{timezone}, 'HH24:MI') AS start_time,
+    TO_CHAR((CURRENT_DATE + aat.end_time):: timestamp without time zone AT TIME ZONE $P{timezone}, 'HH24:MI') AS end_time,
+    CONCAT('Jam ke - ', aat.seq) AS activity_name,
+    MAX(CASE WHEN ass.day_id = 1 THEN subj.name END) AS senin_subject,
+    MAX(CASE WHEN ass.day_id = 1 THEN pd.name END) AS senin_teacher,
+    MAX(CASE WHEN ass.day_id = 2 THEN subj.name END) AS selasa_subject,
+    MAX(CASE WHEN ass.day_id = 2 THEN pd.name END) AS selasa_teacher,
+    MAX(CASE WHEN ass.day_id = 3 THEN subj.name END) AS rabu_subject,
+    MAX(CASE WHEN ass.day_id = 3 THEN pd.name END) AS rabu_teacher,
+    MAX(CASE WHEN ass.day_id = 4 THEN subj.name END) AS kamis_subject,
+    MAX(CASE WHEN ass.day_id = 4 THEN pd.name END) AS kamis_teacher,
+    MAX(CASE WHEN ass.day_id = 5 THEN subj.name END) AS jumat_subject,
+    MAX(CASE WHEN ass.day_id = 5 THEN pd.name END) AS jumat_teacher,
+    MAX(CASE WHEN ass.day_id = 6 THEN subj.name END) AS sabtu_subject,
+    MAX(CASE WHEN ass.day_id = 6 THEN pd.name END) AS sabtu_teacher,
+    MAX(CASE WHEN ass.day_id = 0 THEN subj.name END) AS ahad_subject,
+    MAX(CASE WHEN ass.day_id = 0 THEN pd.name END) AS ahad_teacher
+FROM
+    ac_activity_time aat
+JOIN institution i on i.id=aat.institution_id
+JOIN ac_class_room cr on cr.id='18f27613-d8cd-4b87-aa34-961dc22f060b'
+JOIN academic_year a on a.id=cr.academic_year_id
+LEFT JOIN
+    ac_subject_schedule ass ON aat.id = ass.activity_time_id and ass.class_room_id=cr.id
+LEFT JOIN
+    ac_subject subj ON ass.subject_id = subj.id
+LEFT JOIN
+    person_data pd ON ass.teacher_id = pd.id
+WHERE aat.institution_id='2bf23cba-b3f9-4dc5-9389-83f626ad636c'
+GROUP BY
+    i.name, cr.name, a.name, aat.id, aat.start_time, aat.end_time, aat.seq
+ORDER BY
+    aat.seq;]]>
+	</queryString>
+	<field name="institution_name" class="java.lang.String"/>
+	<field name="class_room" class="java.lang.String"/>
+	<field name="academic_year" class="java.lang.String"/>
+	<field name="activity_id" class="java.lang.String"/>
+	<field name="start_time" class="java.lang.String"/>
+	<field name="end_time" class="java.lang.String"/>
+	<field name="activity_name" class="java.lang.String"/>
+	<field name="senin_subject" class="java.lang.String"/>
+	<field name="senin_teacher" class="java.lang.String"/>
+	<field name="selasa_subject" class="java.lang.String"/>
+	<field name="selasa_teacher" class="java.lang.String"/>
+	<field name="rabu_subject" class="java.lang.String"/>
+	<field name="rabu_teacher" class="java.lang.String"/>
+	<field name="kamis_subject" class="java.lang.String"/>
+	<field name="kamis_teacher" class="java.lang.String"/>
+	<field name="jumat_subject" class="java.lang.String"/>
+	<field name="jumat_teacher" class="java.lang.String"/>
+	<field name="sabtu_subject" class="java.lang.String"/>
+	<field name="sabtu_teacher" class="java.lang.String"/>
+	<field name="ahad_subject" class="java.lang.String"/>
+	<field name="ahad_teacher" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="84" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="17" uuid="0acbddae-a19c-4f34-83a5-20dbf95c0eba"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jadwal Pelajaran]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="17" width="802" height="15" uuid="18aeba56-1230-4614-b020-d57487df5970"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{institution_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="32" width="68" height="15" uuid="a3646627-458a-4745-94e2-f1a4af8be3b9"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kelas]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="593" y="32" width="209" height="15" uuid="f017a5cf-005f-48b7-829c-df22511d8540"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{academic_year}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="68" y="32" width="210" height="15" uuid="7e6389c2-9b66-4a32-b6f4-3da034d9e3e0"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[": "+ $F{class_room}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="57" width="68" height="27" uuid="d93de059-3634-4ec2-b263-4634161ec82a"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.25" lineStyle="Double"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="1.25" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jam]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="68" y="57" width="105" height="27" uuid="0c873ea2-6b6a-44b5-877d-f1fbab73919c"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.25" lineStyle="Double"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="1.25" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Senin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="173" y="57" width="105" height="27" uuid="4b9c6e17-2c77-40ae-8beb-a5a33ce4edcb"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.25" lineStyle="Double"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="1.25" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Selasa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="278" y="57" width="105" height="27" uuid="eeb121b3-62ab-44e0-9b18-bbbcfe142b73"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.25" lineStyle="Double"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="1.25" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rabu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="383" y="57" width="105" height="27" uuid="150a36d6-bfd8-4cfd-bae4-cffc6ec4a068"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.25" lineStyle="Double"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="1.25" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kamis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="488" y="57" width="105" height="27" uuid="55e93453-1c10-4dcb-89fe-0accfeffd79d"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.25" lineStyle="Double"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="1.25" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jumat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="593" y="57" width="105" height="27" uuid="18a3b59f-c2b3-4e2d-b573-7f1e546e85f3"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.25" lineStyle="Double"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="1.25" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sabtu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="698" y="57" width="105" height="27" uuid="a51ff994-65c8-41c2-8184-92aa750880c9"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.25" lineStyle="Double"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="1.25" lineStyle="Double"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ahad]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="50" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="68" height="25" uuid="e31ce29b-38bd-4c34-9da0-c02b7fecf3a5"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{activity_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="25" width="68" height="25" uuid="d1110716-f831-4cd1-b049-15bbdcda6f4c"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{start_time} +" - "+$F{end_time}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="68" y="0" width="105" height="25" uuid="1b540640-4799-449c-9e77-3d65695da77e"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{senin_subject}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="68" y="25" width="105" height="25" uuid="8509247c-5490-4e95-bf20-677f93ada350"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{senin_teacher}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="173" y="25" width="105" height="25" uuid="71ac2ba2-6acb-4c05-9eff-7b5ebfbd1734"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{selasa_teacher}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="173" y="0" width="105" height="25" uuid="7207c601-1d3a-411e-b271-4aa2d90e104f"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{selasa_subject}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="278" y="0" width="105" height="25" uuid="1551e953-6c68-4e6b-b3ff-48c7d41dde96"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rabu_subject}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="278" y="25" width="105" height="25" uuid="cacbc4e8-fd44-4fd1-b819-96788beaeacc"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rabu_teacher}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="383" y="25" width="105" height="25" uuid="1b1e2e0d-7d31-4667-9e7e-145d169e2b22"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kamis_teacher}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="383" y="0" width="105" height="25" uuid="014ef02d-c22f-4bf3-92bc-26dce535cb5f"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kamis_subject}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="488" y="25" width="105" height="25" uuid="3e9dd7bc-8f1e-416e-9d26-e4a83d4bc929"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jumat_teacher}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="488" y="0" width="105" height="25" uuid="68fa3c74-bc2f-44b8-999d-68e1c07069ae"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jumat_subject}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="593" y="25" width="105" height="25" uuid="39ba58fc-21e3-41e7-95bc-0f3482ab941c"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sabtu_teacher}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="593" y="0" width="105" height="25" uuid="d7f66b13-b1ab-44a3-97a0-b45468d1f9b0"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sabtu_subject}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="698" y="25" width="105" height="25" uuid="bbe7919c-7251-40e4-95b3-48547c253e4d"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ahad_teacher}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="698" y="0" width="105" height="25" uuid="49b39c19-b895-4244-9d97-181ff29eaccb"/>
+				<box topPadding="1" leftPadding="2" rightPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ahad_subject}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
