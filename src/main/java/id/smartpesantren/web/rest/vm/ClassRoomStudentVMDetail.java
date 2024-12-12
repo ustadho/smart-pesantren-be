@@ -3,11 +3,11 @@ package id.smartpesantren.web.rest.vm;
 import id.smartpesantren.entity.Student;
 
 public class ClassRoomStudentVMDetail {
-    public String id;
-    public String studentId;
-    private String nis;
-    private String nisn;
-    private String name;
+    private String id;
+    private String studentId;
+    private String studentName;
+    private String studentNis;
+    private String studentNisn;
     private String joinYear;
 
     public ClassRoomStudentVMDetail() {
@@ -16,9 +16,9 @@ public class ClassRoomStudentVMDetail {
     public ClassRoomStudentVMDetail(String id, Student s) {
         setId(id);
         setStudentId(s.getId());
-        setNis(s.getNis());
-        setNisn(s.getNisn());
-        setName(s.getName());
+        setStudentNis(s.getNis());
+        setStudentNisn(s.getNisn());
+        setStudentName(s.getName());
         setJoinYear(s.getJoinYear().getCode());
     }
     public String getId() {
@@ -37,28 +37,28 @@ public class ClassRoomStudentVMDetail {
         this.studentId = studentId;
     }
 
-    public String getNis() {
-        return nis;
+    public String getStudentNis() {
+        return studentNis;
     }
 
-    public void setNis(String nis) {
-        this.nis = nis;
+    public void setStudentNis(String studentNis) {
+        this.studentNis = studentNis;
     }
 
-    public String getNisn() {
-        return nisn;
+    public String getStudentNisn() {
+        return studentNisn;
     }
 
-    public void setNisn(String nisn) {
-        this.nisn = nisn;
+    public void setStudentNisn(String studentNisn) {
+        this.studentNisn = studentNisn;
     }
 
-    public String getName() {
-        return name;
+    public String getStudentName() {
+        return studentName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
     public String getJoinYear() {
