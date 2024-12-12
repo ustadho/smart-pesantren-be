@@ -34,6 +34,13 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
     @JoinColumn(name = "teacher_id", nullable = false)
     private PersonData teacher;
 
+    public SubjectSchedule() {
+    }
+
+    public SubjectSchedule(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }
