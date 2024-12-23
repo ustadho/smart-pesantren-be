@@ -36,7 +36,7 @@ public class DomainUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String login) {
         log.debug("Authenticating {}", login);
         String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
-        Optional<User> userFromDatabase = userRepository.findOneWithAuthoritiesByLogin(lowercaseLogin);
+        Optional<User> userFromDatabase = userRepository.findOneWithAuthoritiesAndWithInstitutionsByLogin(lowercaseLogin);
         return userFromDatabase.map(user -> {
             log.debug("user: {}", user);
             if (!user.getActivated()) {

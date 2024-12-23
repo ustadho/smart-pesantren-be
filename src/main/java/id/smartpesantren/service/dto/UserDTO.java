@@ -2,6 +2,7 @@ package id.smartpesantren.service.dto;
 
 import id.smartpesantren.config.Constants;
 import id.smartpesantren.entity.Authority;
+import id.smartpesantren.entity.Institution;
 import id.smartpesantren.entity.User;
 import org.hibernate.validator.constraints.Email;
 
@@ -48,6 +49,7 @@ public class UserDTO {
     private Instant lastModifiedDate;
 
     private Set<String> authorities;
+    private Set<String> institutions;
 
     private String personId;
 
@@ -60,13 +62,14 @@ public class UserDTO {
                 user.getEmail(), user.getActivated(), user.getImageUrl(), user.getLangKey(),
                 user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
                 user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()),
+                user.getInstitutions().stream().map(Institution::getId).collect(Collectors.toSet()),
                 user.getPerson()==null? null: user.getPerson().getId());
     }
 
     public UserDTO(String id, String login, String firstName, String lastName,
                    String email, boolean activated, String imageUrl, String langKey,
                    String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-                   Set<String> authorities, String personId) {
+                   Set<String> authorities, Set<String> institutions, String personId) {
 
         this.id = id;
         this.login = login;
@@ -81,6 +84,7 @@ public class UserDTO {
         this.lastModifiedBy = lastModifiedBy;
         this.lastModifiedDate = lastModifiedDate;
         this.authorities = authorities;
+        this.institutions = institutions;
         this.personId = personId;
     }
 
@@ -186,6 +190,14 @@ public class UserDTO {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public Set<String> getInstitutions() {
+        return institutions;
+    }
+
+    public void setInstitutions(Set<String> institutions) {
+        this.institutions = institutions;
     }
 
     public String getPersonId() {

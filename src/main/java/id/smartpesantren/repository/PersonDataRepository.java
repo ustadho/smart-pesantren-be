@@ -27,9 +27,12 @@ public interface PersonDataRepository extends JpaRepository<PersonData, String> 
             "left join a.referalInstitution ri \n" +
             "where a.foundation.id=?#{principal.foundationId} \n" +
             "and (coalesce(:unor,'')='' OR o.id=:unor) \n" +
+            "and (coalesce(:jobPosition,'')='' OR jp.id=:jobPosition) \n" +
+            "and (coalesce(:category,'')='' OR ec.id=:category) \n" +
             "and a.isEmployee = true \n" +
             "and upper(a.name) like :q ")
-    Page<EmployeeDTO> filterEmployee(@Param("unor") String unor, @Param("q") String q, Pageable p);
+    Page<EmployeeDTO> filterEmployee(@Param("category") String category, @Param("unor") String unor,
+                                     @Param("jobPosition") String jobPosition, @Param("q") String q, Pageable p);
 
     @Query("select new id.smartpesantren.dto.GuardianDTO(a) \n" +
             "from PersonData a \n" +

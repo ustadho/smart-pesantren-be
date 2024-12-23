@@ -2,7 +2,6 @@ package id.smartpesantren.service;
 
 import id.smartpesantren.entity.ClassRoom;
 import id.smartpesantren.entity.ClassRoomStudent;
-import id.smartpesantren.entity.PersonTitle;
 import id.smartpesantren.entity.Student;
 import id.smartpesantren.repository.ClassRoomRepository;
 import id.smartpesantren.repository.ClassRoomStudentRepository;
@@ -80,15 +79,15 @@ public class ClassRoomStudentService {
             ClassRoomStudentVMDetail d = new ClassRoomStudentVMDetail();
             d.setId(s.getId());
             d.setStudentId(s.getStudent().getId());
-            d.setName(s.getStudent().getName());
-            d.setNisn(s.getStudent().getNisn());
-            d.setNis(s.getStudent().getNis());
+            d.setStudentName(s.getStudent().getName());
+            d.setStudentNisn(s.getStudent().getNisn());
+            d.setStudentNis(s.getStudent().getNis());
             d.setJoinYear(s.getStudent().getJoinYear().getCode());
             vm.getStudents().add(d);
         }
 //        vm.getStudents().stream().sorted(Comparator.comparing(t -> t.getName()));
         List<ClassRoomStudentVMDetail> students = vm.getStudents();
-        students.sort(Comparator.comparing(ClassRoomStudentVMDetail::getName));
+        students.sort(Comparator.comparing(ClassRoomStudentVMDetail::getStudentName));
 
         return vm;
     }

@@ -2,18 +2,16 @@ package id.smartpesantren.service;
 
 
 import id.smartpesantren.config.Constants;
-import id.smartpesantren.entity.PersonData;
+import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.FoundationRepository;
 import id.smartpesantren.repository.AuthorityRepository;
+import id.smartpesantren.repository.InstitutionRepository;
 import id.smartpesantren.repository.UserRepository;
 import id.smartpesantren.security.AuthoritiesConstants;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.service.dto.UserDTO;
 import id.smartpesantren.service.util.RandomUtil;
 
-import id.smartpesantren.entity.Authority;
-import id.smartpesantren.entity.Foundation;
-import id.smartpesantren.entity.User;
 import id.smartpesantren.web.rest.errors.EmailAlreadyUsedException;
 import id.smartpesantren.web.rest.errors.InvalidPasswordException;
 import id.smartpesantren.web.rest.errors.LoginAlreadyUsedException;
@@ -48,15 +46,17 @@ public class UserService {
     private final AuthorityRepository authorityRepository;
 
     private final FoundationRepository foundationRepository;
+    private final InstitutionRepository institutionRepository;
 
     private final CacheManager cacheManager;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository,
-                       FoundationRepository foundationRepository, CacheManager cacheManager) {
+                       FoundationRepository foundationRepository, InstitutionRepository institutionRepository, CacheManager cacheManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.foundationRepository = foundationRepository;
+        this.institutionRepository = institutionRepository;
         this.cacheManager = cacheManager;
     }
 
@@ -168,6 +168,13 @@ public class UserService {
             managedAuthorities.add(new Authority(s));
         });
         user.setAuthorities(managedAuthorities);
+
+        Set<Institution> managedInstitutions = user.getInstitutions();
+        userDTO.getInstitutions().stream().forEach(i -> {
+            managedInstitutions.add(new Institution(i));
+        });
+        user.setAuthorities(managedAuthorities);
+
         user.setPerson(userDTO.getPersonId() == null? null: new PersonData(userDTO.getPersonId()));
         userRepository.save(user);
         this.clearUserCaches(user);
@@ -226,6 +233,15 @@ public class UserService {
                             .filter(Optional::isPresent)
                             .map(Optional::get)
                             .forEach(managedAuthorities::add);
+
+                    Set<Institution> managedInstitutions = user.getInstitutions();
+                    managedInstitutions.clear();
+                    userDTO.getInstitutions().stream()
+                            .map(institutionRepository::findById)
+                            .filter(Optional::isPresent)
+                            .map(Optional::get)
+                            .forEach(managedInstitutions::add);
+
                     this.clearUserCaches(user);
                     log.debug("Changed Information for User: {}", user);
                     return user;
@@ -263,8 +279,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        Foundation c = foundationRepository.findCurrentFoundation().get();
-        return userRepository.findOneWithAuthoritiesByLogin(login)
+        return userRepository.findOneWithAuthoritiesAndWithInstitutionsByLogin(login)
                 .map(user -> {
                     user.getAuthorities().stream().filter(authority -> {
 //                        if(c.getCompanyType()==Constants.COMPANY_TYPE_POS) {
@@ -276,6 +291,11 @@ public class UserService {
 //                        }
                         return true;
                     });
+
+//                    user.getInstitutions().stream().map(i -> {
+//                        System.out.println("Institusi: "+ i.getName());
+//                        return true;
+//                    });
                     return user;
                 });
     }
@@ -287,7 +307,8 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities() {
-        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+        Optional<User> user = userRepository.findOneWithAuthoritiesAndWithInstitutionsByLogin(SecurityUtils.getCurrentUserLogin().get());
+        return user;
     }
 
     /**

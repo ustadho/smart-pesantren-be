@@ -46,8 +46,10 @@ public class EmployeeResource {
     private Page<EmployeeDTO> filter(
             @RequestParam(value = "q", required = false, defaultValue = "") String q,
             @RequestParam(value = "unor", required = false, defaultValue = "") String unor,
+            @RequestParam(value = "jp", required = false, defaultValue = "") String jobPosition,
+            @RequestParam(value = "category", required = false, defaultValue = "") String category,
             Pageable p) {
-        return personDataRepository.filterEmployee(unor,"%"+q.toUpperCase()+ "%", p);
+        return personDataRepository.filterEmployee(category, unor, jobPosition, "%"+q.toUpperCase()+ "%", p);
     }
 
     @GetMapping("all")
@@ -57,7 +59,7 @@ public class EmployeeResource {
         Sort sort = Sort.by("name").ascending();
         PageRequest pageRequest = PageRequest.of(0, limit, sort);
 
-        return personDataRepository.filterEmployee("", "%"+q.toUpperCase()+ "%", pageRequest).getContent();
+        return personDataRepository.filterEmployee("", "", "","%"+q.toUpperCase()+ "%", pageRequest).getContent();
     }
 
     @GetMapping("/{id}")

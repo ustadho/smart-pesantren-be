@@ -1,5 +1,6 @@
 package id.smartpesantren.security.jwt;
 
+import id.smartpesantren.entity.User;
 import id.smartpesantren.security.MyUserDetails;
 import io.github.jhipster.config.JHipsterProperties;
 import io.jsonwebtoken.*;
@@ -29,6 +30,7 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "authorities";
     private static final String FOUNDATION_KEY = "fdn";
+    private static final String PERSON_KEY = "pid";
 
     private Key key;
 
@@ -62,7 +64,7 @@ public class TokenProvider {
                 .getTokenValidityInSecondsForRememberMe();
     }
 
-    public String createToken(Authentication authentication, String foundationId, boolean rememberMe) {
+    public String createToken(Authentication authentication, User user, boolean rememberMe) {
         String authorities = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(","));
@@ -78,7 +80,8 @@ public class TokenProvider {
         return Jwts.builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
-            .claim(FOUNDATION_KEY, foundationId)
+            .claim(FOUNDATION_KEY, user.getFoundation().getId())
+            .claim(PERSON_KEY, user.getPerson() == null? null: user.getPerson().getId())
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)
             .compact();
