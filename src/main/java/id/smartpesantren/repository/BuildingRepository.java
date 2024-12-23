@@ -27,5 +27,5 @@ public interface BuildingRepository extends JpaRepository<Building, String> {
             "and upper(a.name) like :q \n" +
             "and (coalesce(:locationId,'') ='' OR l.id=:locationId) \n" +
             "order by a.name")
-    public Iterable<BuildingVM> findAllBuilding(@Param("q") String q);
+    public Iterable<BuildingVM> findAllBuilding(@Param("locationId") String locationId, @Param("q") String q);
 }

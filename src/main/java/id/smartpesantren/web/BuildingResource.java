@@ -39,15 +39,17 @@ public class BuildingResource {
     }
 
     @GetMapping("all")
-    Iterable<BuildingVM> findAllOrganization(@RequestParam(value = "q", required = false, defaultValue = "") String q) {
-        return buildingRepository.findAllBuilding("%"+q.toUpperCase()+"%");
+    Iterable<BuildingVM> findAllOrganization(@RequestParam("locationId") String locationId,
+                                             @RequestParam(value = "q", required = false,
+                                             defaultValue = "") String q) {
+        return buildingRepository.findAllBuilding(locationId, "%"+q.toUpperCase()+"%");
     }
 
     @GetMapping("{id}")
     BuildingVM findById(@PathVariable("id") String id) {
         return buildingRepository.findById(id)
                 .map(BuildingVM::new)
-                .orElseThrow(() -> new InternalServerErrorException("Job Level could not be found"));
+                .orElseThrow(() -> new InternalServerErrorException("Building could not be found"));
     }
 
     @PutMapping("{id}")

@@ -5,8 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "c_building")
-public class Building {
+@Table(name = "c_asrama")
+public class Asrama {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
@@ -28,19 +28,9 @@ public class Building {
     @Column(columnDefinition = "boolean default true")
     private Boolean active;
 
-    @Column(length = 10)
-    private String color;
-
     @ManyToOne
-    @JoinColumn(name = "location_id", nullable = false)
-    Location location;
-
-    public Building() {
-    }
-
-    public Building(String id) {
-        this.id = id;
-    }
+    @JoinColumn(name = "building_id", nullable = false)
+    Building building;
 
     public String getId() {
         return id;
@@ -90,19 +80,11 @@ public class Building {
         this.active = active;
     }
 
-    public String getColor() {
-        return color;
+    public Building getBuilding() {
+        return building;
     }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 }
