@@ -7,8 +7,9 @@ public class PresenceKbmVMStudent {
     private String studentNis;
     private String studentNisn;
     private Integer presenceStatusId;
-    private Integer presenceStatusName;
+    private String presenceStatusName;
     private String note;
+    private String attachment;
 
     public PresenceKbmVMStudent() {
     }
@@ -46,11 +47,11 @@ public class PresenceKbmVMStudent {
         this.studentNisn = studentNisn;
     }
 
-    public Integer getPresenceStatusName() {
+    public String getPresenceStatusName() {
         return presenceStatusName;
     }
 
-    public void setPresenceStatusName(Integer presenceStatusName) {
+    public void setPresenceStatusName(String presenceStatusName) {
         this.presenceStatusName = presenceStatusName;
     }
 
@@ -76,5 +77,13 @@ public class PresenceKbmVMStudent {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 }

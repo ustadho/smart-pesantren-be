@@ -9,6 +9,7 @@ public class ClassRoomStudentVMDetail {
     private String studentNis;
     private String studentNisn;
     private String joinYear;
+    private String attachment;
 
     public ClassRoomStudentVMDetail() {
     }
@@ -67,5 +68,13 @@ public class ClassRoomStudentVMDetail {
 
     public void setJoinYear(String joinYear) {
         this.joinYear = joinYear;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 }

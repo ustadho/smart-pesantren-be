@@ -7,7 +7,6 @@ import java.util.List;
 
 public class PresenceKbmVM {
     private String id;
-    @NotNull
     private Date presenceDate;
     @NotNull
     private String subjectScheduleId;

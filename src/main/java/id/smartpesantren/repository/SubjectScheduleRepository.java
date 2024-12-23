@@ -1,9 +1,14 @@
 package id.smartpesantren.repository;
 
+import id.smartpesantren.dto.PersonSimpleDTO;
+import id.smartpesantren.dto.PresenceSubjectStudentDTO;
+import id.smartpesantren.dto.SubjectScheduleClassRoomDTO;
 import id.smartpesantren.entity.SubjectSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule, String> {
 
@@ -60,5 +65,24 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
             ") sd;\n",
             nativeQuery = true)
     public String findAllSchedules(@Param("institutionId") String institutionId);
+
+    @Query(value = "select distinct pd.id, pd.name   \n" +
+            "from ac_subject_schedule ass\n" +
+            "join ac_class_room acr on acr.id = ass.class_room_id\n" +
+            "join person_data pd on pd.id=ass.teacher_id \n" +
+            "where acr.academic_year_id = :academicYear\n" +
+            "and ass.day_id = EXTRACT('DOW' FROM CURRENT_DATE)\n" +
+            "order by pd.name", nativeQuery = true)
+    public List<PersonSimpleDTO> findAllTeacherScheduleToday(@Param("academicYear") String academicYear);
+
+    @Query(value = "select ass.id, s.name \"subjectName\", acr.name \"classRoom\", aat.start_time \"startTime\" , aat.end_time \"endTime\"\n" +
+            "from ac_subject_schedule ass \n" +
+            "join ac_activity_time aat on aat.id=ass.activity_time_id \n" +
+            "join ac_subject s on s.id=ass.subject_id  \n" +
+            "join ac_class_room acr on acr.id=ass.class_room_id \n" +
+            "where ass.teacher_id = :teacher\n" +
+            "and ass.day_id = EXTRACT('DOW' FROM CURRENT_DATE)\n" +
+            "order by aat.start_time ", nativeQuery = true)
+    public List<SubjectScheduleClassRoomDTO> findSubjectScheduleClassRoomByTeacherId(@Param("teacher") String teacher);
 
 }
