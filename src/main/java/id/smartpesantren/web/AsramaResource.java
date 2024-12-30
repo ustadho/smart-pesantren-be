@@ -33,6 +33,7 @@ public class AsramaResource {
         o.setName(vm.getName());
         o.setDescription(vm.getDescription());
         o.setBuilding(new Building(vm.getBuildingId()));
+        o.setPesantren(new Pesantren(vm.getPesantrenId()));
         o.setSex(vm.getSex());
         o.setCapacity(vm.getCapacity());
         asramaRepository.save(o);
@@ -69,6 +70,7 @@ public class AsramaResource {
         data.setName(vm.getName());
         data.setDescription(vm.getDescription());
         data.setBuilding(new Building(vm.getBuildingId()));
+        data.setPesantren(new Pesantren(vm.getPesantrenId()));
         data.setSex(vm.getSex());
         data.setCapacity(vm.getCapacity());
         asramaRepository.save(data);

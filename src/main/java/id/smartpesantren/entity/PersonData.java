@@ -3,6 +3,8 @@ package id.smartpesantren.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import id.smartpesantren.web.EmployementType;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -166,6 +168,26 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "employement_type_id")
     EmployementType employementType;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "hr_employee_institution",
+            joinColumns = {@JoinColumn(name = "employee_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "institution_id", referencedColumnName = "id")})
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @BatchSize(size = 20)
+    private Set<Institution> institutions = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "hr_employee_pesantren",
+            joinColumns = {@JoinColumn(name = "employee_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "pesantren_id", referencedColumnName = "id")})
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @BatchSize(size = 20)
+    private Set<Institution> pesantrens = new HashSet<>();
 
     private String photo;
 
@@ -554,5 +576,21 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public Set<Institution> getInstitutions() {
+        return institutions;
+    }
+
+    public void setInstitutions(Set<Institution> institutions) {
+        this.institutions = institutions;
+    }
+
+    public Set<Institution> getPesantrens() {
+        return pesantrens;
+    }
+
+    public void setPesantrens(Set<Institution> pesantrens) {
+        this.pesantrens = pesantrens;
     }
 }

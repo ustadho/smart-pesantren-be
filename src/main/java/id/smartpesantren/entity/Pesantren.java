@@ -1,13 +1,12 @@
 package id.smartpesantren.entity;
 
-import id.smartpesantren.constant.Sex;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "asrama")
-public class Asrama {
+@Table(name = "c_pesantren")
+public class Pesantren {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
@@ -18,29 +17,25 @@ public class Asrama {
     @JoinColumn(name = "foundation_id", nullable = false)
     Foundation foundation;
 
-    @Column(length = 4, nullable = false)
+    @Column(nullable = false)
     private String code;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     private String name;
 
     private String description;
 
-    @Column(columnDefinition = "boolean default true")
-    private Boolean active;
-
-    @ManyToOne
-    @JoinColumn(name = "building_id", nullable = false)
-    Building building;
-
-    @Column(length = 1, columnDefinition = "varchar(1) default 'M'")
+    @JoinColumn(nullable = false)
     private String sex;
 
-    @ManyToOne
-    @JoinColumn(name = "pesantren_id")
-    private Pesantren pesantren;
+    private Boolean active;
 
-    private Short capacity;
+    public Pesantren() {
+    }
+
+    public Pesantren(String id) {
+        this.id = id;
+    }
 
     public String getId() {
         return id;
@@ -82,22 +77,6 @@ public class Asrama {
         this.description = description;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public Building getBuilding() {
-        return building;
-    }
-
-    public void setBuilding(Building building) {
-        this.building = building;
-    }
-
     public String getSex() {
         return sex;
     }
@@ -106,19 +85,11 @@ public class Asrama {
         this.sex = sex;
     }
 
-    public Pesantren getPesantren() {
-        return pesantren;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setPesantren(Pesantren pesantren) {
-        this.pesantren = pesantren;
-    }
-
-    public Short getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Short capacity) {
-        this.capacity = capacity;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

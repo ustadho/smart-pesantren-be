@@ -11,11 +11,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface AsramaRepository extends JpaRepository<Asrama, String> {
-    @Query("select new id.smartpesantren.web.rest.vm.AsramaVM( " +
-            "a.id, a.code, a.name, a.description, b.id, b.name, l.name, a.sex, a.capacity) " +
+    @Query("select new id.smartpesantren.web.rest.vm.AsramaVM(a) " +
             "from Asrama a " +
             "left join a.building b " +
             "left join b.location l " +
+            "left join a.pesantren p " +
             "where a.foundation.id = ?#{principal.foundationId} " +
             "and upper(a.name) like upper(:q) " +
             "and (coalesce(:locationId, '') = '' OR l.id = :locationId) " +
@@ -28,11 +28,11 @@ public interface AsramaRepository extends JpaRepository<Asrama, String> {
     );
 
 
-    @Query("select new id.smartpesantren.web.rest.vm.AsramaVM(a.id, a.code, a.name, a.description, \n" +
-            "b.id, b.name, l.name, a.sex, a.capacity) \n" +
+    @Query("select new id.smartpesantren.web.rest.vm.AsramaVM(a) \n" +
             "from Asrama a \n" +
             "left join a.building b \n" +
             "left join b.location l \n" +
+            "left join a.pesantren p \n" +
             "where a.foundation.id=?#{principal.foundationId} \n" +
             "and upper(a.name) like :q \n" +
             "and (coalesce(:locationId,'') ='' OR l.id=:locationId) \n" +

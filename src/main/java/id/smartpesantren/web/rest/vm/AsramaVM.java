@@ -9,6 +9,8 @@ public class AsramaVM {
     private String description;
     private String buildingId;
     private String buildingName;
+    private String pesantrenId;
+    private String pesantrenName;
     private String locationName;
     private String sex;
     private Short capacity;
@@ -25,6 +27,8 @@ public class AsramaVM {
         setBuildingId(a.getBuilding() == null? null: a.getBuilding().getId());
         setBuildingName(a.getBuilding() == null? null: a.getBuilding().getName());
         setLocationName(a.getBuilding() == null? null: a.getBuilding().getLocation().getName());
+        setPesantrenId(a.getPesantren() == null? null: a.getPesantren().getId());
+        setPesantrenName(a.getPesantren() == null? null: a.getPesantren().getName());
         setSex(a.getSex());
         setCapacity(a.getCapacity());
     }
@@ -88,6 +92,22 @@ public class AsramaVM {
 
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName;
+    }
+
+    public String getPesantrenId() {
+        return pesantrenId;
+    }
+
+    public void setPesantrenId(String pesantrenId) {
+        this.pesantrenId = pesantrenId;
+    }
+
+    public String getPesantrenName() {
+        return pesantrenName;
+    }
+
+    public void setPesantrenName(String pesantrenName) {
+        this.pesantrenName = pesantrenName;
     }
 
     public String getLocationName() {
