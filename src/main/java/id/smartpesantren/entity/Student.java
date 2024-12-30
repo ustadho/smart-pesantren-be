@@ -55,6 +55,9 @@ public class Student extends AbstractAuditingEntity implements Serializable {
 
     private Date dob;
 
+    @Column(name = "kk_no")
+    private String kkNo; //Nomor KK (Kartu Keluarga)
+
     @Column(name = "birth_certificate_no")
     private String birthCertificateNo;
 
@@ -244,6 +247,14 @@ public class Student extends AbstractAuditingEntity implements Serializable {
 
     public void setDob(Date dob) {
         this.dob = dob;
+    }
+
+    public String getKkNo() {
+        return kkNo;
+    }
+
+    public void setKkNo(String kkNo) {
+        this.kkNo = kkNo;
     }
 
     public String getBirthCertificateNo() {

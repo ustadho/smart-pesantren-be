@@ -10,6 +10,8 @@ public class AsramaVM {
     private String buildingId;
     private String buildingName;
     private String locationName;
+    private String sex;
+    private Short capacity;
 
 
     public AsramaVM() {
@@ -23,9 +25,12 @@ public class AsramaVM {
         setBuildingId(a.getBuilding() == null? null: a.getBuilding().getId());
         setBuildingName(a.getBuilding() == null? null: a.getBuilding().getName());
         setLocationName(a.getBuilding() == null? null: a.getBuilding().getLocation().getName());
+        setSex(a.getSex());
+        setCapacity(a.getCapacity());
     }
 
-    public AsramaVM(String id, String code, String name, String description, String buildingId, String buildingName, String locationName) {
+    public AsramaVM(String id, String code, String name, String description, String buildingId, String buildingName,
+                    String locationName, String sex, Short capacity) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -33,7 +38,8 @@ public class AsramaVM {
         this.buildingId = buildingId;
         this.buildingName = buildingName;
         this.locationName = locationName;
-
+        this.sex = sex;
+        this.capacity = capacity;
     }
 
     public String getId() {
@@ -90,5 +96,21 @@ public class AsramaVM {
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public Short getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Short capacity) {
+        this.capacity = capacity;
     }
 }

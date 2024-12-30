@@ -1,11 +1,12 @@
 package id.smartpesantren.entity;
 
+import id.smartpesantren.constant.Sex;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "c_asrama")
+@Table(name = "asrama")
 public class Asrama {
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -31,6 +32,11 @@ public class Asrama {
     @ManyToOne
     @JoinColumn(name = "building_id", nullable = false)
     Building building;
+
+    @Column(length = 1, columnDefinition = "varchar(1) default 'M'")
+    private String sex;
+
+    private Short capacity;
 
     public String getId() {
         return id;
@@ -86,5 +92,21 @@ public class Asrama {
 
     public void setBuilding(Building building) {
         this.building = building;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public Short getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Short capacity) {
+        this.capacity = capacity;
     }
 }

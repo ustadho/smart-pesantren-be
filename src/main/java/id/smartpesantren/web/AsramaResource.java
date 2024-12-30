@@ -1,9 +1,9 @@
 package id.smartpesantren.web;
 
-import id.smartpesantren.entity.Asrama;
-import id.smartpesantren.entity.Building;
-import id.smartpesantren.entity.Foundation;
+import id.smartpesantren.dto.SantriListDTO;
+import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.AsramaRepository;
+import id.smartpesantren.repository.AsramaMappingRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.errors.InternalServerErrorException;
 import id.smartpesantren.web.rest.vm.AsramaVM;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,6 +21,9 @@ import java.util.Optional;
 public class AsramaResource {
     @Autowired
     AsramaRepository asramaRepository;
+
+    @Autowired
+    AsramaMappingRepository asramaMappingRepository;
 
     @PostMapping
     public void createAsrama(@RequestBody @Valid AsramaVM vm) {
@@ -29,6 +33,8 @@ public class AsramaResource {
         o.setName(vm.getName());
         o.setDescription(vm.getDescription());
         o.setBuilding(new Building(vm.getBuildingId()));
+        o.setSex(vm.getSex());
+        o.setCapacity(vm.getCapacity());
         asramaRepository.save(o);
     }
 
@@ -63,6 +69,8 @@ public class AsramaResource {
         data.setName(vm.getName());
         data.setDescription(vm.getDescription());
         data.setBuilding(new Building(vm.getBuildingId()));
+        data.setSex(vm.getSex());
+        data.setCapacity(vm.getCapacity());
         asramaRepository.save(data);
     }
 

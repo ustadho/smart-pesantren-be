@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface AsramaRepository extends JpaRepository<Asrama, String> {
     @Query("select new id.smartpesantren.web.rest.vm.AsramaVM( " +
-            "a.id, a.code, a.name, a.description, b.id, b.name, l.name) " +
+            "a.id, a.code, a.name, a.description, b.id, b.name, l.name, a.sex, a.capacity) " +
             "from Asrama a " +
             "left join a.building b " +
             "left join b.location l " +
@@ -29,7 +29,7 @@ public interface AsramaRepository extends JpaRepository<Asrama, String> {
 
 
     @Query("select new id.smartpesantren.web.rest.vm.AsramaVM(a.id, a.code, a.name, a.description, \n" +
-            "b.id, b.name, l.name) \n" +
+            "b.id, b.name, l.name, a.sex, a.capacity) \n" +
             "from Asrama a \n" +
             "left join a.building b \n" +
             "left join b.location l \n" +

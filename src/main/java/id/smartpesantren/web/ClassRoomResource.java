@@ -129,6 +129,7 @@ public class ClassRoomResource {
 
         current.setAcademicYear(new AcademicYear(vm.getAcademicYearId()));
         current.setClassLevel(new ClassLevel(vm.getClassLevelId()));
+        current.setInstitution(new Institution(vm.getInstitutionId()));
         current.setCode(vm.getCode());
         current.setName(vm.getName());
         current.setRoom(vm.getRoom());
