@@ -40,6 +40,13 @@ public class Asrama {
     @JoinColumn(name = "pesantren_id")
     private Pesantren pesantren;
 
+    public Asrama() {
+    }
+
+    public Asrama(String id) {
+        this.id = id;
+    }
+
     private Short capacity;
 
     public String getId() {

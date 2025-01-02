@@ -29,7 +29,7 @@ public class AsramaVM {
         setLocationName(a.getBuilding() == null? null: a.getBuilding().getLocation().getName());
         setPesantrenId(a.getPesantren() == null? null: a.getPesantren().getId());
         setPesantrenName(a.getPesantren() == null? null: a.getPesantren().getName());
-        setSex(a.getSex());
+        setSex(a.getPesantren() == null? null: a.getPesantren().getSex());
         setCapacity(a.getCapacity());
     }
 

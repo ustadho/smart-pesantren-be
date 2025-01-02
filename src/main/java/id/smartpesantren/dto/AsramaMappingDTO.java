@@ -1,44 +1,36 @@
 package id.smartpesantren.dto;
 
-import id.smartpesantren.entity.ClassRoom;
+import id.smartpesantren.entity.AsramaMapping;
 
 public class AsramaMappingDTO {
     private String id;
     private String academicYearId;
     private String academicYearCode;
-    private String institusi;
-    private String educationLevel;
-    private Short classLevel;
-    private String code;
-    private String name;
+    private String asramaId;
+    private String asramaName;
+    private String buildingName;
+    private String pesantren;
     private String sex;
     private String sexLabel;
-    private Short capacity;
-    private String description;
-    private String room;
-    private String location;
+    private Integer capacity;
+    private Integer studentCount;
 
     public AsramaMappingDTO() {
     }
 
-    public AsramaMappingDTO(ClassRoom c) {
-        setId(c.getId());
-        setCode(c.getCode());
-        setName(c.getName());
-        setAcademicYearId(c.getAcademicYear().getId());
-        setAcademicYearCode(c.getAcademicYear().getCode());
-        setInstitusi(c.getInstitution().getName());
-        setEducationLevel(c.getClassLevel().getEducationLevel().getName());
-        setClassLevel(c.getClassLevel().getLevel());
-        setRoom(c.getRoom());
-        setLocation(c.getLocation().getName());
-        setDescription(c.getDescription());
-        setCapacity(c.getCapacity());
-        setSex(c.getSex());
-        setSexLabel(c.getSex() == null? "": (c.getSex().equalsIgnoreCase("M")? "Putra": "Putri"));
+    public AsramaMappingDTO(AsramaMapping a) {
+        setId(a.getId());
+        setAcademicYearId(a.getAcademicYear().getId());
+        setAcademicYearCode(a.getAcademicYear().getCode());
+        setAsramaId(a.getAsrama().getId());
+        setAsramaName(a.getAsrama().getName());
+        setBuildingName(a.getAsrama().getBuilding().getName());
+        setPesantren(a.getAsrama().getPesantren().getName());
+        setCapacity(a.getAsrama().getCapacity().intValue());
+        setSex(a.getAsrama().getPesantren().getSex());
+        setSexLabel(a.getAsrama().getPesantren().getSex() == null? "": (a.getAsrama().getPesantren().getSex().equalsIgnoreCase("M")? "Putra": "Putri"));
+        setStudentCount(a.getStudents()==null? 0: a.getStudents().size());
     }
-
-
 
     public String getId() {
         return id;
@@ -64,36 +56,36 @@ public class AsramaMappingDTO {
         this.academicYearCode = academicYearCode;
     }
 
-    public String getInstitusi() {
-        return institusi;
+    public String getAsramaId() {
+        return asramaId;
     }
 
-    public void setInstitusi(String institusi) {
-        this.institusi = institusi;
+    public void setAsramaId(String asramaId) {
+        this.asramaId = asramaId;
     }
 
-    public String getEducationLevel() {
-        return educationLevel;
+    public String getAsramaName() {
+        return asramaName;
     }
 
-    public void setEducationLevel(String educationLevel) {
-        this.educationLevel = educationLevel;
+    public void setAsramaName(String asramaName) {
+        this.asramaName = asramaName;
     }
 
-    public Short getClassLevel() {
-        return classLevel;
+    public String getBuildingName() {
+        return buildingName;
     }
 
-    public void setClassLevel(Short classLevel) {
-        this.classLevel = classLevel;
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
     }
 
-    public String getCode() {
-        return code;
+    public String getPesantren() {
+        return pesantren;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setPesantren(String pesantren) {
+        this.pesantren = pesantren;
     }
 
     public String getSex() {
@@ -112,43 +104,19 @@ public class AsramaMappingDTO {
         this.sexLabel = sexLabel;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Short getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(Short capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 
-    public String getDescription() {
-        return description;
+    public Integer getStudentCount() {
+        return studentCount;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getRoom() {
-        return room;
-    }
-
-    public void setRoom(String room) {
-        this.room = room;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
+    public void setStudentCount(Integer studentCount) {
+        this.studentCount = studentCount;
     }
 }

@@ -8,6 +8,7 @@ public class AsramaMappingVM {
     private String id;
     @NotNull
     public String asramaId;
+    public String asramaName;
 
     @NotNull
     public String academicYearId;
@@ -32,6 +33,14 @@ public class AsramaMappingVM {
 
     public void setAsramaId(String asramaId) {
         this.asramaId = asramaId;
+    }
+
+    public String getAsramaName() {
+        return asramaName;
+    }
+
+    public void setAsramaName(String asramaName) {
+        this.asramaName = asramaName;
     }
 
     public String getMusyrifId() {

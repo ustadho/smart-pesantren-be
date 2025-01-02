@@ -18,6 +18,8 @@ public class LoginVM {
 
     private Boolean rememberMe;
 
+    private String academicYearId;
+
     public String getUsername() {
         return username;
     }
@@ -40,6 +42,18 @@ public class LoginVM {
 
     public void setRememberMe(Boolean rememberMe) {
         this.rememberMe = rememberMe;
+    }
+
+    public Boolean getRememberMe() {
+        return rememberMe;
+    }
+
+    public String getAcademicYearId() {
+        return academicYearId;
+    }
+
+    public void setAcademicYearId(String academicYearId) {
+        this.academicYearId = academicYearId;
     }
 
     @Override
