@@ -1,34 +1,25 @@
-package id.smartpesantren.web.rest.vm;
+package id.smartpesantren.dto;
 
-import id.smartpesantren.entity.JenisKegiatan;
-
-import javax.validation.constraints.NotNull;
-import java.util.Date;
-
-public class JenisKegiatanVM {
+import id.smartpesantren.entity.JenisPelanggaran;
+public class JenisPelanggaranDTO {
     private String id;
-
     private String code;
-
-    @NotNull
     private String name;
-
     private String description;
-
-    private Date inTime;
-
     private Boolean active;
 
-    public JenisKegiatanVM() {
+    public JenisPelanggaranDTO() {
     }
 
-    public JenisKegiatanVM(JenisKegiatan a) {
-        setId(a.getId());
-        setCode(a.getCode());
-        setName(a.getName());
-        setDescription(a.getDescription());
-        setInTime(a.getInTime());
-        setActive(a.getActive());
+    public JenisPelanggaranDTO(JenisPelanggaran a) {
+        this(a.getId(), a.getCode(), a.getName(), a.getDescription(), a.getActive());
+    }
+    public JenisPelanggaranDTO(String id, String code, String name, String description, Boolean active) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+        this.description = description;
+        this.active = active;
     }
 
     public String getId() {
@@ -61,14 +52,6 @@ public class JenisKegiatanVM {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getInTime() {
-        return inTime;
-    }
-
-    public void setInTime(Date inTime) {
-        this.inTime = inTime;
     }
 
     public Boolean getActive() {

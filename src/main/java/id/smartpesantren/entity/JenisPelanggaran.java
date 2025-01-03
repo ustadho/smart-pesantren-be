@@ -1,34 +1,38 @@
-package id.smartpesantren.web.rest.vm;
+package id.smartpesantren.entity;
 
-import id.smartpesantren.entity.JenisKegiatan;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
 import java.util.Date;
 
-public class JenisKegiatanVM {
+@Table(name = "jenis_pelanggaran")
+@Entity
+public class JenisPelanggaran { // Jenis Pelanggaran
+    @Id
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @Column(length = 36)
     private String id;
 
+    @ManyToOne
+    @JoinColumn(name = "foundation_id", nullable = false)
+    Foundation foundation;
+
+    @Column
     private String code;
 
-    @NotNull
+    @Column(nullable = false)
     private String name;
 
     private String description;
 
-    private Date inTime;
-
     private Boolean active;
 
-    public JenisKegiatanVM() {
+    public JenisPelanggaran() {
     }
 
-    public JenisKegiatanVM(JenisKegiatan a) {
-        setId(a.getId());
-        setCode(a.getCode());
-        setName(a.getName());
-        setDescription(a.getDescription());
-        setInTime(a.getInTime());
-        setActive(a.getActive());
+    public JenisPelanggaran(String id) {
+        this.id = id;
     }
 
     public String getId() {
@@ -37,6 +41,14 @@ public class JenisKegiatanVM {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Foundation getFoundation() {
+        return foundation;
+    }
+
+    public void setFoundation(Foundation foundation) {
+        this.foundation = foundation;
     }
 
     public String getCode() {
@@ -63,14 +75,6 @@ public class JenisKegiatanVM {
         this.description = description;
     }
 
-    public Date getInTime() {
-        return inTime;
-    }
-
-    public void setInTime(Date inTime) {
-        this.inTime = inTime;
-    }
-
     public Boolean getActive() {
         return active;
     }
@@ -78,4 +82,5 @@ public class JenisKegiatanVM {
     public void setActive(Boolean active) {
         this.active = active;
     }
+
 }

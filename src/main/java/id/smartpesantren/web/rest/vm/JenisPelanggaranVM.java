@@ -1,11 +1,10 @@
 package id.smartpesantren.web.rest.vm;
 
-import id.smartpesantren.entity.JenisKegiatan;
+import id.smartpesantren.entity.JenisPelanggaran;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
-public class JenisKegiatanVM {
+public class JenisPelanggaranVM {
     private String id;
 
     private String code;
@@ -15,19 +14,16 @@ public class JenisKegiatanVM {
 
     private String description;
 
-    private Date inTime;
-
     private Boolean active;
 
-    public JenisKegiatanVM() {
+    public JenisPelanggaranVM() {
     }
 
-    public JenisKegiatanVM(JenisKegiatan a) {
+    public JenisPelanggaranVM(JenisPelanggaran a) {
         setId(a.getId());
         setCode(a.getCode());
         setName(a.getName());
         setDescription(a.getDescription());
-        setInTime(a.getInTime());
         setActive(a.getActive());
     }
 
@@ -61,14 +57,6 @@ public class JenisKegiatanVM {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getInTime() {
-        return inTime;
-    }
-
-    public void setInTime(Date inTime) {
-        this.inTime = inTime;
     }
 
     public Boolean getActive() {
