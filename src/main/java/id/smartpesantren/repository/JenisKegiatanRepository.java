@@ -18,6 +18,7 @@ public interface JenisKegiatanRepository extends JpaRepository<JenisKegiatan, St
     @Query("select new id.smartpesantren.dto.JenisKegiatanDTO(a) " +
             "from JenisKegiatan a \n" +
             "where a.foundation.id=?#{principal.foundationId} \n" +
-            "and upper(a.name) like :q")
+            "and upper(a.name) like :q \n" +
+            "and coalesce(a.active, false) = true")
     public Iterable<JenisKegiatanDTO> filterAll(@Param("q") String q);
 }
