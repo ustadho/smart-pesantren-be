@@ -8,8 +8,10 @@ import id.smartpesantren.repository.AcademicActivityTimeRepository;
 import id.smartpesantren.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,6 +36,27 @@ public class AcademicActivityTimeService {
 
         repository.save(at);
         return dto;
+    }
+
+    @Transactional
+    public void copy(List<AcademicActivityTimeDTO> dtos) {
+        for(AcademicActivityTimeDTO dto: dtos) {
+            AcademicActivityTime at = null;
+            if (dto.getId() != null) {
+                at = repository.findById(dto.getId()).get();
+            } else {
+                at = new AcademicActivityTime();
+                at.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
+            }
+            at.setInstitution(new Institution(dto.getInstitutionId()));
+            at.setSex(dto.getSex());
+            at.setSeq(dto.getSeq());
+            at.setStartTime(dto.getStartTime());
+            at.setEndTime(dto.getEndTime());
+            at.setDescription(dto.getDescription());
+
+            repository.save(at);
+        }
     }
 
     public AcademicActivityTimeDTO findById(String id) {

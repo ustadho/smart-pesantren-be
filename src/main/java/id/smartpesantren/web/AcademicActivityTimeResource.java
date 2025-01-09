@@ -11,6 +11,7 @@ import id.smartpesantren.web.rest.errors.InternalServerErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -61,6 +62,34 @@ public class AcademicActivityTimeResource {
             throw new InternalServerErrorException("Ada irisan dari jam awal dan akhir");
         }
         return service.createOrUpdate(dto);
+    }
+
+    @PostMapping("/copy")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void create(@RequestBody @Valid List<AcademicActivityTimeDTO> dtos) {
+        for(AcademicActivityTimeDTO dto: dtos) {
+            Optional<AcademicActivityTime> existSeq = academicActivityTimeRepository.findByFoundationAndInstitutionAndSexAndSeq(
+                new Foundation(SecurityUtils.getFoundationId().get()),
+                new Institution(dto.getInstitutionId()),
+                dto.getSex(),
+                dto.getSeq()
+            );
+            if (existSeq.isPresent()) {
+                throw new InternalServerErrorException("Jam ke:"+dto.getSeq()+" tersebut sudah pernah dibuat");
+            }
+            boolean isOverlapping = service.isOverlapping(
+                new Foundation(SecurityUtils.getFoundationId().get()),
+                new Institution(dto.getInstitutionId()),
+                dto.getSex(),
+                dto.getStartTime(),
+                dto.getEndTime()
+            );
+
+            if (isOverlapping) {
+                throw new InternalServerErrorException("Ada irisan dari jam awal dan akhir");
+            }
+        }
+        service.copy(dtos);
     }
 
     @GetMapping("/{id}")
