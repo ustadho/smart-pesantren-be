@@ -26,6 +26,7 @@ public class AcademicActivityTimeService {
             at.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
         }
         at.setInstitution(new Institution(dto.getInstitutionId()));
+        at.setSex(dto.getSex());
         at.setSeq(dto.getSeq());
         at.setStartTime(dto.getStartTime());
         at.setEndTime(dto.getEndTime());
@@ -43,6 +44,7 @@ public class AcademicActivityTimeService {
             dto.setId(ac.get().getId());
             dto.setInstitutionId(ac.get().getInstitution().getId());
             dto.setInstitutionName(ac.get().getInstitution().getName());
+            dto.setSex(ac.get().getSex());
             dto.setSeq(ac.get().getSeq());
             dto.setStartTime(ac.get().getStartTime());
             dto.setEndTime(ac.get().getEndTime());
@@ -52,8 +54,8 @@ public class AcademicActivityTimeService {
         return dto;
     }
 
-    public boolean isOverlapping(Foundation foundation, Institution institution, Date startTime, Date endTime) {
-        long count = repository.countOverlappingTimes(foundation, institution, startTime, endTime);
+    public boolean isOverlapping(Foundation foundation, Institution institution, String sex, Date startTime, Date endTime) {
+        long count = repository.countOverlappingTimes(foundation, institution, sex, startTime, endTime);
         return count > 0;
     }
 }

@@ -23,6 +23,9 @@ public class AcademicActivityTime extends AbstractAuditingEntity implements Seri
     @JoinColumn(name = "institution_id", nullable = false)
     Institution institution;
 
+    @Column(name = "sex", columnDefinition = "varchar(1) default 'M'")
+    private String sex;
+
     @Column(columnDefinition = "integer default 1")
     private Integer seq;
 
@@ -63,6 +66,14 @@ public class AcademicActivityTime extends AbstractAuditingEntity implements Seri
 
     public void setInstitution(Institution institution) {
         this.institution = institution;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public Integer getSeq() {

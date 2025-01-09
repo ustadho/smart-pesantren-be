@@ -7,6 +7,7 @@ import java.util.Date;
 public class ActivityTimeDTO {
     private String id;
     private String name;
+    private String sex;
     private String description;
     private Date startTime;
     private Date endTime;
@@ -25,6 +26,14 @@ public class ActivityTimeDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public String getDescription() {

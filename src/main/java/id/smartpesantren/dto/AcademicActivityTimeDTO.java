@@ -8,6 +8,7 @@ public class AcademicActivityTimeDTO {
     private String id;
     private String institutionId;
     private String institutionName;
+    private String sex;
     private Integer seq;
     private Date startTime;
     private Date endTime;
@@ -20,16 +21,18 @@ public class AcademicActivityTimeDTO {
         setId(t.getId());
         setInstitutionId(t.getInstitution().getId());
         setInstitutionName(t.getInstitution().getName());
+        setSex(t.getSex());
         setSeq(t.getSeq());
         setStartTime(t.getStartTime());
         setEndTime(t.getEndTime());
         setDescription(t.getDescription());
     }
 
-    public AcademicActivityTimeDTO(String id, String institutionId, String institutionName, Integer seq, Date startTime, Date endTime, String description) {
+    public AcademicActivityTimeDTO(String id, String institutionId, String institutionName, String sex, Integer seq, Date startTime, Date endTime, String description) {
         this.id = id;
         this.institutionId = institutionId;
         this.institutionName = institutionName;
+        this.sex = sex;
         this.seq = seq;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -58,6 +61,14 @@ public class AcademicActivityTimeDTO {
 
     public void setInstitutionName(String institutionName) {
         this.institutionName = institutionName;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public Integer getSeq() {

@@ -26,6 +26,7 @@ public class SubjectScheduleCustomRepository {
                 "        p.id AS teacher_id,\n" +
                 "        p.name AS teacher_name\n" +
                 "    FROM ac_activity_time act\n" +
+                "    JOIN ac_class_room cr on cr.id=:classRoomId and act.sex=cr.sex \n" +
                 "    CROSS JOIN m_day d\n" +
                 "    LEFT JOIN ac_subject_schedule sch \n" +
                 "        ON sch.activity_time_id = act.id AND sch.day_id = d.id AND sch.class_room_id=:classRoomId\n" +
@@ -34,7 +35,7 @@ public class SubjectScheduleCustomRepository {
                 "    LEFT JOIN person_data p \n" +
                 "        ON p.id = sch.teacher_id\n" +
                 "    where act.foundation_id  = :foundationId \n" +
-                "    and act.institution_id = (select institution_id from ac_class_room where id=:classRoomId) \n" +
+                "    and act.institution_id = cr.institution_id \n" +
                 "    order by act.start_time, act.seq, case when d.id=0 then 7 else d.id end \n" +
                 ")\n" +
                 "SELECT json_agg(\n" +

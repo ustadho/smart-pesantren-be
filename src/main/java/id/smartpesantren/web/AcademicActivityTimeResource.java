@@ -27,20 +27,23 @@ public class AcademicActivityTimeResource {
     AcademicActivityTimeRepository academicActivityTimeRepository;
 
     @GetMapping
-    public Page<AcademicActivityTimeDTO> filter(@RequestParam("iid") String institutionId, Pageable p) {
-        return academicActivityTimeRepository.filter(institutionId, p);
+    public Page<AcademicActivityTimeDTO> filter(@RequestParam("iid") String institutionId,
+                                                @RequestParam("sex") String sex,
+                                                Pageable p) {
+        return academicActivityTimeRepository.filter(institutionId, sex, p);
     }
 
     @GetMapping("/all")
-    public List<AcademicActivityTimeDTO> findAll(@RequestParam("iid") String institutionId) {
-        return academicActivityTimeRepository.findAllActivityTime(institutionId == null? null: institutionId);
+    public List<AcademicActivityTimeDTO> findAll(@RequestParam("iid") String institutionId, @RequestParam("sex") String sex) {
+        return academicActivityTimeRepository.findAllActivityTime(institutionId == null? null: institutionId, sex);
     }
 
     @PostMapping
     public AcademicActivityTimeDTO create(@RequestBody @Valid AcademicActivityTimeDTO dto) {
-        Optional<AcademicActivityTime> existSeq = academicActivityTimeRepository.findByFoundationAndInstitutionAndSeq(
+        Optional<AcademicActivityTime> existSeq = academicActivityTimeRepository.findByFoundationAndInstitutionAndSexAndSeq(
             new Foundation(SecurityUtils.getFoundationId().get()),
             new Institution(dto.getInstitutionId()),
+            dto.getSex(),
             dto.getSeq()
         );
         if (existSeq.isPresent()) {
@@ -49,6 +52,7 @@ public class AcademicActivityTimeResource {
         boolean isOverlapping = service.isOverlapping(
                 new Foundation(SecurityUtils.getFoundationId().get()),
                 new Institution(dto.getInstitutionId()),
+                dto.getSex(),
                 dto.getStartTime(),
                 dto.getEndTime()
         );
@@ -71,9 +75,10 @@ public class AcademicActivityTimeResource {
         if(!ct.isPresent()) {
             throw new InternalServerErrorException("Data tidak ditemukan!");
         }
-        Optional<AcademicActivityTime> existSeq = academicActivityTimeRepository.findByFoundationAndInstitutionAndSeq(
+        Optional<AcademicActivityTime> existSeq = academicActivityTimeRepository.findByFoundationAndInstitutionAndSexAndSeq(
             new Foundation(SecurityUtils.getFoundationId().get()),
             new Institution(dto.getInstitutionId()),
+            dto.getSex(),
             dto.getSeq()
         );
         if (existSeq.isPresent() && !existSeq.get().getId().equalsIgnoreCase(ct.get().getId()) ) {
