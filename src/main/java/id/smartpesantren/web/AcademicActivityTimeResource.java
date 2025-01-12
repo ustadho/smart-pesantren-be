@@ -30,6 +30,7 @@ public class AcademicActivityTimeResource {
     @GetMapping
     public Page<AcademicActivityTimeDTO> filter(@RequestParam("iid") String institutionId,
                                                 @RequestParam("sex") String sex,
+                                                @RequestHeader(value = "timezone", required = false) String timeZone,
                                                 Pageable p) {
         return academicActivityTimeRepository.filter(institutionId, sex, p);
     }

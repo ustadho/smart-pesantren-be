@@ -1,5 +1,6 @@
 package id.smartpesantren.dto;
 
+import java.time.LocalTime;
 import java.util.Date;
 
 public class WorkingHourDetailDTO {
@@ -8,8 +9,8 @@ public class WorkingHourDetailDTO {
     private String dayName;
     private String workingTimeId;
     private String workingTimeName;
-    private Date checkInTime;
-    private Date checkOutTime;
+    private LocalTime checkInTime;
+    private LocalTime checkOutTime;
 
     public String getId() {
         return id;
@@ -51,19 +52,19 @@ public class WorkingHourDetailDTO {
         this.workingTimeName = workingTimeName;
     }
 
-    public Date getCheckInTime() {
+    public LocalTime getCheckInTime() {
         return checkInTime;
     }
 
-    public void setCheckInTime(Date checkInTime) {
+    public void setCheckInTime(LocalTime checkInTime) {
         this.checkInTime = checkInTime;
     }
 
-    public Date getCheckOutTime() {
+    public LocalTime getCheckOutTime() {
         return checkOutTime;
     }
 
-    public void setCheckOutTime(Date checkOutTime) {
+    public void setCheckOutTime(LocalTime checkOutTime) {
         this.checkOutTime = checkOutTime;
     }
 }

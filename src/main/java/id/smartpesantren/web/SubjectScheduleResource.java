@@ -22,7 +22,7 @@ public class SubjectScheduleResource {
     SubjectScheduleRepository subjectScheduleRepository;
 
     @GetMapping("{id}")
-    public List<ActivityScheduleDTO> getSchedules(@PathVariable("id") String classRoomId, @RequestParam("timeZone") String timeZone) {
+    public List<ActivityScheduleDTO> getSchedules(@PathVariable("id") String classRoomId, @RequestHeader("Timezone") String timeZone) {
         return subjectScheduleService.getAllSchedules(classRoomId, timeZone);
     }
 

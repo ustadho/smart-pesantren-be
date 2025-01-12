@@ -32,7 +32,7 @@
 FROM
     ac_activity_time aat
 JOIN institution i on i.id=aat.institution_id
-JOIN ac_class_room cr on cr.id='18f27613-d8cd-4b87-aa34-961dc22f060b'
+JOIN ac_class_room cr on cr.id=$P{classRoomId}
 JOIN academic_year a on a.id=cr.academic_year_id
 LEFT JOIN
     ac_subject_schedule ass ON aat.id = ass.activity_time_id and ass.class_room_id=cr.id
@@ -40,7 +40,7 @@ LEFT JOIN
     ac_subject subj ON ass.subject_id = subj.id
 LEFT JOIN
     person_data pd ON ass.teacher_id = pd.id
-WHERE aat.institution_id='2bf23cba-b3f9-4dc5-9389-83f626ad636c'
+WHERE aat.institution_id=cr.institution_id and aat.sex=cr.sex
 GROUP BY
     i.name, cr.name, a.name, aat.id, aat.start_time, aat.end_time, aat.seq
 ORDER BY

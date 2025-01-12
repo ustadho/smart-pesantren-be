@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -77,7 +78,7 @@ public class AcademicActivityTimeService {
         return dto;
     }
 
-    public boolean isOverlapping(Foundation foundation, Institution institution, String sex, Date startTime, Date endTime) {
+    public boolean isOverlapping(Foundation foundation, Institution institution, String sex, LocalTime startTime, LocalTime endTime) {
         long count = repository.countOverlappingTimes(foundation, institution, sex, startTime, endTime);
         return count > 0;
     }

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +44,7 @@ public interface AcademicActivityTimeRepository extends JpaRepository<AcademicAc
             @Param("foundation") Foundation foundation,
             @Param("institution") Institution institution,
             @Param("sex") String sex,
-            @Param("startTime") Date startTime,
-            @Param("endTime") Date endTime
+            @Param("startTime") LocalTime startTime,
+            @Param("endTime") LocalTime endTime
     );
 }
