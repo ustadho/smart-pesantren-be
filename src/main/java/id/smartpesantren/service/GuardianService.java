@@ -47,7 +47,7 @@ public class GuardianService {
         p.setPersonType(PersonType.GUARDIAN);
         p.setName(vm.getName());
         p.setNik(vm.getNik());
-        p.setPersonTitle(vm.getTitleId() == null? null: new PersonTitle(vm.getTitleId()));
+        p.setTitle(vm.getTitleId() == null? null: new PersonTitle(vm.getTitleId()));
         p.setGuardian(true);
         p.setSex(vm.getSex());
         p.setDob(vm.getDob());
@@ -78,7 +78,7 @@ public class GuardianService {
         vm.setId(p.getId());
         vm.setName(p.getName());
         vm.setSex(p.getSex());
-        vm.setTitleId(p.getPersonTitle() == null ? null: p.getPersonTitle().getId());
+        vm.setTitleId(p.getTitle() == null ? null: p.getTitle().getId());
         vm.setNik(p.getNik());
         vm.setDob(p.getDob());
         vm.setPobId(p.getPob() == null? null: p.getPob().getId());

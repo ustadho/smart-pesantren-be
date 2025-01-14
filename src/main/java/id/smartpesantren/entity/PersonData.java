@@ -163,7 +163,7 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "title_id")
-    private PersonTitle PersonTitle; // Bapak, Ibu, Sdr., Sdri., Alm. Almh.
+    private PersonTitle title; // Bapak, Ibu, Sdr., Sdri., Alm. Almh.
 
     @ManyToOne
     @JoinColumn(name = "employement_type_id")
@@ -554,12 +554,12 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
         this.monthlyRevenue = monthlyRevenue;
     }
 
-    public PersonTitle getPersonTitle() {
-        return PersonTitle;
+    public PersonTitle getTitle() {
+        return title;
     }
 
-    public void setPersonTitle(PersonTitle personTitle) {
-        PersonTitle = personTitle;
+    public void setTitle(PersonTitle title) {
+        this.title = title;
     }
 
     public EmployementType getEmployementType() {
