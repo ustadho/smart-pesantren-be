@@ -27,8 +27,8 @@ public class GuardianService {
         return pd;
     }
 
-    public Page<GuardianDTO> filter(String q, String sex, Pageable p) {
-        return personDataRepository.filterGuardian(q, sex, p);
+    public Page<GuardianDTO> filter(String q, String title, Pageable p) {
+        return personDataRepository.filterGuardian(q, title, p);
     }
 
     public PersonData fromVM(GuardianVM vm) {
