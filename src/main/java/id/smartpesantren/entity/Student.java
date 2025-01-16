@@ -131,6 +131,9 @@ public class Student extends AbstractAuditingEntity implements Serializable {
     @Column(columnDefinition = "integer default 1")
     private Integer status; //0: NOT ACTIVE, 1: ACTIVE, 2: LULUS, 3: PINDAH
 
+    @Column(columnDefinition = "varchar(50) default 'Orang Tua'")
+    private String tinggalBersama;
+
     public Student() {
     }
 
@@ -471,6 +474,14 @@ public class Student extends AbstractAuditingEntity implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getTinggalBersama() {
+        return tinggalBersama;
+    }
+
+    public void setTinggalBersama(String tinggalBersama) {
+        this.tinggalBersama = tinggalBersama;
     }
 
     public String getNotes() {

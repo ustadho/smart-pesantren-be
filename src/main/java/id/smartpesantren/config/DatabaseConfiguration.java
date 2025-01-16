@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
@@ -29,5 +30,14 @@ public class DatabaseConfiguration {
     @Bean
     public Hibernate5Module hibernate5Module() {
         return new Hibernate5Module();
+    }
+
+    @Bean
+    public MBeanExporter exporter()
+    {
+        final MBeanExporter exporter = new MBeanExporter();
+        exporter.setAutodetect(true);
+        exporter.setExcludedBeans("dataSource");
+        return exporter;
     }
 }

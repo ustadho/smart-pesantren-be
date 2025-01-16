@@ -21,26 +21,27 @@ public class ReferalInstitution extends AbstractAuditingEntity implements Serial
     @Column(nullable = false)
     private String name;
 
+    private String address;
+
+    @ManyToOne
+    @JoinColumn(name = "subdistrict_id")
+    private SubDistrict subdistrict;
+
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
 
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "education_level_id")
+    private EducationLevel educationLevel;
 
     public ReferalInstitution() {
     }
 
     public ReferalInstitution(String id) {
         this.id = id;
-    }
-
-    public ReferalInstitution(String id, Foundation foundation, String name, City city, String description) {
-        this.id = id;
-        this.foundation = foundation;
-        this.name = name;
-        this.city = city;
-        this.description = description;
     }
 
     public String getId() {
@@ -79,7 +80,31 @@ public class ReferalInstitution extends AbstractAuditingEntity implements Serial
         return description;
     }
 
+    public EducationLevel getEducationLevel() {
+        return educationLevel;
+    }
+
+    public void setEducationLevel(EducationLevel educationLevel) {
+        this.educationLevel = educationLevel;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public SubDistrict getSubdistrict() {
+        return subdistrict;
+    }
+
+    public void setSubdistrict(SubDistrict subdistrict) {
+        this.subdistrict = subdistrict;
     }
 }

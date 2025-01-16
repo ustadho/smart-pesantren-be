@@ -4,6 +4,7 @@ import id.smartpesantren.dto.ReferalInstitutionDTO;
 import id.smartpesantren.entity.City;
 import id.smartpesantren.entity.Foundation;
 import id.smartpesantren.entity.ReferalInstitution;
+import id.smartpesantren.entity.SubDistrict;
 import id.smartpesantren.repository.ReferalInstitutionRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.errors.BadRequestAlertException;
@@ -62,15 +63,15 @@ public class ReferalInstitutionResource {
         } else if (repository.findByName(req.getName()).isPresent()) {
             throw new CodeAlreadyUsedException();
         } else {
-            ReferalInstitution newData = repository.saveAndFlush(
-                    new ReferalInstitution(
-                        null,
-                        new Foundation(SecurityUtils.getFoundationId().get()),
-                        req.getName(),
-                        req.getCity() == null? null: req.getCity(),
-                        req.getDescription()
-                    )
-            );
+
+            ReferalInstitution newData = new ReferalInstitution();
+            newData.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
+            newData.setName(req.getName());
+            newData.setAddress(req.getAddress());
+            newData.setSubdistrict(req.getSubdistrictId() == null? null: new SubDistrict(req.getSubdistrictId()) );
+            newData.setCity(req.getSubdistrictId() == null? null: new City(req.getCityId()) );
+
+            repository.saveAndFlush(newData);
             req.setId(newData.getId());
 
             return ResponseEntity.created(new URI("/api/hr/referal-institution/" + newData.getId()))
@@ -94,7 +95,9 @@ public class ReferalInstitutionResource {
         }
         req.setId(current.getId());
         current.setName(req.getName());
-        current.setCity(req.getCity() == null? null: req.getCity());
+        current.setAddress(req.getAddress());
+        current.setCity(req.getCityId() == null? null: new City(req.getCityId()));
+        current.setSubdistrict(req.getSubdistrictId() == null? null: new SubDistrict(req.getSubdistrictId()));
         current.setDescription(req.getDescription());
         repository.save(current);
         return ResponseEntity.ok()
