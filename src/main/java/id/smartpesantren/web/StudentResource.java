@@ -64,4 +64,14 @@ public class StudentResource {
         }
         return null;
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable("id") String id) {
+        Optional<Student> exist = repository.findById(id);
+        if(!exist.isPresent()) {
+            throw new DataNotFoundException("data santri tidak ditemukan!");
+        }
+        repository.deleteById(id);
+    }
+
 }

@@ -2,7 +2,9 @@ package id.smartpesantren.dto;
 
 import id.smartpesantren.entity.AcademicActivityTime;
 
+import java.time.Instant;
 import java.time.LocalTime;
+import java.time.OffsetTime;
 import java.util.Date;
 
 public class AcademicActivityTimeDTO {
@@ -11,8 +13,8 @@ public class AcademicActivityTimeDTO {
     private String institutionName;
     private String sex;
     private Integer seq;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private OffsetTime startTime;
+    private OffsetTime endTime;
     private String description;
 
     public AcademicActivityTimeDTO() {
@@ -29,7 +31,7 @@ public class AcademicActivityTimeDTO {
         setDescription(t.getDescription());
     }
 
-    public AcademicActivityTimeDTO(String id, String institutionId, String institutionName, String sex, Integer seq, LocalTime startTime, LocalTime endTime, String description) {
+    public AcademicActivityTimeDTO(String id, String institutionId, String institutionName, String sex, Integer seq, OffsetTime startTime, OffsetTime endTime, String description) {
         this.id = id;
         this.institutionId = institutionId;
         this.institutionName = institutionName;
@@ -80,19 +82,19 @@ public class AcademicActivityTimeDTO {
         this.seq = seq;
     }
 
-    public LocalTime getStartTime() {
+    public OffsetTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(OffsetTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public OffsetTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(OffsetTime endTime) {
         this.endTime = endTime;
     }
 

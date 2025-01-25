@@ -4,7 +4,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalTime;
+import java.time.OffsetTime;
 import java.util.Date;
 
 @Entity
@@ -31,10 +33,10 @@ public class AcademicActivityTime extends AbstractAuditingEntity implements Seri
     private Integer seq;
 
     @Column(columnDefinition = "time with time zone")
-    private LocalTime startTime;
+    private OffsetTime startTime;
 
     @Column(columnDefinition = "time with time zone")
-    private LocalTime endTime;
+    private OffsetTime endTime;
 
     private String description;
 
@@ -85,19 +87,19 @@ public class AcademicActivityTime extends AbstractAuditingEntity implements Seri
         this.seq = seq;
     }
 
-    public LocalTime getStartTime() {
+    public OffsetTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(OffsetTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public OffsetTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(OffsetTime endTime) {
         this.endTime = endTime;
     }
 

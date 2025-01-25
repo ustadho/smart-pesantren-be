@@ -191,6 +191,8 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     private String photo;
 
+    private String pekerjaan;
+
     public PersonData() {
     }
 
@@ -592,5 +594,13 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     public void setPesantrens(Set<Institution> pesantrens) {
         this.pesantrens = pesantrens;
+    }
+
+    public String getPekerjaan() {
+        return pekerjaan;
+    }
+
+    public void setPekerjaan(String pekerjaan) {
+        this.pekerjaan = pekerjaan;
     }
 }

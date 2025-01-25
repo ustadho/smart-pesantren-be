@@ -38,7 +38,22 @@ public class ClassRoomDTO {
         setSexLabel(c.getSex() == null? "": (c.getSex().equalsIgnoreCase("M")? "Putra": "Putri"));
     }
 
-
+    public ClassRoomDTO(String id, String academicYearId, String academicYearCode, String institusi, String educationLevel, Short classLevel, String code, String name, String sex, String sexLabel, Short capacity, String description, String room, String location) {
+        this.id = id;
+        this.academicYearId = academicYearId;
+        this.academicYearCode = academicYearCode;
+        this.institusi = institusi;
+        this.educationLevel = educationLevel;
+        this.classLevel = classLevel;
+        this.code = code;
+        this.name = name;
+        this.sex = sex;
+        this.sexLabel = sexLabel;
+        this.capacity = capacity;
+        this.description = description;
+        this.room = room;
+        this.location = location;
+    }
 
     public String getId() {
         return id;

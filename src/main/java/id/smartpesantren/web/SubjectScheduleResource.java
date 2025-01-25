@@ -3,7 +3,10 @@ package id.smartpesantren.web;
 import id.smartpesantren.dto.ActivityScheduleDTO;
 import id.smartpesantren.dto.PersonSimpleDTO;
 import id.smartpesantren.dto.SubjectScheduleClassRoomDTO;
+import id.smartpesantren.dto.SubjectScheduleHistoryDTO;
+import id.smartpesantren.repository.SubjectScheduleHistoryRepository;
 import id.smartpesantren.repository.SubjectScheduleRepository;
+import id.smartpesantren.service.SubjectScheduleHistoryService;
 import id.smartpesantren.service.SubjectScheduleService;
 import id.smartpesantren.web.rest.vm.SubjectScheduleVM;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,9 @@ import java.util.List;
 public class SubjectScheduleResource {
     @Autowired
     SubjectScheduleService subjectScheduleService;
+
+    @Autowired
+    SubjectScheduleHistoryRepository subjectScheduleHistoryRepository;
 
     @Autowired
     SubjectScheduleRepository subjectScheduleRepository;
@@ -44,5 +50,10 @@ public class SubjectScheduleResource {
     @GetMapping("/by-teacher/{id}")
     public List<SubjectScheduleClassRoomDTO> findSubjectScheduleClassRoomByTeacherId(@PathVariable("id") String id) {
         return subjectScheduleRepository.findSubjectScheduleClassRoomByTeacherId(id);
+    }
+
+    @GetMapping("/history/{classRoomId}")
+    public List<SubjectScheduleHistoryDTO> findAllHistoryByClassRoomId(@PathVariable("classRoomId") String id) {
+        return subjectScheduleHistoryRepository.findAllByClassRoomId(id);
     }
 }
