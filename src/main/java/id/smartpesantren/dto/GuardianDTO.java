@@ -31,7 +31,7 @@ public class GuardianDTO {
         setEmail(p.getEmail());
         setSex(p.getSex().equalsIgnoreCase(Sex.MALE)? "Laki-laki": "Perempuan");
         setDob(p.getDob());
-        setTitle(p.getPersonTitle() == null? null: p.getPersonTitle().getName());
+        setTitle(p.getTitle() == null? null: p.getTitle().getName());
     }
 
 

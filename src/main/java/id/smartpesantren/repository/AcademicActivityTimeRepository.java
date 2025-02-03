@@ -10,6 +10,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.OffsetTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -18,25 +21,32 @@ public interface AcademicActivityTimeRepository extends JpaRepository<AcademicAc
     @Query("select new id.smartpesantren.dto.AcademicActivityTimeDTO(a) \n" +
             "from AcademicActivityTime a \n" +
             "where a.foundation.id=?#{principal.foundationId} \n" +
-            "and (coalesce(:institutionId, '')='' OR a.institution.id=:institutionId) ")
-    Page<AcademicActivityTimeDTO> filter(@Param("institutionId") String institutionId, Pageable p);
+            "and (coalesce(:institutionId, '')='' OR a.institution.id=:institutionId) \n" +
+            "and (coalesce(:sex, '')='' OR a.sex=:sex) \n"
+            )
+    Page<AcademicActivityTimeDTO> filter(@Param("institutionId") String institutionId, @Param("sex") String sex, Pageable p);
 
     @Query("select new id.smartpesantren.dto.AcademicActivityTimeDTO(a) \n" +
             "from AcademicActivityTime a \n" +
             "where a.foundation.id=?#{principal.foundationId} \n" +
             "and (coalesce(:institutionId, '')='' OR a.institution.id=:institutionId) \n" +
+            "and (coalesce(:sex, '')='' OR a.sex=:sex) \n" +
             "order by a.seq, a.startTime")
-    List<AcademicActivityTimeDTO> findAllActivityTime(@Param("institutionId") String institutionId);
+    List<AcademicActivityTimeDTO> findAllActivityTime(@Param("institutionId") String institutionId,
+                                                      @Param("sex") String sex);
 
-    public Optional<AcademicActivityTime> findByFoundationAndInstitutionAndSeq(Foundation foundation, Institution institution, Integer seq);
+    public Optional<AcademicActivityTime> findByFoundationAndInstitutionAndSexAndSeq(Foundation foundation, Institution institution, String sex, Integer seq);
 
     @Query("SELECT COUNT(a) FROM AcademicActivityTime a " +
-            "WHERE a.foundation = :foundation AND a.institution = :institution " +
+            "WHERE a.foundation = :foundation \n" +
+            "AND a.institution = :institution \n" +
+            "AND a.sex=:sex \n" +
             "AND ((:startTime < a.endTime AND :endTime > a.startTime))")
     long countOverlappingTimes(
             @Param("foundation") Foundation foundation,
             @Param("institution") Institution institution,
-            @Param("startTime") Date startTime,
-            @Param("endTime") Date endTime
+            @Param("sex") String sex,
+            @Param("startTime") OffsetTime startTime,
+            @Param("endTime") OffsetTime endTime
     );
 }

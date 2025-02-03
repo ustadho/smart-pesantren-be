@@ -2,15 +2,19 @@ package id.smartpesantren.dto;
 
 import id.smartpesantren.entity.AcademicActivityTime;
 
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.OffsetTime;
 import java.util.Date;
 
 public class AcademicActivityTimeDTO {
     private String id;
     private String institutionId;
     private String institutionName;
+    private String sex;
     private Integer seq;
-    private Date startTime;
-    private Date endTime;
+    private OffsetTime startTime;
+    private OffsetTime endTime;
     private String description;
 
     public AcademicActivityTimeDTO() {
@@ -20,16 +24,18 @@ public class AcademicActivityTimeDTO {
         setId(t.getId());
         setInstitutionId(t.getInstitution().getId());
         setInstitutionName(t.getInstitution().getName());
+        setSex(t.getSex());
         setSeq(t.getSeq());
         setStartTime(t.getStartTime());
         setEndTime(t.getEndTime());
         setDescription(t.getDescription());
     }
 
-    public AcademicActivityTimeDTO(String id, String institutionId, String institutionName, Integer seq, Date startTime, Date endTime, String description) {
+    public AcademicActivityTimeDTO(String id, String institutionId, String institutionName, String sex, Integer seq, OffsetTime startTime, OffsetTime endTime, String description) {
         this.id = id;
         this.institutionId = institutionId;
         this.institutionName = institutionName;
+        this.sex = sex;
         this.seq = seq;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -60,6 +66,14 @@ public class AcademicActivityTimeDTO {
         this.institutionName = institutionName;
     }
 
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
     public Integer getSeq() {
         return seq;
     }
@@ -68,19 +82,19 @@ public class AcademicActivityTimeDTO {
         this.seq = seq;
     }
 
-    public Date getStartTime() {
+    public OffsetTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(OffsetTime startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public OffsetTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(OffsetTime endTime) {
         this.endTime = endTime;
     }
 

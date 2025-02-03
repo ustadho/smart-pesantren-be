@@ -6,23 +6,32 @@ import id.smartpesantren.entity.ReferalInstitution;
 public class ReferalInstitutionDTO {
     private String id;
     private String name;
-    private City city;
+
+    private String address;
+
+    private Integer subdistrictId;
+    private String subdistrictName;
+
+    private Integer cityId;
+    private String cityName;
     private String description;
+    private Integer educationLevelId;
+    private String educationLevelName;
 
     public ReferalInstitutionDTO() {
     }
 
-    public ReferalInstitutionDTO(ReferalInstitution r) {
-        this(r.getId(), r.getName(),
-                r.getCity(),
-                r.getDescription());
-    }
-
-    public ReferalInstitutionDTO(String id, String name, City city, String description) {
-        this.id = id;
-        this.name = name;
-        this.city = city;
-        this.description = description;
+    public ReferalInstitutionDTO(ReferalInstitution a) {
+        this.id = a.getId();
+        this.name = a.getName();
+        this.address = a.getAddress();
+        this.subdistrictId = a.getSubdistrict() == null? null: a.getSubdistrict().getId();
+        this.subdistrictName = a.getSubdistrict() == null? null: a.getSubdistrict().getName();
+        this.cityId = a.getCity() == null? null: a.getCity().getId();
+        this.cityName = a.getCity() == null? null: a.getCity().getName();
+        this.description = a.getDescription();
+        this.setEducationLevelId(a.getEducationLevel() == null? null: a.getEducationLevel().getId());
+        this.setEducationLevelName(a.getEducationLevel() == null? null: a.getEducationLevel().getName());
     }
 
     public String getId() {
@@ -41,19 +50,67 @@ public class ReferalInstitutionDTO {
         this.name = name;
     }
 
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getEducationLevelId() {
+        return educationLevelId;
+    }
+
+    public void setEducationLevelId(Integer educationLevelId) {
+        this.educationLevelId = educationLevelId;
+    }
+
+    public String getEducationLevelName() {
+        return educationLevelName;
+    }
+
+    public void setEducationLevelName(String educationLevelName) {
+        this.educationLevelName = educationLevelName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Integer getSubdistrictId() {
+        return subdistrictId;
+    }
+
+    public void setSubdistrictId(Integer subdistrictId) {
+        this.subdistrictId = subdistrictId;
+    }
+
+    public String getSubdistrictName() {
+        return subdistrictName;
+    }
+
+    public void setSubdistrictName(String subdistrictName) {
+        this.subdistrictName = subdistrictName;
+    }
+
+    public Integer getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 }

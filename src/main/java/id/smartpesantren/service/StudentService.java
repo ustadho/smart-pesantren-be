@@ -81,6 +81,8 @@ public class StudentService {
         s.setSex(vm.getSex());
         s.setPob(vm.getPobId()==null? null: new City(vm.getPobId()));
         s.setDob(vm.getDob());
+        s.setKkNo(vm.getKkNo());
+        s.setBirthCertificateNo(vm.getBirthCertificateNo());
         s.setCertificateNo(vm.getCertificateNo());
         s.setBloodType(vm.getBloodType());
         s.setChildNo(vm.getChildNo());
@@ -144,6 +146,8 @@ public class StudentService {
         vm.setSex(st.getSex());
         vm.setPobId(st.getPob()==null? null: st.getPob().getId());
         vm.setDob(st.getDob());
+        vm.setKkNo(st.getKkNo());
+        vm.setBirthCertificateNo(st.getBirthCertificateNo());
         vm.setCertificateNo(st.getCertificateNo());
         vm.setBloodType(st.getBloodType());
         vm.setChildNo(st.getChildNo());

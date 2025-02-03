@@ -23,7 +23,9 @@ public interface ClassRoomRepository extends JpaRepository<ClassRoom, String> {
             "order by c.level desc")
     public Iterable<ClassRoomDTO> findAllDefault();
 
-    @Query("select new id.smartpesantren.dto.ClassRoomDTO(a) \n" +
+    @Query("select new id.smartpesantren.dto.ClassRoomDTO(a.id, b.id, b.code, a.institution.name, c.educationLevel.name, c.level,\n" +
+            "a.code, a.name, a.sex, case when a.sex='M' then 'Putra' else 'Putri' end,  \n" +
+            "a.capacity, a.description, a.room, a.location.name) \n" +
             "from ClassRoom a \n" +
             "join a.academicYear b \n" +
             "join a.classLevel c \n" +

@@ -22,45 +22,48 @@ public class BuildingResource {
     BuildingRepository buildingRepository;
 
     @PostMapping
-    public void createJobLevel(@RequestBody @Valid BuildingVM req) {
+    public void createBuilding(@RequestBody @Valid BuildingVM vm) {
         Building o = new Building();
         o.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
-        o.setCode(req.getCode());
-        o.setName(req.getName());
-        o.setDescription(req.getDescription());
-        o.setColor(req.getColor());
+        o.setCode(vm.getCode());
+        o.setName(vm.getName());
+        o.setDescription(vm.getDescription());
+        o.setColor(vm.getColor());
+        o.setLocation(new Location(vm.getLocationId()));
         buildingRepository.save(o);
     }
 
     @GetMapping
-    Page<BuildingVM> filter(@RequestParam("q") String q, Pageable p) {
-        return buildingRepository.filter("%"+q.toUpperCase()+"%", p);
-
+    Page<BuildingVM> filter(@RequestParam("locationId") String locationId, @RequestParam("q") String q, Pageable p) {
+        return buildingRepository.filter(locationId, "%"+q.toUpperCase()+"%", p);
     }
 
     @GetMapping("all")
-    Iterable<BuildingVM> findAllOrganization(@RequestParam(value = "q", required = false, defaultValue = "") String q) {
-        return buildingRepository.findAllBuilding("%"+q.toUpperCase()+"%");
+    Iterable<BuildingVM> findAllOrganization(@RequestParam("locationId") String locationId,
+                                             @RequestParam(value = "q", required = false,
+                                             defaultValue = "") String q) {
+        return buildingRepository.findAllBuilding(locationId, "%"+q.toUpperCase()+"%");
     }
 
     @GetMapping("{id}")
     BuildingVM findById(@PathVariable("id") String id) {
         return buildingRepository.findById(id)
                 .map(BuildingVM::new)
-                .orElseThrow(() -> new InternalServerErrorException("Job Level could not be found"));
+                .orElseThrow(() -> new InternalServerErrorException("Building could not be found"));
     }
 
     @PutMapping("{id}")
-    void update(@PathVariable("id") String id, @RequestBody BuildingVM req) {
+    void update(@PathVariable("id") String id, @RequestBody BuildingVM vm) {
         Optional<Building> a = buildingRepository.findById(id);
         if (!a.isPresent()) {
             throw new InternalServerErrorException("Unit dengan id tersebut tidak ditemukan");
         }
         Building data = a.get();
-        data.setCode(req.getCode());
-        data.setName(req.getName());
-        data.setDescription(req.getDescription());
-        data.setColor(req.getColor());
+        data.setCode(vm.getCode());
+        data.setName(vm.getName());
+        data.setDescription(vm.getDescription());
+        data.setColor(vm.getColor());
+        data.setLocation(new Location(vm.getLocationId()));
         buildingRepository.save(data);
     }
 

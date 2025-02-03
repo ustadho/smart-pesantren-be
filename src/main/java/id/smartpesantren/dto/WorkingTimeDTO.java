@@ -2,22 +2,23 @@ package id.smartpesantren.dto;
 
 import id.smartpesantren.entity.WorkingTime;
 
+import java.time.LocalTime;
 import java.util.Date;
 
 public class WorkingTimeDTO {
     private String id;
     private String code;
     private String name;
-    private Date checkInTime;
-    private Date checkOutTime;
+    private LocalTime checkInTime;
+    private LocalTime checkOutTime;
     private Boolean previousDay = Boolean.FALSE;
     private Boolean nextDate = Boolean.FALSE;
     private Integer lateTolerance;
     private Integer earlyLeaveTolerance;
-    private Date scanStartCheckInTime;
-    private Date scanEndCheckInTime;
-    private Date scanStartCheckOutTime;
-    private Date scanEndCheckOutTime;
+    private LocalTime scanStartCheckInTime;
+    private LocalTime scanEndCheckInTime;
+    private LocalTime scanStartCheckOutTime;
+    private LocalTime scanEndCheckOutTime;
     private String color;
     private Integer noOfWorkingDays;
 
@@ -44,7 +45,7 @@ public class WorkingTimeDTO {
         );
     }
 
-    public WorkingTimeDTO(String id, String code, String name, Date checkInTime, Date checkOutTime, Boolean previousDay, Boolean nextDate, Integer lateTolerance, Integer earlyLeaveTolerance, Date scanStartCheckInTime, Date scanEndCheckInTime, Date scanStartCheckOutTime, Date scanEndCheckOutTime, String color, Integer noOfWorkingDays) {
+    public WorkingTimeDTO(String id, String code, String name, LocalTime checkInTime, LocalTime checkOutTime, Boolean previousDay, Boolean nextDate, Integer lateTolerance, Integer earlyLeaveTolerance, LocalTime scanStartCheckInTime, LocalTime scanEndCheckInTime, LocalTime scanStartCheckOutTime, LocalTime scanEndCheckOutTime, String color, Integer noOfWorkingDays) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -86,21 +87,6 @@ public class WorkingTimeDTO {
         this.name = name;
     }
 
-    public Date getCheckInTime() {
-        return checkInTime;
-    }
-
-    public void setCheckInTime(Date checkInTime) {
-        this.checkInTime = checkInTime;
-    }
-
-    public Date getCheckOutTime() {
-        return checkOutTime;
-    }
-
-    public void setCheckOutTime(Date checkOutTime) {
-        this.checkOutTime = checkOutTime;
-    }
 
     public Boolean getPreviousDay() {
         return previousDay;
@@ -134,38 +120,6 @@ public class WorkingTimeDTO {
         this.earlyLeaveTolerance = earlyLeaveTolerance;
     }
 
-    public Date getScanStartCheckInTime() {
-        return scanStartCheckInTime;
-    }
-
-    public void setScanStartCheckInTime(Date scanStartCheckInTime) {
-        this.scanStartCheckInTime = scanStartCheckInTime;
-    }
-
-    public Date getScanEndCheckInTime() {
-        return scanEndCheckInTime;
-    }
-
-    public void setScanEndCheckInTime(Date scanEndCheckInTime) {
-        this.scanEndCheckInTime = scanEndCheckInTime;
-    }
-
-    public Date getScanStartCheckOutTime() {
-        return scanStartCheckOutTime;
-    }
-
-    public void setScanStartCheckOutTime(Date scanStartCheckOutTime) {
-        this.scanStartCheckOutTime = scanStartCheckOutTime;
-    }
-
-    public Date getScanEndCheckOutTime() {
-        return scanEndCheckOutTime;
-    }
-
-    public void setScanEndCheckOutTime(Date scanEndCheckOutTime) {
-        this.scanEndCheckOutTime = scanEndCheckOutTime;
-    }
-
     public String getColor() {
         return color;
     }
@@ -180,5 +134,53 @@ public class WorkingTimeDTO {
 
     public void setNoOfWorkingDays(Integer noOfWorkingDays) {
         this.noOfWorkingDays = noOfWorkingDays;
+    }
+
+    public LocalTime getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(LocalTime checkInTime) {
+        this.checkInTime = checkInTime;
+    }
+
+    public LocalTime getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public void setCheckOutTime(LocalTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
+    public LocalTime getScanStartCheckInTime() {
+        return scanStartCheckInTime;
+    }
+
+    public void setScanStartCheckInTime(LocalTime scanStartCheckInTime) {
+        this.scanStartCheckInTime = scanStartCheckInTime;
+    }
+
+    public LocalTime getScanEndCheckInTime() {
+        return scanEndCheckInTime;
+    }
+
+    public void setScanEndCheckInTime(LocalTime scanEndCheckInTime) {
+        this.scanEndCheckInTime = scanEndCheckInTime;
+    }
+
+    public LocalTime getScanStartCheckOutTime() {
+        return scanStartCheckOutTime;
+    }
+
+    public void setScanStartCheckOutTime(LocalTime scanStartCheckOutTime) {
+        this.scanStartCheckOutTime = scanStartCheckOutTime;
+    }
+
+    public LocalTime getScanEndCheckOutTime() {
+        return scanEndCheckOutTime;
+    }
+
+    public void setScanEndCheckOutTime(LocalTime scanEndCheckOutTime) {
+        this.scanEndCheckOutTime = scanEndCheckOutTime;
     }
 }

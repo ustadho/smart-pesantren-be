@@ -48,7 +48,7 @@ public interface PersonDataRepository extends JpaRepository<PersonData, String> 
             "where a.foundation.id=?#{principal.foundationId} \n" +
             "and a.isGuardian = true \n"+
             "and upper(a.name) like :q \n"+
-            "and (coalesce(:sex,'')='' OR a.sex=:sex) "
+            "and (coalesce(:title,'')='' OR a.title.id=:title) "
     )
-    Page<GuardianDTO> filterGuardian(@Param("q") String q, @Param("sex") String sex, Pageable p);
+    Page<GuardianDTO> filterGuardian(@Param("q") String q, @Param("title") String title, Pageable p);
 }

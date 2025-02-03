@@ -29,11 +29,11 @@ public class GuardianResource {
     }
 
     @GetMapping
-    public Page<GuardianDTO> filter(@RequestParam(value = "q") String q, @RequestParam(value = "sex") String sex, Pageable p) {
+    public Page<GuardianDTO> filter(@RequestParam(value = "q") String q, @RequestParam(value = "title") String title, Pageable p) {
         q = q==null? "": q;
         return service.filter(
                 "%"+q.toUpperCase()+"%",
-                sex == null? "": sex,
+                title == null? "": title,
                 p);
     }
 

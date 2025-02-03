@@ -28,6 +28,7 @@ public class StudentVM {
 
     private Date dob;
 
+    private String kkNo; //Nomor Kartu keluarga
     private String birthCertificateNo;
 
     private String bloodType;
@@ -176,6 +177,14 @@ public class StudentVM {
 
     public void setDob(Date dob) {
         this.dob = dob;
+    }
+
+    public String getKkNo() {
+        return kkNo;
+    }
+
+    public void setKkNo(String kkNo) {
+        this.kkNo = kkNo;
     }
 
     public String getBirthCertificateNo() {

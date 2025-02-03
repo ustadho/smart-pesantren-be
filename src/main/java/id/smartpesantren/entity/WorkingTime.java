@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -24,13 +25,11 @@ public class WorkingTime extends AbstractAuditingEntity implements Serializable 
     @Column(length = 100, nullable = false)
     private String name;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "check_in_time")
-    private Date checkInTime;
+    @Column(name = "check_in_time", columnDefinition = "time with time zone")
+    private LocalTime checkInTime;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "check_out_time")
-    private Date checkOutTime;
+    @Column(name = "check_out_time", columnDefinition = "time with time zone")
+    private LocalTime checkOutTime;
 
     @Column(name = "prev_day")
     private Boolean previousDay = Boolean.FALSE;
@@ -44,21 +43,17 @@ public class WorkingTime extends AbstractAuditingEntity implements Serializable 
     @Column(name = "early_leave_tolerance")
     private Integer earlyLeaveTolerance;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "scan_start_check_in_time")
-    private Date scanStartCheckInTime;
+    @Column(name = "scan_start_check_in_time", columnDefinition = "time with time zone")
+    private LocalTime scanStartCheckInTime;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "scan_end_check_in_time")
-    private Date scanEndCheckInTime;
+    @Column(name = "scan_end_check_in_time", columnDefinition = "time with time zone")
+    private LocalTime scanEndCheckInTime;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "scan_start_check_out_time")
-    private Date scanStartCheckOutTime;
+    @Column(name = "scan_start_check_out_time", columnDefinition = "time with time zone")
+    private LocalTime scanStartCheckOutTime;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "scan_end_check_out_time")
-    private Date scanEndCheckOutTime;
+    @Column(name = "scan_end_check_out_time", columnDefinition = "time with time zone")
+    private LocalTime scanEndCheckOutTime;
 
     @Column(name = "color", length = 10)
     private String color;
@@ -105,20 +100,36 @@ public class WorkingTime extends AbstractAuditingEntity implements Serializable 
         this.name = name;
     }
 
-    public Date getCheckInTime() {
+    public LocalTime getCheckInTime() {
         return checkInTime;
     }
 
-    public void setCheckInTime(Date checkInTime) {
+    public void setCheckInTime(LocalTime checkInTime) {
         this.checkInTime = checkInTime;
     }
 
-    public Date getCheckOutTime() {
+    public LocalTime getCheckOutTime() {
         return checkOutTime;
     }
 
-    public void setCheckOutTime(Date checkOutTime) {
+    public void setCheckOutTime(LocalTime checkOutTime) {
         this.checkOutTime = checkOutTime;
+    }
+
+    public void setScanStartCheckInTime(LocalTime scanStartCheckInTime) {
+        this.scanStartCheckInTime = scanStartCheckInTime;
+    }
+
+    public void setScanEndCheckInTime(LocalTime scanEndCheckInTime) {
+        this.scanEndCheckInTime = scanEndCheckInTime;
+    }
+
+    public void setScanStartCheckOutTime(LocalTime scanStartCheckOutTime) {
+        this.scanStartCheckOutTime = scanStartCheckOutTime;
+    }
+
+    public void setScanEndCheckOutTime(LocalTime scanEndCheckOutTime) {
+        this.scanEndCheckOutTime = scanEndCheckOutTime;
     }
 
     public Boolean getPreviousDay() {
@@ -153,36 +164,20 @@ public class WorkingTime extends AbstractAuditingEntity implements Serializable 
         this.earlyLeaveTolerance = earlyLeaveTolerance;
     }
 
-    public Date getScanStartCheckInTime() {
+    public LocalTime getScanStartCheckInTime() {
         return scanStartCheckInTime;
     }
 
-    public void setScanStartCheckInTime(Date scanStartCheckInTime) {
-        this.scanStartCheckInTime = scanStartCheckInTime;
-    }
-
-    public Date getScanEndCheckInTime() {
+    public LocalTime getScanEndCheckInTime() {
         return scanEndCheckInTime;
     }
 
-    public void setScanEndCheckInTime(Date scanEndCheckInTime) {
-        this.scanEndCheckInTime = scanEndCheckInTime;
-    }
-
-    public Date getScanStartCheckOutTime() {
+    public LocalTime getScanStartCheckOutTime() {
         return scanStartCheckOutTime;
     }
 
-    public void setScanStartCheckOutTime(Date scanStartCheckOutTime) {
-        this.scanStartCheckOutTime = scanStartCheckOutTime;
-    }
-
-    public Date getScanEndCheckOutTime() {
+    public LocalTime getScanEndCheckOutTime() {
         return scanEndCheckOutTime;
-    }
-
-    public void setScanEndCheckOutTime(Date scanEndCheckOutTime) {
-        this.scanEndCheckOutTime = scanEndCheckOutTime;
     }
 
     public String getColor() {

@@ -4,6 +4,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.OffsetTime;
 import java.util.Date;
 
 @Entity
@@ -23,14 +26,17 @@ public class AcademicActivityTime extends AbstractAuditingEntity implements Seri
     @JoinColumn(name = "institution_id", nullable = false)
     Institution institution;
 
+    @Column(name = "sex", columnDefinition = "varchar(1) default 'M'")
+    private String sex;
+
     @Column(columnDefinition = "integer default 1")
     private Integer seq;
 
-    @Temporal(TemporalType.TIME)
-    private Date startTime;
+    @Column(columnDefinition = "time with time zone")
+    private OffsetTime startTime;
 
-    @Temporal(TemporalType.TIME)
-    private Date endTime;
+    @Column(columnDefinition = "time with time zone")
+    private OffsetTime endTime;
 
     private String description;
 
@@ -65,6 +71,14 @@ public class AcademicActivityTime extends AbstractAuditingEntity implements Seri
         this.institution = institution;
     }
 
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
     public Integer getSeq() {
         return seq;
     }
@@ -73,19 +87,19 @@ public class AcademicActivityTime extends AbstractAuditingEntity implements Seri
         this.seq = seq;
     }
 
-    public Date getStartTime() {
+    public OffsetTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(OffsetTime startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public OffsetTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(OffsetTime endTime) {
         this.endTime = endTime;
     }
 

@@ -21,7 +21,9 @@ management:
             enabled: false # When using the MailService, configure an SMTP server and set this to true
     metrics:
         enabled: false # http://micrometer.io/ is disabled by default, as we use http://metrics.dropwizard.io/ instead
-
+hibernate:
+    jdbc:
+        time_zone=UTC:
 spring:
     application:
         name: AkuntingApp
@@ -43,6 +45,9 @@ spring:
     jackson:
         serialization:
             indent-output: true
+        deserialization:
+            adjust-dates-to-context-time-zone: true
+        time-zone: UTC
     cache:
         jcache:
             config: classpath:config/ehcache/ehcache-dev.xml
@@ -53,6 +58,16 @@ spring:
         password: ${DB_PASSWORD}
         hikari:
             auto-commit: false
+            connection-timeout: 50000
+            idle-timeout: 300000
+            max-lifetime: 900000
+            maximum-pool-size: 10
+            minimum-idle: ${DB_POOL_IDLE_MIN}
+            pool-name: ${DB_POOL_NAME}
+            connection-test-query: select 1 from m_city
+            register-mbeans: true
+            data-source-properties:
+                useLegacyDatetimeCode: false
 
     jpa:
         database-platform: io.github.jhipster.domain.util.FixedPostgreSQL82Dialect

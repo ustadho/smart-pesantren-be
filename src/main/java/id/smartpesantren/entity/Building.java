@@ -31,6 +31,17 @@ public class Building {
     @Column(length = 10)
     private String color;
 
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false)
+    Location location;
+
+    public Building() {
+    }
+
+    public Building(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }
@@ -85,5 +96,13 @@ public class Building {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
