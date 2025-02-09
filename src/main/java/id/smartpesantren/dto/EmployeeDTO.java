@@ -43,14 +43,16 @@ public class EmployeeDTO {
     public Boolean isGuardian;
 
     public Boolean active;
+    private String phone;
+    private String email;
 
     public EmployeeDTO() {
     }
 
     public EmployeeDTO(PersonData p) {
         this(p.getId(),
-                p.getEmployeeCategory().getId(),
-                p.getEmployeeCategory().getName(),
+                p.getEmployeeCategory() == null? null: p.getEmployeeCategory().getId(),
+                p.getEmployeeCategory() == null? null: p.getEmployeeCategory().getName(),
                 p.getEmployeeNo(),
                 p.getName(),
                 p.getSex(),
@@ -80,7 +82,9 @@ public class EmployeeDTO {
                 p.getReferalInstitution() == null? null: p.getReferalInstitution().getId(),
                 p.getReferalInstitution() == null? null: p.getReferalInstitution().getName(),
                 p.isGuardian(),
-                p.getActive()
+                p.getActive(),
+                p.getPhone(),
+                p.getEmail()
             );
     }
 
@@ -88,7 +92,7 @@ public class EmployeeDTO {
                        String nik, City pob, Date dob, String organizationId, String organizationName,
                        String sectionId, String sectionName, String jobPositionId, String jobPositionName,
                        Integer educationLevelId, String educationLevelName, String permanentAddress, String permanentRT, String permanentRW, Integer permanentSubdistrictId, String permanentSubdistrictName, String residentialAddress, String residentialRT, String residentialRW, Integer residentialSubdistrictId, String residentialSubdistrictName, String majors, String faculty,
-                       String institutionId, String istitutionName, Boolean isGuardian, Boolean active) {
+                       String institutionId, String institutionName, Boolean isGuardian, Boolean active, String phone, String email) {
         this.id = id;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
@@ -122,6 +126,8 @@ public class EmployeeDTO {
         this.institutionName = institutionName;
         this.isGuardian = isGuardian;
         this.active = active;
+        this.phone = phone;
+        this.email = email;
     }
 
     public String getId() {
@@ -386,5 +392,21 @@ public class EmployeeDTO {
 
     public void setSectionName(String sectionName) {
         this.sectionName = sectionName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
