@@ -7,8 +7,8 @@ import id.smartpesantren.entity.PersistentToken;
 import id.smartpesantren.service.util.RandomUtil;
 import io.github.jhipster.config.JHipsterProperties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,7 +49,7 @@ import java.util.Arrays;
 public class PersistentTokenRememberMeServices extends
     AbstractRememberMeServices {
 
-    private final Logger log = LoggerFactory.getLogger(PersistentTokenRememberMeServices.class);
+    protected final Log log = LogFactory.getLog(getClass());
 
     // Token is valid for one month
     private static final int TOKEN_VALIDITY_DAYS = 31;
@@ -61,10 +61,10 @@ public class PersistentTokenRememberMeServices extends
     private final UserRepository userRepository;
 
     public PersistentTokenRememberMeServices(JHipsterProperties jHipsterProperties,
-            org.springframework.security.core.userdetails.UserDetailsService userDetailsService,
-            PersistentTokenRepository persistentTokenRepository, UserRepository userRepository) {
-
+                                             org.springframework.security.core.userdetails.UserDetailsService userDetailsService,
+                                             PersistentTokenRepository persistentTokenRepository, UserRepository userRepository) {
         super(jHipsterProperties.getSecurity().getRememberMe().getKey(), userDetailsService);
+        log.debug("PersistentTokenRememberMeServices initialized.");
         this.persistentTokenRepository = persistentTokenRepository;
         this.userRepository = userRepository;
     }
@@ -77,7 +77,7 @@ public class PersistentTokenRememberMeServices extends
         String login = token.getUser().getLogin();
 
         // Token also matches, so login is valid. Update the token value, keeping the *same* series number.
-        log.debug("Refreshing persistent login token for user '{}', series '{}'", login, token.getSeries());
+        log.debug("Refreshing persistent login token for user '{}', series '{}'");
         token.setTokenDate(LocalDate.now());
         token.setTokenValue(RandomUtil.generateTokenData());
         token.setIpAddress(request.getRemoteAddr());
@@ -98,7 +98,7 @@ public class PersistentTokenRememberMeServices extends
 
         String login = successfulAuthentication.getName();
 
-        log.debug("Creating new persistent login for user {}", login);
+        log.debug("Creating new persistent login for user {}"+login);
         PersistentToken token = userRepository.findOneByLogin(login).map(u -> {
             PersistentToken t = new PersistentToken();
             t.setSeries(RandomUtil.generateSeriesData());
@@ -159,7 +159,7 @@ public class PersistentTokenRememberMeServices extends
         }
 
         // We have a match for this user/series combination
-        log.info("presentedToken={} / tokenValue={}", presentedToken, token.getTokenValue());
+        log.info("presentedToken={} / tokenValue={}"+ presentedToken +"-"+ token.getTokenValue());
         if (!presentedToken.equals(token.getTokenValue())) {
             // Token doesn't match series value. Delete this session and throw an exception.
             persistentTokenRepository.delete(token);

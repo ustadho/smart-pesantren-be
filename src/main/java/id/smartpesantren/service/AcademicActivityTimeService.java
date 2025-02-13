@@ -80,7 +80,7 @@ public class AcademicActivityTimeService {
         return dto;
     }
 
-    public boolean isOverlapping(Foundation foundation, Institution institution, String sex, LocalTime startTime, LocalTime endTime) {
+    public boolean isOverlapping(Foundation foundation, Institution institution, String sex, String startTime, String endTime) {
         long count = repository.countOverlappingTimes(foundation, institution, sex, startTime, endTime);
         return count > 0;
     }

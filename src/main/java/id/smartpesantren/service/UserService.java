@@ -174,7 +174,7 @@ public class UserService {
         userDTO.getInstitutions().stream().forEach(i -> {
             managedInstitutions.add(new Institution(i));
         });
-        user.setAuthorities(managedAuthorities);
+        user.setInstitutions(managedInstitutions);
 
         user.setPerson(userDTO.getPersonId() == null? null: new PersonData(userDTO.getPersonId()));
         userRepository.save(user);

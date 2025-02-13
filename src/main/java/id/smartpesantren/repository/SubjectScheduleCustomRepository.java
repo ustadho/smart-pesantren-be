@@ -13,6 +13,7 @@ public class SubjectScheduleCustomRepository {
     public String findAllSchedules(String foundationId, String classRoomId, String timeZone) {
         String sql = "WITH schedule_data AS (\n" +
                 "    SELECT \n" +
+                "        cr.id AS class_room_id,\n" +
                 "        act.id AS activity_id,\n" +
                 "        CONCAT('Jam ke-', act.seq) AS activity_name,\n" +
                 "        TO_CHAR((CURRENT_DATE + act.start_time):::: timestamp with time zone, 'HH24:MI') AS start_time,\n" +
@@ -40,6 +41,7 @@ public class SubjectScheduleCustomRepository {
                 ")\n" +
                 "SELECT json_agg(\n" +
                 "           json_build_object(\n" +
+                "               'classRoomId', sd.class_room_id,\n" +
                 "               'activityId', sd.activity_id,\n" +
                 "               'activityName', sd.activity_name,\n" +
                 "               'startTime', sd.start_time,\n" +
@@ -52,9 +54,21 @@ public class SubjectScheduleCustomRepository {
                 "                                  'dayName', sdi.day_name,\n" +
                 "                                  'id', sdi.schedule_id,\n" +
                 "                                  'subjectId', sdi.subject_id,\n" +
+                "                                  'classRoomId', sdi.class_room_id,\n" +
                 "                                  'subjectName', sdi.subject_name,\n" +
                 "                                  'teacherId', sdi.teacher_id,\n" +
-                "                                  'teacherName', sdi.teacher_name\n" +
+                "                                  'teacherName', sdi.teacher_name,\n" +
+                "                                  'teachers', (\n" +
+                "                                       SELECT json_agg(\n" +
+                "                                           json_build_object(\n" +
+                "                                               'id', asst.teacher_id,\n" +
+                "                                               'name', coalesce(pd.name,'')\n" +
+                "                                           )\n" +
+                "                                       )\n" +
+                "                                       from ac_subject_schedule_teacher asst\n" +
+                "                                       left join person_data pd on pd.id=asst.teacher_id\n" +
+                "                                       where asst.schedule_id = sdi.schedule_id\n" +
+                "                                  )\n" +
                 "                              )\n" +
                 "                          )\n" +
                 "                   FROM schedule_data sdi\n" +
@@ -63,7 +77,7 @@ public class SubjectScheduleCustomRepository {
                 "           )\n" +
                 "       )::::text AS result\n" +
                 "FROM (\n" +
-                "    SELECT DISTINCT activity_id, activity_name, activity_seq, start_time, end_time\n" +
+                "    SELECT DISTINCT activity_id, class_room_id, activity_name, activity_seq, start_time, end_time\n" +
                 "    FROM schedule_data\n" +
                 "    order by start_time, activity_seq\n" +
                 ") sd " +

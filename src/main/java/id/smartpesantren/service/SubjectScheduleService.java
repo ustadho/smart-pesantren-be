@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.smartpesantren.constant.LogActivityStatus;
 import id.smartpesantren.dto.ActivityScheduleDTO;
+import id.smartpesantren.dto.EmployeeSimpleDTO;
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.SubjectScheduleCustomRepository;
 import id.smartpesantren.repository.SubjectScheduleHistoryRepository;
@@ -14,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SubjectScheduleService {
@@ -50,13 +50,20 @@ public class SubjectScheduleService {
         SubjectSchedule ss = fromVm(vm);
         subjectScheduleRepository.save(ss);
         // Save History
-        SubjectScheduleHistory sh = subjectScheduleHistoryService.fromOrigin(ss);
-        if(vm.getId() == null) {
-            sh.setLogActivity(LogActivityStatus.INSERT);
-        } else {
-            sh.setLogActivity(LogActivityStatus.UPDATE);
+        List<SubjectScheduleHistory> histories = new ArrayList<>();
+        for(EmployeeSimpleDTO e: vm.getTeachers()) {
+            SubjectScheduleHistory sh = subjectScheduleHistoryService.fromOrigin(ss);
+            sh.setTeacher(new PersonData(e.getId()));
+            if (vm.getId() == null) {
+                sh.setLogActivity(LogActivityStatus.INSERT);
+            } else {
+                sh.setLogActivity(LogActivityStatus.UPDATE);
+            }
+            histories.add(sh);
         }
-        subjectScheduleHistoryRepository.save(sh);
+        if(histories.size() > 0) {
+            subjectScheduleHistoryRepository.saveAll(histories);
+        }
         vm.setId(ss.getId());
         return vm;
     }
@@ -72,7 +79,14 @@ public class SubjectScheduleService {
         ss.setClassRoom(new ClassRoom(vm.getClassRoomId()));
         ss.setSubject(new Subject(vm.getSubjectId()));
         ss.setActivityTime(new AcademicActivityTime(vm.getActivityTimeId()));
-        ss.setTeacher(new PersonData(vm.getTeacherId()));
+
+        Set<PersonData> managedTeachers = ss.getTeachers();
+        vm.getTeachers().stream().forEach(s -> {
+            managedTeachers.add(new PersonData(s.getId()));
+        });
+        ss.setTeachers(managedTeachers);
+
+//        ss.setTeacher(new PersonData(vm.getTeacherId()));
         return ss;
     }
 

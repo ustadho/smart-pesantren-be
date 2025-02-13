@@ -3,7 +3,9 @@ logging:
         ROOT: DEBUG
         io.github.jhipster: DEBUG
         id.kas.smartpesantren: DEBUG
-
+        org.springframework.security: DEBUG
+    file:
+        name: application.log
 management:
     endpoints:
         web:

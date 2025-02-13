@@ -32,11 +32,11 @@ public class AcademicActivityTime extends AbstractAuditingEntity implements Seri
     @Column(columnDefinition = "integer default 1")
     private Integer seq;
 
-    @Column(columnDefinition = "time with time zone")
-    private LocalTime startTime;
+    @Column(columnDefinition = "text")
+    private String startTime;
 
-    @Column(columnDefinition = "time with time zone")
-    private LocalTime endTime;
+    @Column(columnDefinition = "text")
+    private String endTime;
 
     private String description;
 
@@ -87,19 +87,19 @@ public class AcademicActivityTime extends AbstractAuditingEntity implements Seri
         this.seq = seq;
     }
 
-    public LocalTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

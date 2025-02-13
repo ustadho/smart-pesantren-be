@@ -1,9 +1,14 @@
 package id.smartpesantren.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "ac_subject_schedule")
@@ -30,9 +35,14 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
     @JoinColumn(name = "activity_time_id", nullable = false)
     private AcademicActivityTime activityTime;
 
-    @ManyToOne
-    @JoinColumn(name = "teacher_id", nullable = false)
-    private PersonData teacher;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "ac_subject_schedule_teacher",
+            joinColumns = {@JoinColumn(name = "schedule_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "teacher_id", referencedColumnName = "id")})
+    @BatchSize(size = 20)
+    private Set<PersonData> teachers = new HashSet<>();
 
     public SubjectSchedule() {
     }
@@ -81,11 +91,11 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
         this.activityTime = activityTime;
     }
 
-    public PersonData getTeacher() {
-        return teacher;
+    public Set<PersonData> getTeachers() {
+        return teachers;
     }
 
-    public void setTeacher(PersonData teacher) {
-        this.teacher = teacher;
+    public void setTeachers(Set<PersonData> teachers) {
+        this.teachers = teachers;
     }
 }

@@ -4,11 +4,14 @@ import id.smartpesantren.dto.PersonSimpleDTO;
 import id.smartpesantren.dto.PresenceSubjectStudentDTO;
 import id.smartpesantren.dto.SubjectScheduleClassRoomDTO;
 import id.smartpesantren.entity.SubjectSchedule;
+import id.smartpesantren.entity.User;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule, String> {
 
@@ -85,4 +88,6 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
             "order by aat.start_time ", nativeQuery = true)
     public List<SubjectScheduleClassRoomDTO> findSubjectScheduleClassRoomByTeacherId(@Param("teacher") String teacher);
 
+    @EntityGraph(attributePaths = {"teachers"})
+    Optional<SubjectSchedule> findOneWithTeacherById(String id);
 }
