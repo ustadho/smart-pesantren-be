@@ -16,8 +16,8 @@ public class SubjectScheduleCustomRepository {
                 "        cr.id AS class_room_id,\n" +
                 "        act.id AS activity_id,\n" +
                 "        CONCAT('Jam ke-', act.seq) AS activity_name,\n" +
-                "        TO_CHAR((CURRENT_DATE + act.start_time):::: timestamp with time zone, 'HH24:MI') AS start_time,\n" +
-                "        TO_CHAR((CURRENT_DATE + act.end_time):::: timestamp with time zone , 'HH24:MI') AS end_time,\n" +
+                "        act.start_time,\n" +
+                "        act.end_time,\n" +
                 "        act.seq AS activity_seq,\n" +
                 "        d.id AS day_id,\n" +
                 "        d.name AS day_name,\n" +
