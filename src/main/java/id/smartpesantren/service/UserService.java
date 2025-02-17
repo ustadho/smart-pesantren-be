@@ -275,6 +275,15 @@ public class UserService {
                 });
     }
 
+    public void resetDefaultPassword(String id) {
+        userRepository.findById(id).ifPresent(user -> {
+            String encryptedPassword = passwordEncoder.encode("12345678");
+            user.setPassword(encryptedPassword);
+            this.clearUserCaches(user);
+            log.debug("Reset default password User: {}", user);
+        });
+    }
+
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable, Integer profile, String q) {
         return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER, profile,"%"+q+"%").map(UserDTO::new);

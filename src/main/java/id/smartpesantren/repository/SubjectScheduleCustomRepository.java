@@ -24,8 +24,8 @@ public class SubjectScheduleCustomRepository {
                 "        sch.id AS schedule_id,\n" +
                 "        sub.id AS subject_id,\n" +
                 "        sub.name AS subject_name,\n" +
-                "        p.id AS teacher_id,\n" +
-                "        p.name AS teacher_name\n" +
+                "        string_agg(p.id, ', ') teacher_id,\n" +
+                "        string_agg(p.name, ', ') AS teacher_name\n" +
                 "    FROM ac_activity_time act\n" +
                 "    JOIN ac_class_room cr on cr.id=:classRoomId and act.sex=cr.sex \n" +
                 "    CROSS JOIN m_day d\n" +
@@ -33,10 +33,23 @@ public class SubjectScheduleCustomRepository {
                 "        ON sch.activity_time_id = act.id AND sch.day_id = d.id AND sch.class_room_id=:classRoomId\n" +
                 "    LEFT JOIN ac_subject sub \n" +
                 "        ON sub.id = sch.subject_id\n" +
+                "    LEFT JOIN ac_subject_schedule_teacher sst \n" +
+                "        ON sch.id = sst.schedule_id\n" +
                 "    LEFT JOIN person_data p \n" +
-                "        ON p.id = sch.teacher_id\n" +
+                "        ON p.id = sst.teacher_id\n" +
                 "    where act.foundation_id  = :foundationId \n" +
-                "    and act.institution_id = cr.institution_id \n" +
+                "    and act.institution_id = cr.institution_id " +
+                "   group by cr.id,\n" +
+                "        act.id,\n" +
+                "        CONCAT('Jam ke-', act.seq),\n" +
+                "        act.start_time,\n" +
+                "        act.end_time,\n" +
+                "        act.seq,\n" +
+                "        d.id,\n" +
+                "        d.name,\n" +
+                "        sch.id,\n" +
+                "        sub.id,\n" +
+                "        sub.name \n" +
                 "    order by act.start_time, act.seq, case when d.id=0 then 7 else d.id end \n" +
                 ")\n" +
                 "SELECT json_agg(\n" +
@@ -91,4 +104,51 @@ public class SubjectScheduleCustomRepository {
 
         return result != null ? result.toString() : "[]";
     }
+
+    public String findAllSchedulePerDay(String classRoomId, String timeZone) {
+        String sql = "SELECT json_agg(data)\n" +
+                "FROM (\n" +
+                "  SELECT json_build_object(\n" +
+                "  'dayId', md.id,\n" +
+                "  'dayName', md.name,\n" +
+                "  'schedules', (\n" +
+                "    SELECT json_agg(\n" +
+                "      json_build_object(\n" +
+                "        'id', ass.id,\n" +
+                "        'classRoomId', ass.class_room_id,\n" +
+                "        'subjectId', ass.subject_id,\n" +
+                "        'subjectName', s.name,\n" +
+                "        'activityStartId', ass.acitivity_time_start_id,\n" +
+                "        'activityStartTime', at1.start_time,\n" +
+                "        'activityEndId', ass.acitivity_time_end_id,\n" +
+                "        'activityEndTme', at2.end_time,\n" +
+                "        'duration', COALESCE(ass.duration, 0),\n" +
+                "        'teachers', (\n" +
+                "          SELECT string_agg(pd.name, ', ')\n" +
+                "          FROM ac_subject_schedule_teacher asst\n" +
+                "          JOIN person_data pd ON pd.id = asst.teacher_id\n" +
+                "          WHERE asst.schedule_id = ass.id -- <==\n" +
+                "        )\n" +
+                "      )\n" +
+                "    )\n" +
+                "    FROM ac_subject_schedule ass\n" +
+                "    JOIN ac_subject s ON s.id = ass.subject_id\n" +
+                "    JOIN ac_activity_time at1 ON at1.id = ass.acitivity_time_start_id\n" +
+                "    JOIN ac_activity_time at2 ON at2.id = ass.acitivity_time_end_id\n" +
+                "    WHERE ass.day_id = md.id\n" +
+                "      AND ass.class_room_id = :classRoomId\n" +
+                "  )\n" +
+                ") AS data\n" +
+                "FROM m_day md\n" +
+                "ORDER BY CASE WHEN md.id = 0 THEN 9 ELSE md.id END\n" +
+                ") days\n";
+        System.out.println(sql);
+        Query query = entityManager.createNativeQuery(sql);
+        query.setParameter("classRoomId", classRoomId);
+//        query.setParameter("timeZone", timeZone);
+        Object result = query.getSingleResult();
+
+        return result != null ? result.toString() : "[]";
+    }
+
 }

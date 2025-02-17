@@ -9,8 +9,8 @@ public class ActivityTimeDTO {
     private String name;
     private String sex;
     private String description;
-    private Date startTime;
-    private Date endTime;
+    private String startTime;
+    private String endTime;
 
     public String getId() {
         return id;
@@ -44,19 +44,19 @@ public class ActivityTimeDTO {
         this.description = description;
     }
 
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 }

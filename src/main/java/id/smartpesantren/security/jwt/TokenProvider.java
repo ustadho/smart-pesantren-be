@@ -97,7 +97,13 @@ public class TokenProvider {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        MyUserDetails principal = new MyUserDetails(claims.getSubject(), "", authorities, claims.get(FOUNDATION_KEY).toString());
+        MyUserDetails principal = new MyUserDetails(
+                claims.getSubject(),
+                "",
+                authorities,
+                claims.get(FOUNDATION_KEY).toString(),
+                claims.get(PERSON_KEY) == null? null: claims.get(PERSON_KEY).toString()
+                );
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 

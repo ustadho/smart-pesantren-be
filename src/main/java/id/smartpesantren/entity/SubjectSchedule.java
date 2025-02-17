@@ -31,9 +31,26 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
+//    @ManyToOne
+//    @JoinColumn(name = "activity_time_id", nullable = false)
+//    private AcademicActivityTime activityTime;
+
+//    @JsonIgnore
+//    @ManyToMany
+//    @JoinTable(
+//            name = "ac_subject_schedule_time",
+//            joinColumns = {@JoinColumn(name = "schedule_id", referencedColumnName = "id")},
+//            inverseJoinColumns = {@JoinColumn(name = "activity_id", referencedColumnName = "id")})
+//    @BatchSize(size = 20)
+//    private Set<AcademicActivityTime> activityTimes = new HashSet<>();
+
     @ManyToOne
-    @JoinColumn(name = "activity_time_id", nullable = false)
-    private AcademicActivityTime activityTime;
+    @JoinColumn(name = "acitivity_time_start_id")
+    private AcademicActivityTime activityTimeStart;
+
+    @ManyToOne
+    @JoinColumn(name = "acitivity_time_end_id")
+    private AcademicActivityTime activityTimeEnd;
 
     @JsonIgnore
     @ManyToMany
@@ -43,6 +60,9 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
             inverseJoinColumns = {@JoinColumn(name = "teacher_id", referencedColumnName = "id")})
     @BatchSize(size = 20)
     private Set<PersonData> teachers = new HashSet<>();
+
+    @Column(columnDefinition = "integer default 1")
+    private Integer duration;
 
     public SubjectSchedule() {
     }
@@ -83,12 +103,20 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
         this.subject = subject;
     }
 
-    public AcademicActivityTime getActivityTime() {
-        return activityTime;
+    public AcademicActivityTime getActivityTimeStart() {
+        return activityTimeStart;
     }
 
-    public void setActivityTime(AcademicActivityTime activityTime) {
-        this.activityTime = activityTime;
+    public void setActivityTimeStart(AcademicActivityTime activityTimeStart) {
+        this.activityTimeStart = activityTimeStart;
+    }
+
+    public AcademicActivityTime getActivityTimeEnd() {
+        return activityTimeEnd;
+    }
+
+    public void setActivityTimeEnd(AcademicActivityTime activityTimeEnd) {
+        this.activityTimeEnd = activityTimeEnd;
     }
 
     public Set<PersonData> getTeachers() {
@@ -97,5 +125,13 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
 
     public void setTeachers(Set<PersonData> teachers) {
         this.teachers = teachers;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 }

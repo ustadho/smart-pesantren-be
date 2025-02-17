@@ -1,6 +1,7 @@
 package id.smartpesantren.service.dto;
 
 import id.smartpesantren.config.Constants;
+import id.smartpesantren.dto.PersonSimpleDTO;
 import id.smartpesantren.entity.Authority;
 import id.smartpesantren.entity.Institution;
 import id.smartpesantren.entity.User;
@@ -9,6 +10,7 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.*;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,6 +60,7 @@ public class UserDTO {
     private Set<String> institutions;
 
     private String personId;
+    private PersonDTO personData;
 
     public UserDTO() {
         // Empty constructor needed for MapStruct.
@@ -70,6 +73,16 @@ public class UserDTO {
                 user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()),
                 user.getInstitutions().stream().map(Institution::getId).collect(Collectors.toSet()),
                 user.getPerson()==null? null: user.getPerson().getId(), user.getProfile());
+        if(user.getPerson() != null) {
+            PersonDTO dto = new PersonDTO();
+            dto.setId(user.getPerson().getId());
+            dto.setName(user.getPerson().getName());
+            dto.setPersonType(user.getPerson().getPersonType());
+            dto.setPhone(user.getPerson().getPhone());
+            dto.setEmail(user.getPerson().getEmail());
+            dto.setPhoto(user.getPerson().getPhoto());
+            setPersonData(dto);
+        }
     }
 
     public UserDTO(String id, String login, String firstName, String lastName,
@@ -221,6 +234,14 @@ public class UserDTO {
 
     public void setPersonId(String personId) {
         this.personId = personId;
+    }
+
+    public PersonDTO getPersonData() {
+        return personData;
+    }
+
+    public void setPersonData(PersonDTO personData) {
+        this.personData = personData;
     }
 
     @Override

@@ -126,12 +126,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/management/health").permitAll()
                 .antMatchers("/management/info").permitAll()
                 .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.SUPERADMIN)
-                .and()
-                .rememberMe()
-                .rememberMeParameter("remember-me")
-                .rememberMeServices(rememberMeServices())
-                .key(jHipsterProperties.getSecurity().getRememberMe().getKey())
-                .tokenValiditySeconds(86400)
+//                .and()
+//                .rememberMe()
+//                .rememberMeParameter("remember-me")
+//                .rememberMeServices(rememberMeServices())
+//                .key(jHipsterProperties.getSecurity().getRememberMe().getKey())
+//                .tokenValiditySeconds(86400)
                 .and()
                 .apply(securityConfigurerAdapter());
 

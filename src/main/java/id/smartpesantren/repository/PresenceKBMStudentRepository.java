@@ -22,9 +22,8 @@ public interface PresenceKBMStudentRepository extends JpaRepository<PresenceKBM,
             "from ac_class_room acr \n" +
             "join ac_class_room_student acrs on acr.id = acrs.class_room_id  \n" +
             "join ac_student s on s.id=acrs.student_id \n" +
-            "join ac_subject_schedule ss on ss.class_room_id = acrs.class_room_id \n" +
             "left join a on a.student_id=acrs.student_id\n" +
-            "where ss.id = :id\n" +
+            "where acr.id = :id\n" +
             "order by s.name\n", nativeQuery = true)
-    public List<PresenceSubjectStudentDTO> findDetailStudentsByScheduleId(@Param("id") String id);
+    public List<PresenceSubjectStudentDTO> findDetailStudentsByClassRoomId(@Param("id") String id);
 }

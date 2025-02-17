@@ -1,5 +1,6 @@
 package id.smartpesantren.web.rest.vm;
 
+import id.smartpesantren.dto.ActivityTimeDTO;
 import id.smartpesantren.dto.EmployeeSimpleDTO;
 
 import javax.validation.constraints.NotNull;
@@ -11,13 +12,13 @@ public class SubjectScheduleVM {
     private String classRoomId;
     @NotNull
     private Integer dayId;
-    private Integer dayName;
+    private String dayName;
     @NotNull
     private String subjectId;
     private String subjectName;
-    @NotNull
-    private String activityTimeId;
-    private String activityTimeName;
+    private String activityTimeStartId;
+    private String activityTimeEndId;
+    private Integer duration;
     private Set<EmployeeSimpleDTO> teachers;
 
     public String getId() {
@@ -44,11 +45,11 @@ public class SubjectScheduleVM {
         this.dayId = dayId;
     }
 
-    public Integer getDayName() {
+    public String getDayName() {
         return dayName;
     }
 
-    public void setDayName(Integer dayName) {
+    public void setDayName(String dayName) {
         this.dayName = dayName;
     }
 
@@ -68,20 +69,28 @@ public class SubjectScheduleVM {
         this.subjectName = subjectName;
     }
 
-    public String getActivityTimeId() {
-        return activityTimeId;
+    public String getActivityTimeStartId() {
+        return activityTimeStartId;
     }
 
-    public void setActivityTimeId(String activityTimeId) {
-        this.activityTimeId = activityTimeId;
+    public void setActivityTimeStartId(String activityTimeStartId) {
+        this.activityTimeStartId = activityTimeStartId;
     }
 
-    public String getActivityTimeName() {
-        return activityTimeName;
+    public String getActivityTimeEndId() {
+        return activityTimeEndId;
     }
 
-    public void setActivityTimeName(String activityTimeName) {
-        this.activityTimeName = activityTimeName;
+    public void setActivityTimeEndId(String activityTimeEndId) {
+        this.activityTimeEndId = activityTimeEndId;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public Set<EmployeeSimpleDTO> getTeachers() {

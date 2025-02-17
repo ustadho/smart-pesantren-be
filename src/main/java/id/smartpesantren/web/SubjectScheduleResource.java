@@ -1,18 +1,17 @@
 package id.smartpesantren.web;
 
-import id.smartpesantren.dto.ActivityScheduleDTO;
-import id.smartpesantren.dto.PersonSimpleDTO;
-import id.smartpesantren.dto.SubjectScheduleClassRoomDTO;
-import id.smartpesantren.dto.SubjectScheduleHistoryDTO;
+import id.smartpesantren.dto.*;
 import id.smartpesantren.repository.SubjectScheduleHistoryRepository;
 import id.smartpesantren.repository.SubjectScheduleRepository;
-import id.smartpesantren.service.SubjectScheduleHistoryService;
+import id.smartpesantren.repository.UserRepository;
+import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.service.SubjectScheduleService;
 import id.smartpesantren.web.rest.vm.SubjectScheduleVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,9 +26,22 @@ public class SubjectScheduleResource {
     @Autowired
     SubjectScheduleRepository subjectScheduleRepository;
 
-    @GetMapping("{id}")
+    @Autowired
+    UserRepository userRepository;
+
+    @GetMapping("{id}/list")
     public List<ActivityScheduleDTO> getSchedules(@PathVariable("id") String classRoomId, @RequestHeader("Timezone") String timeZone) {
         return subjectScheduleService.getAllSchedules(classRoomId, timeZone);
+    }
+
+    @GetMapping("{id}/list-per-day")
+    public List<ActivityScheduleByDayDTO> getSchedulesByDay(@PathVariable("id") String classRoomId, @RequestHeader("Timezone") String timeZone) {
+        return subjectScheduleService.findAllSchedulePerDay(classRoomId, timeZone);
+    }
+
+    @GetMapping("/{id}")
+    public SubjectScheduleVM findById(@PathVariable("id") String id) {
+        return subjectScheduleService.findById(id);
     }
 
     @PutMapping
@@ -48,12 +60,21 @@ public class SubjectScheduleResource {
     }
 
     @GetMapping("/by-teacher/{id}")
-    public List<SubjectScheduleClassRoomDTO> findSubjectScheduleClassRoomByTeacherId(@PathVariable("id") String id) {
-        return subjectScheduleRepository.findSubjectScheduleClassRoomByTeacherId(id);
+    public List<MyScheduleDTO> findSubjectScheduleClassRoomByTeacherId(@PathVariable("id") String id) {
+        return subjectScheduleRepository.findTeacherScheduleToday(id);
     }
 
     @GetMapping("/history/{classRoomId}")
     public List<SubjectScheduleHistoryDTO> findAllHistoryByClassRoomId(@PathVariable("classRoomId") String id) {
         return subjectScheduleHistoryRepository.findAllByClassRoomId(id);
+    }
+
+    @GetMapping("my-current-schedule")
+    List<MyScheduleDTO> findMyCurrentSchedule() {
+        return SecurityUtils.getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .filter(user -> user.getPerson() != null)
+            .map(user -> subjectScheduleRepository.findTeacherScheduleToday(user.getPerson().getId()))
+            .orElseGet(ArrayList::new);
     }
 }
