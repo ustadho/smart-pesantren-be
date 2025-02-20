@@ -16,6 +16,7 @@ public class SubjectScheduleVM {
     @NotNull
     private String subjectId;
     private String subjectName;
+    private String activityTimeId;
     private String activityTimeStartId;
     private String activityTimeEndId;
     private Integer duration;
@@ -67,6 +68,14 @@ public class SubjectScheduleVM {
 
     public void setSubjectName(String subjectName) {
         this.subjectName = subjectName;
+    }
+
+    public String getActivityTimeId() {
+        return activityTimeId;
+    }
+
+    public void setActivityTimeId(String activityTimeId) {
+        this.activityTimeId = activityTimeId;
     }
 
     public String getActivityTimeStartId() {

@@ -26,7 +26,7 @@ public class SubjectScheduleHistoryService {
     public SubjectScheduleHistory fromOrigin(SubjectSchedule s) {
         SubjectScheduleHistory sh = new SubjectScheduleHistory();
         sh.setSubject(s.getSubject());
-//        sh.setActivityTime(s.getActivityTime());
+        sh.setActivityTime(s.getActivityTime());
         sh.setDay(s.getDay());
         sh.setClassRoom(s.getClassRoom());
         sh.setSubjectScheduleId(s.getId());

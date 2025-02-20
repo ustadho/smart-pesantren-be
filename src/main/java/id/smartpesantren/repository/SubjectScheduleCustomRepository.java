@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class SubjectScheduleCustomRepository {
@@ -69,6 +70,7 @@ public class SubjectScheduleCustomRepository {
                 "                                  'subjectId', sdi.subject_id,\n" +
                 "                                  'classRoomId', sdi.class_room_id,\n" +
                 "                                  'subjectName', sdi.subject_name,\n" +
+                "                                  'activityTimeId', sdi.activity_id,\n" +
                 "                                  'teacherId', sdi.teacher_id,\n" +
                 "                                  'teacherName', sdi.teacher_name,\n" +
                 "                                  'teachers', (\n" +
@@ -106,7 +108,7 @@ public class SubjectScheduleCustomRepository {
     }
 
     public String findAllSchedulePerDay(String classRoomId, String timeZone) {
-        String sql = "SELECT json_agg(data)\n" +
+        String sql = "SELECT json_agg(data)::::text AS result\n" +
                 "FROM (\n" +
                 "  SELECT json_build_object(\n" +
                 "  'dayId', md.id,\n" +

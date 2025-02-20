@@ -31,18 +31,9 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
-//    @ManyToOne
-//    @JoinColumn(name = "activity_time_id", nullable = false)
-//    private AcademicActivityTime activityTime;
-
-//    @JsonIgnore
-//    @ManyToMany
-//    @JoinTable(
-//            name = "ac_subject_schedule_time",
-//            joinColumns = {@JoinColumn(name = "schedule_id", referencedColumnName = "id")},
-//            inverseJoinColumns = {@JoinColumn(name = "activity_id", referencedColumnName = "id")})
-//    @BatchSize(size = 20)
-//    private Set<AcademicActivityTime> activityTimes = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "activity_time_id", nullable = false)
+    private AcademicActivityTime activityTime;
 
     @ManyToOne
     @JoinColumn(name = "acitivity_time_start_id")
@@ -101,6 +92,14 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public AcademicActivityTime getActivityTime() {
+        return activityTime;
+    }
+
+    public void setActivityTime(AcademicActivityTime activityTime) {
+        this.activityTime = activityTime;
     }
 
     public AcademicActivityTime getActivityTimeStart() {

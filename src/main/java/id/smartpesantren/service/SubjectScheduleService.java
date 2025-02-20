@@ -92,16 +92,9 @@ public class SubjectScheduleService {
         ss.setClassRoom(new ClassRoom(vm.getClassRoomId()));
         ss.setSubject(new Subject(vm.getSubjectId()));
         ss.setDuration(vm.getDuration());
-        ss.setActivityTimeStart(new AcademicActivityTime(vm.getActivityTimeStartId()));
-        ss.setActivityTimeEnd(new AcademicActivityTime(vm.getActivityTimeEndId()));
-//        ss.setActivityTime(new AcademicActivityTime(vm.getActivityTimeId()));
-
-//        Set<AcademicActivityTime> managedTimes = ss.getActivityTimes();
-//        vm.getActivityTimes().stream().forEach(s -> {
-//            managedTimes.add(new AcademicActivityTime(s.getId()));
-//        });
-//        ss.setActivityTimes(managedTimes);
-
+//        ss.setActivityTimeStart(new AcademicActivityTime(vm.getActivityTimeId()));
+//        ss.setActivityTimeEnd(new AcademicActivityTime(vm.getActivityTimeEndId()));
+        ss.setActivityTime(new AcademicActivityTime(vm.getActivityTimeId()));
         Set<PersonData> managedTeachers = ss.getTeachers();
         vm.getTeachers().stream().forEach(s -> {
             managedTeachers.add(new PersonData(s.getId()));
@@ -133,6 +126,7 @@ public class SubjectScheduleService {
             vm.setDayId(s.getDay().getId());
             vm.setDayName(s.getDay().getName());
             vm.setDuration(s.getDuration());
+            vm.setActivityTimeId(s.getActivityTime() == null? null: s.getActivityTime().getId());
             vm.setActivityTimeStartId(s.getActivityTimeStart() == null? null: s.getActivityTimeStart().getId());
             vm.setActivityTimeEndId(s.getActivityTimeEnd() == null? null: s.getActivityTimeEnd().getId());
             if(s.getTeachers() != null) {

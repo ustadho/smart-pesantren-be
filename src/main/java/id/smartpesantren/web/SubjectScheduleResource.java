@@ -77,4 +77,13 @@ public class SubjectScheduleResource {
             .map(user -> subjectScheduleRepository.findTeacherScheduleToday(user.getPerson().getId()))
             .orElseGet(ArrayList::new);
     }
+
+    @GetMapping("my-weekly-schedule")
+    List<MyScheduleWeeklyDTO> findMyWeeklySchedule() {
+        return SecurityUtils.getCurrentUserLogin()
+                .flatMap(userRepository::findOneByLogin)
+                .filter(user -> user.getPerson() != null)
+                .map(user -> subjectScheduleRepository.findAllMyWeeklySchedule(user.getPerson().getId()))
+                .orElseGet(ArrayList::new);
+    }
 }
