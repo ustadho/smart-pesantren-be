@@ -116,6 +116,6 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
             "join academic_year ay on ay.id = vw.academic_year_id \n" +
             "and ay.is_default = true\n" +
             "where ast.teacher_id =:teacherId \n" +
-            "order by vw.day_id\n", nativeQuery = true)
+            "order by vw.day_id, vw.start_time\n", nativeQuery = true)
     public List<MyScheduleWeeklyDTO> findAllMyWeeklySchedule(@Param("teacherId") String id);
 }
