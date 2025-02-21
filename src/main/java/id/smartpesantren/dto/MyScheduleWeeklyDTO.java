@@ -7,6 +7,7 @@ public interface MyScheduleWeeklyDTO {
     public int getDayId();
     public String getDayName();
     public String getClassRoomName();
+    public String getInstitutionName();
     public String getSubjectId();
     public String getSubjectName();
     public String getStartTime();

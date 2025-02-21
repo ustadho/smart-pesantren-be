@@ -109,7 +109,7 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
             "order by a.\"startTime\"", nativeQuery = true)
     public List<MyScheduleDTO> findTeacherScheduleToday(@Param("teacherId") String id);
 
-    @Query(value = "select vw.schedule_id \"scheduleId\", vw.day_id \"dayId\", vw.day_name \"dayName\", vw.class_room_name \"classRoomName\", vw.subject_id \"subjectId\", vw.subject_name \"subjectName\", \n" +
+    @Query(value = "select vw.schedule_id \"scheduleId\", vw.day_id \"dayId\", vw.day_name \"dayName\", vw.institution_name, \"institutionName\" vw.class_room_name \"classRoomName\", vw.subject_id \"subjectId\", vw.subject_name \"subjectName\", \n" +
             "vw.start_time \"startTime\", vw.end_time \"endTime\", vw.duration, vw.teachers\n" +
             "from vw_schedule_all vw \n" +
             "join ac_subject_schedule_teacher ast on ast.schedule_id=vw.schedule_id \n" +
