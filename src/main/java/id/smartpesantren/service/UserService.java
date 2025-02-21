@@ -146,6 +146,7 @@ public class UserService {
     public User createUser(UserDTO userDTO) {
         String cid = SecurityUtils.getFoundationId().get();
         User user = new User();
+        user.setProfile(new UserProfile(userDTO.getProfile()));
         user.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
@@ -173,7 +174,7 @@ public class UserService {
         userDTO.getInstitutions().stream().forEach(i -> {
             managedInstitutions.add(new Institution(i));
         });
-        user.setAuthorities(managedAuthorities);
+        user.setInstitutions(managedInstitutions);
 
         user.setPerson(userDTO.getPersonId() == null? null: new PersonData(userDTO.getPersonId()));
         userRepository.save(user);
@@ -218,6 +219,7 @@ public class UserService {
                 .map(Optional::get)
                 .map(user -> {
                     this.clearUserCaches(user);
+                    user.setProfile(new UserProfile(userDTO.getProfile()));
                     user.setLogin(userDTO.getLogin().toLowerCase());
                     user.setFirstName(userDTO.getFirstName());
                     user.setLastName(userDTO.getLastName());
@@ -225,7 +227,8 @@ public class UserService {
                     user.setImageUrl(userDTO.getImageUrl());
                     user.setActivated(userDTO.isActivated());
                     user.setLangKey(userDTO.getLangKey());
-
+                    user.setProfile(user.getProfile());
+                    user.setPerson(userDTO.getPersonId() == null? null: new PersonData(userDTO.getPersonId()));
                     Set<Authority> managedAuthorities = user.getAuthorities();
                     managedAuthorities.clear();
                     userDTO.getAuthorities().stream()
@@ -272,9 +275,18 @@ public class UserService {
                 });
     }
 
+    public void resetDefaultPassword(String id) {
+        userRepository.findById(id).ifPresent(user -> {
+            String encryptedPassword = passwordEncoder.encode("12345678");
+            user.setPassword(encryptedPassword);
+            this.clearUserCaches(user);
+            log.debug("Reset default password User: {}", user);
+        });
+    }
+
     @Transactional(readOnly = true)
-    public Page<UserDTO> getAllManagedUsers(Pageable pageable, String q) {
-        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER, "%"+q+"%").map(UserDTO::new);
+    public Page<UserDTO> getAllManagedUsers(Pageable pageable, Integer profile, String q) {
+        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER, profile,"%"+q+"%").map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)

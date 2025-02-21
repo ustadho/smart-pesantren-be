@@ -43,6 +43,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "foundation_id", nullable = false)
     Foundation foundation;
 
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false, columnDefinition = "integer default 1")
+    UserProfile profile;
+
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1)
     @Column(length = 50, unique = true, nullable = false)
@@ -255,6 +259,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setPerson(PersonData person) {
         this.person = person;
+    }
+
+    public UserProfile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(UserProfile profile) {
+        this.profile = profile;
     }
 
     @Override

@@ -5,6 +5,7 @@
  */
 package id.smartpesantren.repository;
 
+import id.smartpesantren.entity.Foundation;
 import id.smartpesantren.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -43,16 +44,17 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findOneWithAuthoritiesById(Long id);
 
     @EntityGraph(attributePaths = {"authorities", "institutions"})
-    @Cacheable(cacheNames = USERS_BY_LOGIN_CACHE)
+//    @Cacheable(cacheNames = USERS_BY_LOGIN_CACHE)
     Optional<User> findOneWithAuthoritiesAndWithInstitutionsByLogin(String login);
 
     @EntityGraph(attributePaths = "authorities")
-    @Cacheable(cacheNames = USERS_BY_EMAIL_CACHE)
+//    @Cacheable(cacheNames = USERS_BY_EMAIL_CACHE)
     Optional<User> findOneWithAuthoritiesByEmail(String email);
 
     @Query("from User u " +
             "where u.foundation.id=?#{principal.foundationId} \n " +
             "and u.login !=:login \n" +
+            "and (:profile is null OR u.profile.id=:profile) \n" +
             "and (u.login like :q or u.email like :q)")
-    Page<User> findAllByLoginNot(Pageable pageable, @Param("login") String login, @Param("q") String q);
+    Page<User> findAllByLoginNot(Pageable pageable, @Param("login") String login, @Param("profile") Integer profile, @Param("q") String q);
 }

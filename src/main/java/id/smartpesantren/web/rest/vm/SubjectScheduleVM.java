@@ -1,6 +1,10 @@
 package id.smartpesantren.web.rest.vm;
 
+import id.smartpesantren.dto.ActivityTimeDTO;
+import id.smartpesantren.dto.EmployeeSimpleDTO;
+
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 public class SubjectScheduleVM {
     private String id;
@@ -8,16 +12,15 @@ public class SubjectScheduleVM {
     private String classRoomId;
     @NotNull
     private Integer dayId;
-    private Integer dayName;
+    private String dayName;
     @NotNull
     private String subjectId;
     private String subjectName;
-    @NotNull
     private String activityTimeId;
-    private String activityTimeName;
-    @NotNull
-    private String teacherId;
-    private String teacherName;
+    private String activityTimeStartId;
+    private String activityTimeEndId;
+    private Integer duration;
+    private Set<EmployeeSimpleDTO> teachers;
 
     public String getId() {
         return id;
@@ -43,11 +46,11 @@ public class SubjectScheduleVM {
         this.dayId = dayId;
     }
 
-    public Integer getDayName() {
+    public String getDayName() {
         return dayName;
     }
 
-    public void setDayName(Integer dayName) {
+    public void setDayName(String dayName) {
         this.dayName = dayName;
     }
 
@@ -75,27 +78,36 @@ public class SubjectScheduleVM {
         this.activityTimeId = activityTimeId;
     }
 
-    public String getActivityTimeName() {
-        return activityTimeName;
+    public String getActivityTimeStartId() {
+        return activityTimeStartId;
     }
 
-    public void setActivityTimeName(String activityTimeName) {
-        this.activityTimeName = activityTimeName;
+    public void setActivityTimeStartId(String activityTimeStartId) {
+        this.activityTimeStartId = activityTimeStartId;
     }
 
-    public String getTeacherId() {
-        return teacherId;
+    public String getActivityTimeEndId() {
+        return activityTimeEndId;
     }
 
-    public void setTeacherId(String teacherId) {
-        this.teacherId = teacherId;
+    public void setActivityTimeEndId(String activityTimeEndId) {
+        this.activityTimeEndId = activityTimeEndId;
     }
 
-    public String getTeacherName() {
-        return teacherName;
+    public Integer getDuration() {
+        return duration;
     }
 
-    public void setTeacherName(String teacherName) {
-        this.teacherName = teacherName;
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
+
+    public Set<EmployeeSimpleDTO> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(Set<EmployeeSimpleDTO> teachers) {
+        this.teachers = teachers;
+    }
+
 }

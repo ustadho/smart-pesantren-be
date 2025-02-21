@@ -4,7 +4,6 @@ import id.smartpesantren.dto.PresenceSubjectStudentDTO;
 import id.smartpesantren.repository.PresenceKBMStudentRepository;
 import id.smartpesantren.service.PresenceKBMService;
 import id.smartpesantren.web.rest.vm.PresenceKbmVM;
-import id.smartpesantren.web.rest.vm.PresenceKbmVMStudent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,7 @@ public class PresenceKBMResource {
     }
 
     @GetMapping("detail-students/{id}")
-    public List<PresenceSubjectStudentDTO> findDetailStudentsByScheduleId(@PathVariable("id") String id) {
-        return presenceKBMStudentRepository.findDetailStudentsByScheduleId(id);
+    public List<PresenceSubjectStudentDTO> findDetailStudentsByClassRoomId(@PathVariable("id") String id) {
+        return presenceKBMStudentRepository.findDetailStudentsByClassRoomId(id);
     }
 }

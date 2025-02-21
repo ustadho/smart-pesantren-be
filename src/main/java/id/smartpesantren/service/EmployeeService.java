@@ -34,6 +34,7 @@ public class EmployeeService {
         } else {
             pd = new PersonData();
         }
+        pd.setActive(vm.getActive());
         pd.setName(vm.getName());
         pd.setEmployeeNo(vm.getEmployeeNo());
         pd.setSex(vm.getSex());

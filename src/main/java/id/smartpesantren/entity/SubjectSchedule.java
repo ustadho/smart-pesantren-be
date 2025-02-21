@@ -1,9 +1,14 @@
 package id.smartpesantren.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "ac_subject_schedule")
@@ -31,8 +36,24 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
     private AcademicActivityTime activityTime;
 
     @ManyToOne
-    @JoinColumn(name = "teacher_id", nullable = false)
-    private PersonData teacher;
+    @JoinColumn(name = "acitivity_time_start_id")
+    private AcademicActivityTime activityTimeStart;
+
+    @ManyToOne
+    @JoinColumn(name = "acitivity_time_end_id")
+    private AcademicActivityTime activityTimeEnd;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "ac_subject_schedule_teacher",
+            joinColumns = {@JoinColumn(name = "schedule_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "teacher_id", referencedColumnName = "id")})
+    @BatchSize(size = 20)
+    private Set<PersonData> teachers = new HashSet<>();
+
+    @Column(columnDefinition = "integer default 1")
+    private Integer duration;
 
     public SubjectSchedule() {
     }
@@ -81,11 +102,35 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
         this.activityTime = activityTime;
     }
 
-    public PersonData getTeacher() {
-        return teacher;
+    public AcademicActivityTime getActivityTimeStart() {
+        return activityTimeStart;
     }
 
-    public void setTeacher(PersonData teacher) {
-        this.teacher = teacher;
+    public void setActivityTimeStart(AcademicActivityTime activityTimeStart) {
+        this.activityTimeStart = activityTimeStart;
+    }
+
+    public AcademicActivityTime getActivityTimeEnd() {
+        return activityTimeEnd;
+    }
+
+    public void setActivityTimeEnd(AcademicActivityTime activityTimeEnd) {
+        this.activityTimeEnd = activityTimeEnd;
+    }
+
+    public Set<PersonData> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(Set<PersonData> teachers) {
+        this.teachers = teachers;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 }

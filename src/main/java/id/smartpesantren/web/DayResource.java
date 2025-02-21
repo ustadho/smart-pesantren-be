@@ -17,6 +17,6 @@ public class DayResource {
 
     @GetMapping("all")
     public List<Day> findAll() {
-        return dayRepository.findAll();
+        return dayRepository.findAllDays();
     }
 }

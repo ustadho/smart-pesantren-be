@@ -84,9 +84,9 @@ public class EmployeeVM {
 
     public EmployeeVM(PersonData p) {
         this.setId(p.getId());
-        this.setCategoryId(p.getEmployeeCategory().getId());
-        this.setCategoryName(p.getEmployeeCategory().getName());
-        this.setEmployeeNo(p.getEmployeeNo());
+        this.setCategoryId(p.getEmployeeCategory() == null? null: p.getEmployeeCategory().getId());
+        this.setCategoryName(p.getEmployeeCategory() == null? null: p.getEmployeeCategory().getName());
+        this.setEmployeeNo(p.getEmployeeCategory() == null? null: p.getEmployeeNo());
         this.setName(p.getName());
         this.setSex(p.getSex());
         this.setNik(p.getNik());

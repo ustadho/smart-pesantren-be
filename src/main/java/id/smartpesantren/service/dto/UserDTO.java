@@ -1,13 +1,16 @@
 package id.smartpesantren.service.dto;
 
 import id.smartpesantren.config.Constants;
+import id.smartpesantren.dto.PersonSimpleDTO;
 import id.smartpesantren.entity.Authority;
 import id.smartpesantren.entity.Institution;
 import id.smartpesantren.entity.User;
+import id.smartpesantren.entity.UserProfile;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.*;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,7 +31,9 @@ public class UserDTO {
     @Size(max = 50)
     private String lastName;
 
-    @Email
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
+    @Pattern(regexp = Constants.EMAIL_REGEX, message = "Invalid email format")
     @Size(min = 5, max = 100)
     private String email;
 
@@ -48,10 +53,14 @@ public class UserDTO {
 
     private Instant lastModifiedDate;
 
+    @NotNull
+    private Integer profile;
+
     private Set<String> authorities;
     private Set<String> institutions;
 
     private String personId;
+    private PersonDTO personData;
 
     public UserDTO() {
         // Empty constructor needed for MapStruct.
@@ -63,13 +72,23 @@ public class UserDTO {
                 user.getCreatedBy(), user.getCreatedDate(), user.getLastModifiedBy(), user.getLastModifiedDate(),
                 user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()),
                 user.getInstitutions().stream().map(Institution::getId).collect(Collectors.toSet()),
-                user.getPerson()==null? null: user.getPerson().getId());
+                user.getPerson()==null? null: user.getPerson().getId(), user.getProfile());
+        if(user.getPerson() != null) {
+            PersonDTO dto = new PersonDTO();
+            dto.setId(user.getPerson().getId());
+            dto.setName(user.getPerson().getName());
+            dto.setPersonType(user.getPerson().getPersonType());
+            dto.setPhone(user.getPerson().getPhone());
+            dto.setEmail(user.getPerson().getEmail());
+            dto.setPhoto(user.getPerson().getPhoto());
+            setPersonData(dto);
+        }
     }
 
     public UserDTO(String id, String login, String firstName, String lastName,
                    String email, boolean activated, String imageUrl, String langKey,
                    String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-                   Set<String> authorities, Set<String> institutions, String personId) {
+                   Set<String> authorities, Set<String> institutions, String personId, UserProfile profile) {
 
         this.id = id;
         this.login = login;
@@ -86,6 +105,7 @@ public class UserDTO {
         this.authorities = authorities;
         this.institutions = institutions;
         this.personId = personId;
+        this.profile = profile == null? null: profile.getId();
     }
 
     public String getId() {
@@ -142,6 +162,14 @@ public class UserDTO {
 
     public Instant getLastModifiedDate() {
         return lastModifiedDate;
+    }
+
+    public Integer getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Integer profile) {
+        this.profile = profile;
     }
 
     public void setLastModifiedDate(Instant lastModifiedDate) {
@@ -206,6 +234,14 @@ public class UserDTO {
 
     public void setPersonId(String personId) {
         this.personId = personId;
+    }
+
+    public PersonDTO getPersonData() {
+        return personData;
+    }
+
+    public void setPersonData(PersonDTO personData) {
+        this.personData = personData;
     }
 
     @Override

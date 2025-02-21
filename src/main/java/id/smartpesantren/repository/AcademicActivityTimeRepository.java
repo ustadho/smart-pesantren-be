@@ -46,7 +46,7 @@ public interface AcademicActivityTimeRepository extends JpaRepository<AcademicAc
             @Param("foundation") Foundation foundation,
             @Param("institution") Institution institution,
             @Param("sex") String sex,
-            @Param("startTime") LocalTime startTime,
-            @Param("endTime") LocalTime endTime
+            @Param("startTime") String startTime,
+            @Param("endTime") String endTime
     );
 }

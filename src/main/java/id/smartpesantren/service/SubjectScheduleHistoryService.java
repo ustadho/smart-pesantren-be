@@ -2,7 +2,9 @@ package id.smartpesantren.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import id.smartpesantren.constant.LogActivityStatus;
 import id.smartpesantren.dto.ActivityScheduleDTO;
+import id.smartpesantren.dto.EmployeeSimpleDTO;
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.SubjectScheduleCustomRepository;
 import id.smartpesantren.repository.SubjectScheduleHistoryRepository;
@@ -12,6 +14,7 @@ import id.smartpesantren.web.rest.vm.SubjectScheduleVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,7 +30,7 @@ public class SubjectScheduleHistoryService {
         sh.setDay(s.getDay());
         sh.setClassRoom(s.getClassRoom());
         sh.setSubjectScheduleId(s.getId());
-        sh.setTeacher(s.getTeacher());
+//        sh.setTeacher(s.getTeacher());
         sh.setSubjectScheduleId(s.getId());
         return sh;
     }

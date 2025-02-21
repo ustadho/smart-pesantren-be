@@ -9,12 +9,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface PersonDataRepository extends JpaRepository<PersonData, String> {
     @Query("select new id.smartpesantren.dto.EmployeeDTO(a.id, ec.id, ec.name, " +
             "a.employeeNo, a.name, a.sex, a.nik, pob, a.dob, o.id, o.name, s.id, s.name, jp.id, jp.name, el.id, el.name, " +
             "a.permanentAddress, a.permanentRT, a.permanentRW, a.permanentSubDistrict.id, a.permanentSubDistrict.name, " +
             "a.residentialAddress, a.residentialRT, a.residentialRW, a.residentialSubDistrict.id, a.residentialSubDistrict.name, " +
-            "a.majors, a.faculty, ri.id, ri.name, a.isGuardian, a.active) \n" +
+            "a.majors, a.faculty, ri.id, ri.name, a.isGuardian, a.active, a.phone, a.email) \n" +
             "from PersonData a \n" +
             "left join a.organization o \n" +
             "left join a.section s \n" +
@@ -51,4 +53,25 @@ public interface PersonDataRepository extends JpaRepository<PersonData, String> 
             "and (coalesce(:title,'')='' OR a.title.id=:title) "
     )
     Page<GuardianDTO> filterGuardian(@Param("q") String q, @Param("title") String title, Pageable p);
+
+    @Query("select new id.smartpesantren.dto.EmployeeDTO(a.id, ec.id, ec.name, " +
+            "a.employeeNo, a.name, a.sex, a.nik, pob, a.dob, o.id, o.name, s.id, s.name, jp.id, jp.name, el.id, el.name, " +
+            "a.permanentAddress, a.permanentRT, a.permanentRW, a.permanentSubDistrict.id, a.permanentSubDistrict.name, " +
+            "a.residentialAddress, a.residentialRT, a.residentialRW, a.residentialSubDistrict.id, a.residentialSubDistrict.name, " +
+            "a.majors, a.faculty, ri.id, ri.name, a.isGuardian, a.active, a.phone, a.email) \n" +
+            "from PersonData a \n" +
+            "left join a.organization o \n" +
+            "left join a.section s \n" +
+            "left join a.jobPosition jp \n" +
+            "left join a.employeeCategory ec \n" +
+            "left join a.educationLevel el \n" +
+            "left join a.pob pob \n" +
+            "left join a.permanentSubDistrict psd \n" +
+            "left join a.residentialSubDistrict rsd \n" +
+            "left join a.referalInstitution ri \n" +
+            "where a.foundation.id=?#{principal.foundationId} \n" +
+            "and a.personType=:personType \n" +
+            "and a.active = true \n" +
+            "and upper(a.name) like :q ")
+    List<EmployeeDTO> findAllByType(@Param("personType") String personType, @Param("q") String q);
 }

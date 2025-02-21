@@ -6,11 +6,13 @@
 package id.smartpesantren.web;
 
 import id.smartpesantren.config.Constants;
+import id.smartpesantren.entity.Foundation;
 import id.smartpesantren.security.MyUserDetails;
 import com.codahale.metrics.annotation.Timed;
 import id.smartpesantren.entity.User;
 import id.smartpesantren.repository.UserRepository;
 import id.smartpesantren.security.AuthoritiesConstants;
+import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.service.MailService;
 import id.smartpesantren.service.UserService;
 import id.smartpesantren.service.dto.UserDTO;
@@ -127,6 +129,7 @@ public class UserResource {
     @Timed
     @PreAuthorize("hasRole(\"" + AuthoritiesConstants.SUPERADMIN + "\")")
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
+        Foundation f = new Foundation(SecurityUtils.getFoundationId().get());
         log.debug("REST request to update User : {}", userDTO);
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
@@ -150,11 +153,13 @@ public class UserResource {
      */
     @GetMapping("/users")
     @Timed
-    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(value = "q", required = false) String q, Pageable pageable) {
+    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(value = "profile", required = false) String profile,
+                                                     @RequestParam(value = "q", required = false) String q,
+                                                     Pageable pageable) {
         q = q == null? "": q;
         q = "%"+q+"%";
 
-        final Page<UserDTO> page = userService.getAllManagedUsers(pageable, q);
+        final Page<UserDTO> page = userService.getAllManagedUsers(pageable, profile.equalsIgnoreCase("")? null: Integer.parseInt(profile),  q);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

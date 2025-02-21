@@ -1,9 +1,15 @@
 package id.smartpesantren.config;
 
+import id.smartpesantren.repository.PersistentTokenRepository;
+import id.smartpesantren.repository.PersistentTokensJPARepository;
+import id.smartpesantren.repository.UserRepository;
 import id.smartpesantren.security.AuthoritiesConstants;
-
+import id.smartpesantren.security.PersistentTokenRememberMeServices;
 import id.smartpesantren.security.jwt.JWTConfigurer;
 import id.smartpesantren.security.jwt.TokenProvider;
+import io.github.jhipster.config.JHipsterProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +37,7 @@ import javax.annotation.PostConstruct;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Import(SecurityProblemSupport.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
+    Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     private final UserDetailsService userDetailsService;
@@ -42,12 +48,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final SecurityProblemSupport problemSupport;
 
-    public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, UserDetailsService userDetailsService, TokenProvider tokenProvider, CorsFilter corsFilter, SecurityProblemSupport problemSupport) {
+    private final PersistentTokenRepository persistentTokenRepository;
+    private final JHipsterProperties jHipsterProperties;
+    private final UserRepository userRepository;
+
+
+    public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, UserDetailsService userDetailsService, TokenProvider tokenProvider, CorsFilter corsFilter, SecurityProblemSupport problemSupport, PersistentTokenRepository persistentTokenRepository, JHipsterProperties jHipsterProperties, UserRepository userRepository) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userDetailsService = userDetailsService;
         this.tokenProvider = tokenProvider;
         this.corsFilter = corsFilter;
         this.problemSupport = problemSupport;
+        this.persistentTokenRepository = persistentTokenRepository;
+        this.jHipsterProperties = jHipsterProperties;
+        this.userRepository = userRepository;
     }
 
     @PostConstruct
@@ -71,7 +85,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
@@ -113,9 +126,41 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/management/health").permitAll()
                 .antMatchers("/management/info").permitAll()
                 .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.SUPERADMIN)
+//                .and()
+//                .rememberMe()
+//                .rememberMeParameter("remember-me")
+//                .rememberMeServices(rememberMeServices())
+//                .key(jHipsterProperties.getSecurity().getRememberMe().getKey())
+//                .tokenValiditySeconds(86400)
                 .and()
                 .apply(securityConfigurerAdapter());
 
+    }
+
+    @Bean
+    public PersistentTokenRememberMeServices rememberMeServices() {
+        log.info("Initializing PersistentTokenRememberMeServices...");
+        if (jHipsterProperties == null) {
+            log.error("jHipsterProperties is null");
+        }
+        if (userDetailsService == null) {
+            log.error("userDetailsService is null");
+        }
+        if (persistentTokenRepository == null) {
+            log.error("persistentTokenRepository is null");
+        }
+        if (userRepository == null) {
+            log.error("userRepository is null");
+        }
+
+        PersistentTokenRememberMeServices services = new PersistentTokenRememberMeServices(
+                jHipsterProperties,
+                userDetailsService,
+                persistentTokenRepository,
+                userRepository
+        );
+        log.info("PersistentTokenRememberMeServices created successfully.");
+        return services;
     }
 
     private JWTConfigurer securityConfigurerAdapter() {

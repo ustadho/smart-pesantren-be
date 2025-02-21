@@ -1,5 +1,6 @@
 package id.smartpesantren.web.rest.vm;
 
+import id.smartpesantren.entity.UserProfile;
 import id.smartpesantren.service.dto.UserDTO;
 
 import javax.validation.constraints.Size;
@@ -27,10 +28,10 @@ public class ManagedUserVM extends UserDTO {
     public ManagedUserVM(String id, String login, String password, String firstName, String lastName,
                          String email, boolean activated, String imageUrl, String langKey,
                          String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate,
-                         Set<String> authorities, Set<String> institutions, String personId) {
+                         Set<String> authorities, Set<String> institutions, String personId, UserProfile userProfile) {
 
         super(id, login, firstName, lastName, email, activated, imageUrl, langKey,
-                createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities, institutions, personId);
+                createdBy, createdDate, lastModifiedBy, lastModifiedDate, authorities, institutions, personId, userProfile);
 
         this.password = password;
     }

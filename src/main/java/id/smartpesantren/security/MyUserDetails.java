@@ -15,6 +15,7 @@ public class MyUserDetails implements UserDetails {
 
     private String username;
     private String foundationId;
+    private String personId;
 
     @JsonIgnore
     private String password;
@@ -23,12 +24,14 @@ public class MyUserDetails implements UserDetails {
 
     public MyUserDetails(String username, String password,
                          Collection<? extends GrantedAuthority> authorities,
-                         String foundationId) {
+                         String foundationId,
+                         String personId) {
         System.out.println("MyUserDetails: "+ username);
         this.username = username;
         this.password = password;
         this.authorities = authorities;
         this.foundationId = foundationId;
+        this.personId = personId;
     }
 
     public static MyUserDetails build(User user) {
@@ -40,7 +43,9 @@ public class MyUserDetails implements UserDetails {
                 user.getLogin(),
                 user.getLastName(),
                 authorities,
-                user.getFoundation().getId());
+                user.getFoundation().getId(),
+                user.getPerson() == null? null: user.getPerson().getId()
+                );
     }
 
     @Override
@@ -50,6 +55,14 @@ public class MyUserDetails implements UserDetails {
 
     public String getFoundationId() {
         return foundationId;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
 
     public void setFoundationId(String foundationId) {

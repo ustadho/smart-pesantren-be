@@ -13,8 +13,8 @@ public class AcademicActivityTimeDTO {
     private String institutionName;
     private String sex;
     private Integer seq;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private String startTime;
+    private String endTime;
     private String description;
 
     public AcademicActivityTimeDTO() {
@@ -31,7 +31,7 @@ public class AcademicActivityTimeDTO {
         setDescription(t.getDescription());
     }
 
-    public AcademicActivityTimeDTO(String id, String institutionId, String institutionName, String sex, Integer seq, LocalTime startTime, LocalTime endTime, String description) {
+    public AcademicActivityTimeDTO(String id, String institutionId, String institutionName, String sex, Integer seq, String startTime, String endTime, String description) {
         this.id = id;
         this.institutionId = institutionId;
         this.institutionName = institutionName;
@@ -82,19 +82,19 @@ public class AcademicActivityTimeDTO {
         this.seq = seq;
     }
 
-    public LocalTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

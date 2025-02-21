@@ -151,6 +151,12 @@ public class AccountResource {
         userService.changePassword(passwordChangeDto.getCurrentPassword(), passwordChangeDto.getNewPassword());
     }
 
+    @PutMapping(path = "/account/reset-password/{id}")
+    @Timed
+    public void resetDefaultPassword(@PathVariable String id) {
+        userService.resetDefaultPassword(id);
+    }
+
     /**
      * POST   /account/reset-password/init : Send an email to reset the password of the user
      *
