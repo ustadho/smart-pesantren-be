@@ -93,7 +93,7 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
     Optional<SubjectSchedule> findOneWithTeacherById(String id);
 
     @Query(value = "select * from (\n" +
-            "\tselect ass.class_room_id \"classRoomId\", acr.\"name\" \"classRoomName\", ass.subject_id \"subjectId\", as2.\"name\" \"subjectName\", \n" +
+            "\tselect ass.id \"subjectScheduleId\", ass.class_room_id \"classRoomId\", acr.\"name\" \"classRoomName\", ass.subject_id \"subjectId\", as2.\"name\" \"subjectName\", \n" +
             "\tmin(aat.start_time) \"startTime\", max(aat.end_time) \"endTime\"  \n" +
             "\tfrom ac_subject_schedule_teacher asst\n" +
             "\tjoin ac_subject_schedule ass on ass.id = asst.schedule_id  \n" +
@@ -104,7 +104,7 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
             "\twhere asst.teacher_id = :teacherId\n" +
             "\tand acr.academic_year_id = (select id from academic_year ay where foundation_id=?#{principal.foundationId} and is_default = true order by start_date desc limit 1)\n" +
             "\tand ass.day_id = extract(dow from current_date)\n" +
-            "\tgroup by ass.class_room_id, acr.\"name\", as2.\"name\", ass.subject_id\n" +
+            "\tgroup by ass.id, ass.class_room_id, acr.\"name\", as2.\"name\", ass.subject_id\n" +
             ") a\n" +
             "order by a.\"startTime\"", nativeQuery = true)
     public List<MyScheduleDTO> findTeacherScheduleToday(@Param("teacherId") String id);

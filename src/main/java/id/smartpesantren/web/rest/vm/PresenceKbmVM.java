@@ -11,7 +11,7 @@ public class PresenceKbmVM {
     @NotNull
     private String subjectScheduleId;
     @NotNull
-    private String subjectScheduleTeacherId;
+    private String teacherId;
     private String description;
 
     private List<PresenceKbmVMStudent> students = new ArrayList<>();
@@ -40,12 +40,12 @@ public class PresenceKbmVM {
         this.subjectScheduleId = subjectScheduleId;
     }
 
-    public String getSubjectScheduleTeacherId() {
-        return subjectScheduleTeacherId;
+    public String getTeacherId() {
+        return teacherId;
     }
 
-    public void setSubjectScheduleTeacherId(String subjectScheduleTeacherId) {
-        this.subjectScheduleTeacherId = subjectScheduleTeacherId;
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
     }
 
     public String getDescription() {
