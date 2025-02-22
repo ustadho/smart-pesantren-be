@@ -71,7 +71,7 @@ public class SubjectScheduleService {
             }
             histories.add(sh);
         }
-        if(histories.size() > 0) {
+        if(histories.isEmpty()) {
             subjectScheduleHistoryRepository.saveAll(histories);
         }
         vm.setId(ss.getId());

@@ -51,7 +51,7 @@ public class PresenceKBMService {
                 p.setPresenceDate(new Date());
             }
             p.setSubjectSchedule(new SubjectSchedule(vm.getSubjectScheduleId()));
-            p.setTeacher(new PersonData(vm.getTeacherId()));
+            p.setTeacher(new PersonData(vm.getSubjectScheduleTeacherId()));
             p.setStudent(new Student(d.getStudentId()));
             p.setPresenceStatus(new PresenceStatus(d.getPresenceStatusId()));
             p.setNote(d.getNote());
