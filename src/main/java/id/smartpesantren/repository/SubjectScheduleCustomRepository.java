@@ -74,12 +74,14 @@ public class SubjectScheduleCustomRepository {
                 "                                  'teacherId', sdi.teacher_id,\n" +
                 "                                  'teacherName', sdi.teacher_name,\n" +
                 "                                  'teachers', (\n" +
-                "                                       SELECT json_agg(\n" +
+                "                                       SELECT COALESCE(json_agg(\n" +
                 "                                           json_build_object(\n" +
-                "                                               'id', asst.teacher_id,\n" +
-                "                                               'name', coalesce(pd.name,'')\n" +
+                "                                               'id', asst.id,\n" +
+                "                                               'employeeId', asst.teacher_id,\n" +
+                "                                               'employeeNo', coalesce(pd.employee_no,''),\n" +
+                "                                               'employeeName', coalesce(pd.name,'')\n" +
                 "                                           )\n" +
-                "                                       )\n" +
+                "                                       ), '[]'::::json)\n" +
                 "                                       from ac_subject_schedule_teacher asst\n" +
                 "                                       left join person_data pd on pd.id=asst.teacher_id\n" +
                 "                                       where asst.schedule_id = sdi.schedule_id\n" +

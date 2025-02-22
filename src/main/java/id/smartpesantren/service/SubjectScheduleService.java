@@ -3,16 +3,13 @@ package id.smartpesantren.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.smartpesantren.constant.LogActivityStatus;
-import id.smartpesantren.dto.ActivityScheduleByDayDTO;
-import id.smartpesantren.dto.ActivityScheduleDTO;
-import id.smartpesantren.dto.ActivityTimeDTO;
-import id.smartpesantren.dto.EmployeeSimpleDTO;
+import id.smartpesantren.dto.*;
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.SubjectScheduleCustomRepository;
 import id.smartpesantren.repository.SubjectScheduleHistoryRepository;
 import id.smartpesantren.repository.SubjectScheduleRepository;
 import id.smartpesantren.security.SecurityUtils;
-import id.smartpesantren.service.dto.PersonDTO;
+import id.smartpesantren.web.rest.vm.ClassRoomStudentVMDetail;
 import id.smartpesantren.web.rest.vm.SubjectScheduleVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,9 +61,9 @@ public class SubjectScheduleService {
         subjectScheduleRepository.save(ss);
         // Save History
         List<SubjectScheduleHistory> histories = new ArrayList<>();
-        for(EmployeeSimpleDTO e: vm.getTeachers()) {
+        for(SubjectScheduleVMTeacher e: vm.getTeachers()) {
             SubjectScheduleHistory sh = subjectScheduleHistoryService.fromOrigin(ss);
-            sh.setTeacher(new PersonData(e.getId()));
+            sh.setTeacher(new PersonData(e.getEmployeeId()));
             if (vm.getId() == null) {
                 sh.setLogActivity(LogActivityStatus.INSERT);
             } else {
@@ -88,19 +85,53 @@ public class SubjectScheduleService {
         } else {
             ss = subjectScheduleRepository.findById(vm.getId()).get();
         }
+        ss.setActivityTime(new AcademicActivityTime(vm.getActivityTimeId()));
         ss.setDay(new Day(vm.getDayId()));
         ss.setClassRoom(new ClassRoom(vm.getClassRoomId()));
         ss.setSubject(new Subject(vm.getSubjectId()));
         ss.setDuration(vm.getDuration());
-//        ss.setActivityTimeStart(new AcademicActivityTime(vm.getActivityTimeId()));
-//        ss.setActivityTimeEnd(new AcademicActivityTime(vm.getActivityTimeEndId()));
-        ss.setActivityTime(new AcademicActivityTime(vm.getActivityTimeId()));
-        Set<PersonData> managedTeachers = ss.getTeachers();
-        vm.getTeachers().stream().forEach(s -> {
-            managedTeachers.add(new PersonData(s.getId()));
-        });
-        ss.setTeachers(managedTeachers);
-
+        for (Iterator<SubjectScheduleTeacher> iterator = ss.getTeachers().iterator(); iterator.hasNext();) {
+            SubjectScheduleTeacher d = iterator.next();
+            boolean used = false;
+            for(SubjectScheduleVMTeacher di: vm.getTeachers()) {
+                if(di.getId() != null && di.getId().equalsIgnoreCase(d.getId())) {
+                    used = true;
+                    break;
+                }
+            }
+            if(!used) {
+                iterator.remove();
+            }
+        }
+        for(SubjectScheduleVMTeacher d: vm.getTeachers()) {
+            SubjectScheduleTeacher st = null;
+            if(ss.getId() == null) {
+                st = new SubjectScheduleTeacher();
+            } else {
+                if(d.getId() == null) {
+                    st = new SubjectScheduleTeacher();
+                } else {
+                    // Check if existing detail needs deletion
+                    boolean existingDetailFound = false;
+                    for (SubjectScheduleTeacher existingDetail : ss.getTeachers()) {
+                        if (existingDetail.getId().equals(d.getId())) {
+                            st = existingDetail;
+                            existingDetailFound = true;
+                            break;
+                        }
+                    }
+                    if(!existingDetailFound) {
+                        System.out.println("detail not exists");
+                    }
+                }
+            }
+            st.setSchedule(ss);
+            st.setId(d.getId());
+            st.setTeacher(new PersonData(d.getEmployeeId()));
+            if(st.getId() == null) {
+                ss.getTeachers().add(st);
+            }
+        }
 //        ss.setTeacher(new PersonData(vm.getTeacherId()));
         return ss;
     }
@@ -130,11 +161,12 @@ public class SubjectScheduleService {
             vm.setActivityTimeStartId(s.getActivityTimeStart() == null? null: s.getActivityTimeStart().getId());
             vm.setActivityTimeEndId(s.getActivityTimeEnd() == null? null: s.getActivityTimeEnd().getId());
             if(s.getTeachers() != null) {
-                for(PersonData t : s.getTeachers()) {
-                    EmployeeSimpleDTO d = new EmployeeSimpleDTO();
+                for(SubjectScheduleTeacher t : s.getTeachers()) {
+                    SubjectScheduleVMTeacher d = new SubjectScheduleVMTeacher();
                     d.setId(t.getId());
-                    d.setName(t.getName());
-                    d.setEmployeeNo(t.getEmployeeNo());
+                    d.setEmployeeId(t.getTeacher().getId());
+                    d.setEmployeeName(t.getTeacher().getName());
+                    d.setEmployeeNo(t.getTeacher().getEmployeeNo());
                     vm.getTeachers().add(d);
                 }
             }

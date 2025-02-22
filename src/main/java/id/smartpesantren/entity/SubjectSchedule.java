@@ -1,6 +1,7 @@
 package id.smartpesantren.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
@@ -43,14 +44,18 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
     @JoinColumn(name = "acitivity_time_end_id")
     private AcademicActivityTime activityTimeEnd;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "ac_subject_schedule_teacher",
-            joinColumns = {@JoinColumn(name = "schedule_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "teacher_id", referencedColumnName = "id")})
-    @BatchSize(size = 20)
-    private Set<PersonData> teachers = new HashSet<>();
+//    @JsonIgnore
+//    @ManyToMany
+//    @JoinTable(
+//            name = "ac_subject_schedule_teacher",
+//            joinColumns = {@JoinColumn(name = "schedule_id", referencedColumnName = "id")},
+//            inverseJoinColumns = {@JoinColumn(name = "teacher_id", referencedColumnName = "id")})
+//    @BatchSize(size = 20)
+//    private Set<PersonData> teachers = new HashSet<>();
+
+    @OneToMany(mappedBy = "schedule", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<SubjectScheduleTeacher> teachers = new HashSet<>();
 
     @Column(columnDefinition = "integer default 1")
     private Integer duration;
@@ -118,11 +123,11 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
         this.activityTimeEnd = activityTimeEnd;
     }
 
-    public Set<PersonData> getTeachers() {
+    public Set<SubjectScheduleTeacher> getTeachers() {
         return teachers;
     }
 
-    public void setTeachers(Set<PersonData> teachers) {
+    public void setTeachers(Set<SubjectScheduleTeacher> teachers) {
         this.teachers = teachers;
     }
 
