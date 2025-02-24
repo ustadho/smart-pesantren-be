@@ -1,35 +1,34 @@
 package id.smartpesantren.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "ac_presence_kbm")
-public class PresenceKBM extends AbstractAuditingEntity implements Serializable {
+public class PresenceKBM extends AbstractAuditingEntity {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     @Column(length = 36)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "subject_schedule_id", nullable = false)
-    private SubjectSchedule subjectSchedule;
+    @Column(nullable = false, columnDefinition = "date default current_date")
+    private LocalDate presenceDate;
+
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "schedule_id", nullable = false)
+    @JsonBackReference
+    SubjectSchedule subjectSchedule;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
     private PersonData teacher;
-
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date presenceDate;
-
-    @ManyToOne
-    @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
 
     @ManyToOne
     @JoinColumn(name = "presence_status_id", nullable = false)
@@ -38,7 +37,9 @@ public class PresenceKBM extends AbstractAuditingEntity implements Serializable 
     @Column(columnDefinition = "text")
     private String note;
 
-    private String attachment;
+    @OneToMany(mappedBy = "presenceKBM", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<PresenceKBMStudent> students = new HashSet<>();
 
     public String getId() {
         return id;
@@ -48,36 +49,12 @@ public class PresenceKBM extends AbstractAuditingEntity implements Serializable 
         this.id = id;
     }
 
-    public Student getStudent() {
-        return student;
+    public LocalDate getPresenceDate() {
+        return presenceDate;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public PresenceStatus getPresenceStatus() {
-        return presenceStatus;
-    }
-
-    public void setPresenceStatus(PresenceStatus presenceStatus) {
-        this.presenceStatus = presenceStatus;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public String getAttachment() {
-        return attachment;
-    }
-
-    public void setAttachment(String attachment) {
-        this.attachment = attachment;
+    public void setPresenceDate(LocalDate presenceDate) {
+        this.presenceDate = presenceDate;
     }
 
     public SubjectSchedule getSubjectSchedule() {
@@ -96,11 +73,27 @@ public class PresenceKBM extends AbstractAuditingEntity implements Serializable 
         this.teacher = teacher;
     }
 
-    public Date getPresenceDate() {
-        return presenceDate;
+    public PresenceStatus getPresenceStatus() {
+        return presenceStatus;
     }
 
-    public void setPresenceDate(Date presenceDate) {
-        this.presenceDate = presenceDate;
+    public void setPresenceStatus(PresenceStatus presenceStatus) {
+        this.presenceStatus = presenceStatus;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public Set<PresenceKBMStudent> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<PresenceKBMStudent> students) {
+        this.students = students;
     }
 }

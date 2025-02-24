@@ -61,7 +61,8 @@ public class SubjectScheduleResource {
 
     @GetMapping("/by-teacher/{id}")
     public List<MyScheduleDTO> findSubjectScheduleClassRoomByTeacherId(@PathVariable("id") String id) {
-        return subjectScheduleRepository.findTeacherScheduleToday(id);
+        List<MyScheduleDTO> list = subjectScheduleRepository.findTeacherScheduleToday("%"+id+"%");
+        return list;
     }
 
     @GetMapping("/history/{classRoomId}")
@@ -74,7 +75,7 @@ public class SubjectScheduleResource {
         return SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .filter(user -> user.getPerson() != null)
-            .map(user -> subjectScheduleRepository.findTeacherScheduleToday(user.getPerson().getId()))
+            .map(user -> subjectScheduleRepository.findTeacherScheduleToday("%"+user.getPerson().getId()+"%"))
             .orElseGet(ArrayList::new);
     }
 

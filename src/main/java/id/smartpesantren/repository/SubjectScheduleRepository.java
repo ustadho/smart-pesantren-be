@@ -92,21 +92,14 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
     @EntityGraph(attributePaths = {"teachers"})
     Optional<SubjectSchedule> findOneWithTeacherById(String id);
 
-    @Query(value = "select * from (\n" +
-            "\tselect ass.id \"subjectScheduleId\", ass.class_room_id \"classRoomId\", acr.\"name\" \"classRoomName\", ass.subject_id \"subjectId\", as2.\"name\" \"subjectName\", \n" +
-            "\tmin(aat.start_time) \"startTime\", max(aat.end_time) \"endTime\"  \n" +
-            "\tfrom ac_subject_schedule_teacher asst\n" +
-            "\tjoin ac_subject_schedule ass on ass.id = asst.schedule_id  \n" +
-            "\tjoin m_day md on md.id = ass.day_id \n" +
-            "\tjoin ac_activity_time aat on aat.id=ass.activity_time_id \n" +
-            "\tjoin ac_class_room acr on acr.id=ass.class_room_id \n" +
-            "\tjoin ac_subject as2 on as2.id = ass.subject_id \n" +
-            "\twhere asst.teacher_id = :teacherId\n" +
-            "\tand acr.academic_year_id = (select id from academic_year ay where foundation_id=?#{principal.foundationId} and is_default = true order by start_date desc limit 1)\n" +
-            "\tand ass.day_id = extract(dow from current_date)\n" +
-            "\tgroup by ass.id, ass.class_room_id, acr.\"name\", as2.\"name\", ass.subject_id\n" +
-            ") a\n" +
-            "order by a.\"startTime\"", nativeQuery = true)
+    @Query(value =
+            "select vsa.class_room_id \"classRoomId\", vsa.class_room_name \"classRoomName\",  \"subject_id\" as \"subjectId\", \n" +
+            "\tschedule_id \"subjectScheduleId\", \"subject_name\" \"subjectName\", start_time \"startTime\", end_time \"endTime\" \n" +
+            "\tfrom vw_schedule_all vsa \n" +
+            "\twhere vsa.academic_year_id = (select id from academic_year ay where foundation_id=?#{principal.foundationId}\n" +
+            " and is_default = true order by start_date desc limit 1)\n" +
+            "\tand vsa.day_id = extract(dow from current_date)\n" +
+            "\tand vsa.teacher_ids like :teacherId", nativeQuery = true)
     public List<MyScheduleDTO> findTeacherScheduleToday(@Param("teacherId") String id);
 
     @Query(value = "select vw.schedule_id \"scheduleId\", vw.day_id \"dayId\", vw.day_name \"dayName\", vw.institution_name \"institutionName\", vw.class_room_name \"classRoomName\", vw.subject_id \"subjectId\", vw.subject_name \"subjectName\", \n" +
