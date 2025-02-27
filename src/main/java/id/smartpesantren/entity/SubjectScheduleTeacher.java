@@ -20,6 +20,10 @@ public class SubjectScheduleTeacher {
     SubjectSchedule schedule;
 
     @ManyToOne
+    @JoinColumn(name = "subject_id", nullable = false)
+    private Subject subject;
+
+    @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
     PersonData teacher;
 
@@ -46,4 +50,14 @@ public class SubjectScheduleTeacher {
     public void setTeacher(PersonData teacher) {
         this.teacher = teacher;
     }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+
 }

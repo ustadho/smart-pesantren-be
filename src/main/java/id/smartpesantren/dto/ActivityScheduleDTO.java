@@ -70,20 +70,14 @@ public class ActivityScheduleDTO {
         @JsonProperty("id")
         private String id;
 
-        @JsonProperty("subjectId")
-        private String subjectId;
+        @JsonProperty("subject")
+        private String subject;
 
-        @JsonProperty("subjectName")
-        private String subjectName;
+        @JsonProperty("teacher")
+        private String teacher;
 
-        @JsonProperty("teacherId")
-        private String teacherId;
-
-        @JsonProperty("teacherName")
-        private String teacherName;
-
-        // Getters and Setters
-
+        @JsonProperty("subjects")
+        private List<DayScheduleDTOSubject> subjects;
 
         public Integer getDayId() {
             return dayId;
@@ -100,6 +94,55 @@ public class ActivityScheduleDTO {
         public void setDayName(String dayName) {
             this.dayName = dayName;
         }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getSubject() {
+            return subject;
+        }
+
+        public void setSubject(String subject) {
+            this.subject = subject;
+        }
+
+        public String getTeacher() {
+            return teacher;
+        }
+
+        public void setTeacher(String teacher) {
+            this.teacher = teacher;
+        }
+
+        public List<DayScheduleDTOSubject> getSubjects() {
+            return subjects;
+        }
+
+        public void setSubjects(List<DayScheduleDTOSubject> subjects) {
+            this.subjects = subjects;
+        }
+    }
+
+    public static class DayScheduleDTOSubject {
+        @JsonProperty("id")
+        private String id;
+
+        @JsonProperty("subjectId")
+        private String subjectId;
+
+        @JsonProperty("subjectName")
+        private String subjectName;
+
+        @JsonProperty("teacherId")
+        private String teacherId;
+
+        @JsonProperty("teacherName")
+        private String teacherName;
 
         public String getId() {
             return id;

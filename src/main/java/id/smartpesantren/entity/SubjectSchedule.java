@@ -29,10 +29,6 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
     Day day;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id", nullable = false)
-    private Subject subject;
-
-    @ManyToOne
     @JoinColumn(name = "activity_time_id", nullable = false)
     private AcademicActivityTime activityTime;
 
@@ -89,14 +85,6 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
 
     public void setDay(Day day) {
         this.day = day;
-    }
-
-    public Subject getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
     }
 
     public AcademicActivityTime getActivityTime() {

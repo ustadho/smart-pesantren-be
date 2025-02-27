@@ -23,14 +23,14 @@ public class SubjectScheduleHistoryService {
     SubjectScheduleHistoryRepository subjectScheduleHistoryRepository;
 
 
-    public SubjectScheduleHistory fromOrigin(SubjectSchedule s) {
+    public SubjectScheduleHistory fromOrigin(SubjectScheduleTeacher s) {
         SubjectScheduleHistory sh = new SubjectScheduleHistory();
         sh.setSubject(s.getSubject());
-        sh.setActivityTime(s.getActivityTime());
-        sh.setDay(s.getDay());
-        sh.setClassRoom(s.getClassRoom());
+        sh.setActivityTime(s.getSchedule().getActivityTime());
+        sh.setDay(s.getSchedule().getDay());
+        sh.setClassRoom(s.getSchedule().getClassRoom());
         sh.setSubjectScheduleId(s.getId());
-//        sh.setTeacher(s.getTeacher());
+        sh.setTeacher(s.getTeacher());
         sh.setSubjectScheduleId(s.getId());
         return sh;
     }

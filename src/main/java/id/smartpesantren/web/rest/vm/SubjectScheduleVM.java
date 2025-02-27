@@ -1,8 +1,5 @@
 package id.smartpesantren.web.rest.vm;
 
-import id.smartpesantren.dto.EmployeeSimpleDTO;
-import id.smartpesantren.dto.SubjectScheduleVMTeacher;
-
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -13,14 +10,11 @@ public class SubjectScheduleVM {
     @NotNull
     private Integer dayId;
     private String dayName;
-    @NotNull
-    private String subjectId;
-    private String subjectName;
     private String activityTimeId;
     private String activityTimeStartId;
     private String activityTimeEndId;
     private Integer duration;
-    private Set<SubjectScheduleVMTeacher> teachers;
+    private Set<SubjectScheduleVMSubjectTeacher> subjects;
 
     public String getId() {
         return id;
@@ -52,22 +46,6 @@ public class SubjectScheduleVM {
 
     public void setDayName(String dayName) {
         this.dayName = dayName;
-    }
-
-    public String getSubjectId() {
-        return subjectId;
-    }
-
-    public void setSubjectId(String subjectId) {
-        this.subjectId = subjectId;
-    }
-
-    public String getSubjectName() {
-        return subjectName;
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
     }
 
     public String getActivityTimeId() {
@@ -102,11 +80,12 @@ public class SubjectScheduleVM {
         this.duration = duration;
     }
 
-    public Set<SubjectScheduleVMTeacher> getTeachers() {
-        return teachers;
+    public Set<SubjectScheduleVMSubjectTeacher> getSubjects() {
+        return subjects;
     }
 
-    public void setTeachers(Set<SubjectScheduleVMTeacher> teachers) {
-        this.teachers = teachers;
+    public void setSubjects(Set<SubjectScheduleVMSubjectTeacher> subjects) {
+        this.subjects = subjects;
     }
+
 }
