@@ -145,4 +145,3 @@ FROM (
     order by start_time, activity_seq
 ) sd
 
-  
