@@ -20,6 +20,19 @@ public class StudentDTO {
     public StudentDTO() {
     }
 
+    public StudentDTO(String id, String nis, String nisn, String name, String sex, Date dob, String joinYear, String institution, String category, String status) {
+        this.id = id;
+        this.nis = nis;
+        this.nisn = nisn;
+        this.name = name;
+        this.sex = sex;
+        this.dob = dob;
+        this.joinYear = joinYear;
+        this.institution = institution;
+        this.category = category;
+        this.status = status;
+    }
+
     public StudentDTO(Student s) {
         setId(s.getId());
         setName(s.getName());

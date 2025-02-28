@@ -9,7 +9,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface StudentRepository extends JpaRepository<Student, String> {
-    @Query("select new id.smartpesantren.dto.StudentDTO(a) \n " +
+    @Query("select new id.smartpesantren.dto.StudentDTO(a.id, a.nis, a.nisn, a.name, " +
+            "case when a.sex='M' then 'Putra' else 'Putri' end, a.dob, a.joinYear.code, " +
+            "a.institution.name, a.category.name, " +
+            "CASE WHEN a.status = '1' THEN 'Aktif' " +
+            "   WHEN a.status='2' then 'Lulus' " +
+            "   WHEN a.status='3' then 'Pindah' " +
+            "ELSE 'Non Aktif' END) \n " +
             "from Student a " +
             "where a.foundation.id=?#{principal.foundationId}\n" +
             "and (coalesce(:iid,'')='' OR a.institution.id=:iid) \n"+

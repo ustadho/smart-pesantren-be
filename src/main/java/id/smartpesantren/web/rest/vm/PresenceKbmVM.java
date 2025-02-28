@@ -1,18 +1,19 @@
 package id.smartpesantren.web.rest.vm;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class PresenceKbmVM {
     private String id;
-    private Date presenceDate;
+    private LocalDate presenceDate;
     @NotNull
     private String subjectScheduleId;
     @NotNull
     private String teacherId;
-    private String description;
+    private String note;
+    private Integer statusId;
 
     private List<PresenceKbmVMStudent> students = new ArrayList<>();
 
@@ -24,11 +25,11 @@ public class PresenceKbmVM {
         this.id = id;
     }
 
-    public Date getPresenceDate() {
+    public LocalDate getPresenceDate() {
         return presenceDate;
     }
 
-    public void setPresenceDate(Date presenceDate) {
+    public void setPresenceDate(LocalDate presenceDate) {
         this.presenceDate = presenceDate;
     }
 
@@ -48,12 +49,12 @@ public class PresenceKbmVM {
         this.teacherId = teacherId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getNote() {
+        return note;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public List<PresenceKbmVMStudent> getStudents() {
@@ -62,5 +63,13 @@ public class PresenceKbmVM {
 
     public void setStudents(List<PresenceKbmVMStudent> students) {
         this.students = students;
+    }
+
+    public Integer getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
     }
 }

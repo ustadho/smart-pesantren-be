@@ -15,6 +15,6 @@ public interface SubjectScheduleHistoryDTO {
     public String getSubjectName();
     public String getTeacherName();
     public Short getSeq();
-    public LocalTime getStartTime();
-    public LocalTime getEndTime();
+    public String getStartTime();
+    public String getEndTime();
 }

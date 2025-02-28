@@ -124,7 +124,7 @@ public class EmployeeVM {
         this.setWorkingShift(p.getWorkingShift());
         this.setEmail(p.getEmail());
         this.setPhone(p.getPhone());
-        this.setPhoto(p.getPhoto());
+        this.setJoinDate(p.getJoinDate());
         for(EmployeeFormalEducaton e: p.getFormalEducations()) {
             EmployeeFormalEducationVM edu = new EmployeeFormalEducationVM();
             edu.setId(e.getId());

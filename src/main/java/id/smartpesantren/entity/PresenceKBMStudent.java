@@ -4,24 +4,26 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "ac_presence_kbm_student")
-public class PresenceKBMStudent {
+public class PresenceKBMStudent extends AbstractAuditingEntity implements Serializable {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     @Column(length = 36)
     private String id;
 
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "presence_id", nullable = false)
     @JsonBackReference
-    PresenceKBM presenceKBM;
+    private PresenceKBM presenceKBM;
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+    Student student;
 
     @ManyToOne
     @JoinColumn(name = "presence_status_id", nullable = false)
@@ -30,28 +32,14 @@ public class PresenceKBMStudent {
     @Column(columnDefinition = "text")
     private String note;
 
+    private String attachment;
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public PresenceKBM getPresenceKBM() {
-        return presenceKBM;
-    }
-
-    public void setPresenceKBM(PresenceKBM presenceKBM) {
-        this.presenceKBM = presenceKBM;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
     }
 
     public PresenceStatus getPresenceStatus() {
@@ -68,5 +56,29 @@ public class PresenceKBMStudent {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
+    }
+
+    public PresenceKBM getPresenceKBM() {
+        return presenceKBM;
+    }
+
+    public void setPresenceKBM(PresenceKBM presenceKBM) {
+        this.presenceKBM = presenceKBM;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }
