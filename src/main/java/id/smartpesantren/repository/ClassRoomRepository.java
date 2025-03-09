@@ -32,7 +32,7 @@ public interface ClassRoomRepository extends JpaRepository<ClassRoom, String> {
             "where b.isDefault=true \n" +
             "and a.institution.id=:institutionId \n" +
             "and a.academicYear.id=:academicYearId \n" +
-            "order by c.level asc")
+            "order by c.level asc, a.name")
     public List<ClassRoomDTO> findAllByAcademicYear(@Param("institutionId") String institutionId, @Param("academicYearId") String academicYearId);
 
     @Query("select new id.smartpesantren.dto.ClassRoomDTO(a) \n" +
