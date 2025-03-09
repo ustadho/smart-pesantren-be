@@ -133,13 +133,14 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
                     "ORDER BY \"startTime\"", nativeQuery = true)
     public List<MyScheduleDTO> findTeacherScheduleToday(@Param("teacherId") String id);
 
-    @Query(value = "select vw.schedule_id \"scheduleId\", vw.day_id \"dayId\", vw.day_name \"dayName\", vw.institution_name \"institutionName\", vw.class_room_name \"classRoomName\", vw.subject_id \"subjectId\", vw.subject_name \"subjectName\", \n" +
+    @Query(value = "select vw.schedule_id \"scheduleId\", vw.day_id \"dayId\", vw.day_name \"dayName\", vw.institution_name \"institutionName\", \n" +
+            "vw.class_room_name \"classRoomName\", ast.subject_id \"subjectId\", s.name \"subjectName\", \n" +
             "vw.start_time \"startTime\", vw.end_time \"endTime\", vw.duration, vw.teachers\n" +
             "from vw_schedule_all vw \n" +
-            "join ac_subject_schedule_teacher ast on ast.schedule_id=vw.schedule_id \n" +
+            "join ac_subject_schedule_teacher ast on ast.schedule_id=vw.schedule_id and ast.teacher_id =:teacherId\n" +
             "join academic_year ay on ay.id = vw.academic_year_id \n" +
+            "join ac_subject s on s.id=ast.subject_id \n" +
             "and ay.is_default = true\n" +
-            "where ast.teacher_id =:teacherId \n" +
-            "order by vw.day_id, vw.start_time\n", nativeQuery = true)
+            "order by vw.day_id, vw.start_time", nativeQuery = true)
     public List<MyScheduleWeeklyDTO> findAllMyWeeklySchedule(@Param("teacherId") String id);
 }
