@@ -33,4 +33,9 @@ public class SubjectSchedule2Resource {
     public List<ActivityScheduleByDayDTO> getSchedulesByDay(@PathVariable("id") String classRoomId, @RequestHeader("Timezone") String timeZone) {
         return subjectScheduleService.findAllSchedulePerDay(classRoomId, timeZone);
     }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") String id) {
+        subjectScheduleService.deleteById(id);
+    }
 }

@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SubjectSchedule2Service {
@@ -119,7 +116,7 @@ public class SubjectSchedule2Service {
                     // Check if existing detail needs deletion
                     boolean existingDetailFound = false;
                     for (SubjectScheduleTeacher2 existingDetail : ss.getSubjectTeachers()) {
-                        if (existingDetail.getId().equals(d.getId())) {
+                        if (Objects.equals(existingDetail.getId(), d.getId())) {
                             st = existingDetail;
                             existingDetailFound = true;
                             break;
@@ -152,7 +149,9 @@ public class SubjectSchedule2Service {
 //                this.subjectSchedule2Repository.deleteById(id);
 //                this.subjectScheduleHistoryRepository.save(sh);
             }
+            this.subjectSchedule2Repository.deleteById(id);
         }
+
     }
 
     public SubjectScheduleVM findById(String id) {
