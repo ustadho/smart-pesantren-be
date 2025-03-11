@@ -23,6 +23,8 @@ public class SubjectSchedule2Resource {
     @Autowired
     SubjectSchedule2Service subjectScheduleService;
 
+    @Autowired
+    SubjectSchedule2Repository subjectScheduleRepository;
 
     @PutMapping
     public SubjectSchedule2VM update(@RequestBody @Valid SubjectSchedule2VM vm) {
@@ -37,5 +39,16 @@ public class SubjectSchedule2Resource {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") String id) {
         subjectScheduleService.deleteById(id);
+    }
+
+    @GetMapping("/teachers/{id}")
+    public List<PersonSimpleDTO> findAllTeacher(@PathVariable("id") String academicYear) {
+        return subjectScheduleRepository.findAllTeacherScheduleToday(academicYear);
+    }
+
+    @GetMapping("/by-teacher/{id}")
+    public List<MySchedule2DTO> findSubjectScheduleClassRoomByTeacherId(@PathVariable("id") String teacherId) {
+        List<MySchedule2DTO> list = subjectScheduleRepository.findTeacherScheduleToday(teacherId);
+        return list;
     }
 }
