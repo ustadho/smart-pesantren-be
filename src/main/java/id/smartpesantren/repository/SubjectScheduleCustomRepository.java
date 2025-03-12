@@ -120,9 +120,9 @@ public class SubjectScheduleCustomRepository {
                 "        'classRoomId', ass.class_room_id,\n" +
                 "        'subjectId', ass.subject_id,\n" +
                 "        'subjectName', s.name,\n" +
-                "        'activityStartId', ass.acitivity_time_start_id,\n" +
+                "        'activityStartId', ass.activity_time_start_id,\n" +
                 "        'activityStartTime', at1.start_time,\n" +
-                "        'activityEndId', ass.acitivity_time_end_id,\n" +
+                "        'activityEndId', ass.activity_time_end_id,\n" +
                 "        'activityEndTme', at2.end_time,\n" +
                 "        'duration', COALESCE(ass.duration, 0),\n" +
                 "        'teachers', (\n" +
@@ -135,8 +135,8 @@ public class SubjectScheduleCustomRepository {
                 "    )\n" +
                 "    FROM ac_subject_schedule ass\n" +
                 "    JOIN ac_subject s ON s.id = ass.subject_id\n" +
-                "    JOIN ac_activity_time at1 ON at1.id = ass.acitivity_time_start_id\n" +
-                "    JOIN ac_activity_time at2 ON at2.id = ass.acitivity_time_end_id\n" +
+                "    JOIN ac_activity_time at1 ON at1.id = ass.activity_time_start_id\n" +
+                "    JOIN ac_activity_time at2 ON at2.id = ass.activity_time_end_id\n" +
                 "    WHERE ass.day_id = md.id\n" +
                 "      AND ass.class_room_id = :classRoomId\n" +
                 "  )\n" +

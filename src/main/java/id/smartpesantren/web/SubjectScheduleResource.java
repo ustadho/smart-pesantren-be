@@ -21,32 +21,22 @@ public class SubjectScheduleResource {
     SubjectScheduleService subjectScheduleService;
 
     @Autowired
-    SubjectScheduleHistoryRepository subjectScheduleHistoryRepository;
+    SubjectScheduleRepository subjectScheduleRepository;
 
     @Autowired
-    SubjectScheduleRepository subjectScheduleRepository;
+    SubjectScheduleHistoryRepository subjectScheduleHistoryRepository;
 
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("{id}/list")
-    public List<ActivityScheduleDTO> getSchedules(@PathVariable("id") String classRoomId, @RequestHeader("Timezone") String timeZone) {
-        return subjectScheduleService.getAllSchedules(classRoomId, timeZone);
+    @PutMapping
+    public SubjectScheduleVM update(@RequestBody @Valid SubjectScheduleVM vm) {
+        return subjectScheduleService.saveOrUpdate(vm);
     }
 
     @GetMapping("{id}/list-per-day")
     public List<ActivityScheduleByDayDTO> getSchedulesByDay(@PathVariable("id") String classRoomId, @RequestHeader("Timezone") String timeZone) {
         return subjectScheduleService.findAllSchedulePerDay(classRoomId, timeZone);
-    }
-
-    @GetMapping("/{id}")
-    public SubjectScheduleVM findById(@PathVariable("id") String id) {
-        return subjectScheduleService.findById(id);
-    }
-
-    @PutMapping
-    public SubjectScheduleVM update(@RequestBody @Valid SubjectScheduleVM vm) {
-        return subjectScheduleService.saveOrUpdate(vm);
     }
 
     @DeleteMapping("/{id}")
@@ -60,8 +50,8 @@ public class SubjectScheduleResource {
     }
 
     @GetMapping("/by-teacher/{id}")
-    public List<MyScheduleDTO> findSubjectScheduleClassRoomByTeacherId(@PathVariable("id") String id) {
-        List<MyScheduleDTO> list = subjectScheduleRepository.findTeacherScheduleToday(id);
+    public List<MySchedule2DTO> findSubjectScheduleClassRoomByTeacherId(@PathVariable("id") String teacherId) {
+        List<MySchedule2DTO> list = subjectScheduleRepository.findTeacherScheduleToday(teacherId);
         return list;
     }
 
@@ -71,12 +61,12 @@ public class SubjectScheduleResource {
     }
 
     @GetMapping("my-current-schedule")
-    List<MyScheduleDTO> findMyCurrentSchedule() {
+    List<MySchedule2DTO> findMyCurrentSchedule() {
         return SecurityUtils.getCurrentUserLogin()
-            .flatMap(userRepository::findOneByLogin)
-            .filter(user -> user.getPerson() != null)
-            .map(user -> subjectScheduleRepository.findTeacherScheduleToday("%"+user.getPerson().getId()+"%"))
-            .orElseGet(ArrayList::new);
+                .flatMap(userRepository::findOneByLogin)
+                .filter(user -> user.getPerson() != null)
+                .map(user -> subjectScheduleRepository.findTeacherScheduleToday("%"+user.getPerson().getId()+"%"))
+                .orElseGet(ArrayList::new);
     }
 
     @GetMapping("my-weekly-schedule")
@@ -87,4 +77,5 @@ public class SubjectScheduleResource {
                 .map(user -> subjectScheduleRepository.findAllMyWeeklySchedule(user.getPerson().getId()))
                 .orElseGet(ArrayList::new);
     }
+
 }

@@ -30,9 +30,9 @@ public class SubjectScheduleCustom2Repository {
                 "    FROM ac_activity_time act\n" +
                 "    JOIN ac_class_room cr on cr.id=:classRoomId and act.sex=cr.sex \n" +
                 "    CROSS JOIN m_day d\n" +
-                "    LEFT JOIN ac_subject_schedule2 sch \n" +
+                "    LEFT JOIN ac_subject_schedule sch \n" +
                 "        ON sch.activity_time_id = act.id AND sch.day_id = d.id AND sch.class_room_id=:classRoomId\n" +
-                "    LEFT JOIN ac_subject_schedule_teacher2 sst \n" +
+                "    LEFT JOIN ac_subject_schedule_teacher sst \n" +
                 "        ON sch.id = sst.schedule_id\n" +
                 "    LEFT JOIN person_data p \n" +
                 "        ON p.id = sst.teacher_id\n" +
@@ -80,7 +80,7 @@ public class SubjectScheduleCustom2Repository {
                 "                                               'teacherName', coalesce(pd.name,'')\n" +
                 "                                           )\n" +
                 "                                       ), '[]'::::json)\n" +
-                "                                       from ac_subject_schedule_teacher2 asst\n" +
+                "                                       from ac_subject_schedule_teacher asst\n" +
                 "                                       left join ac_subject2 as2 on as2.id=asst.subject_id\n" +
                 "                                       left join person_data pd on pd.id=asst.teacher_id\n" +
                 "                                       where asst.schedule_id = sdi.schedule_id\n" +
@@ -120,9 +120,9 @@ public class SubjectScheduleCustom2Repository {
                 "          'dayId', ass.day_id,\n" +
                 "          'dayName', md.name,\n" +
                 "          'classRoomId', ass.class_room_id,\n" +
-                "          'activityStartId', ass.acitivity_time_start_id,\n" +
+                "          'activityStartId', ass.activity_time_start_id,\n" +
                 "          'activityStartTime', at1.start_time,\n" +
-                "          'activityEndId', ass.acitivity_time_end_id,\n" +
+                "          'activityEndId', ass.activity_time_end_id,\n" +
                 "          'activityEndTime', at2.end_time,\n" +
                 "          'duration', COALESCE(ass.duration, 0),\n" +
                 "          'subjectTeachers', COALESCE((\n" +
@@ -135,16 +135,16 @@ public class SubjectScheduleCustom2Repository {
                 "                'subjectName', s.name\n" +
                 "              )\n" +
                 "            )\n" +
-                "            FROM ac_subject_schedule_teacher2 asst\n" +
+                "            FROM ac_subject_schedule_teacher asst\n" +
                 "            JOIN person_data pd ON pd.id = asst.teacher_id\n" +
                 "            JOIN ac_subject s ON s.id = asst.subject_id \n" +
                 "            WHERE asst.schedule_id = ass.id\n" +
                 "          ), cast('[]' as json))\n" +
                 "        )\n" +
                 "      )\n" +
-                "      FROM ac_subject_schedule2 ass\n" +
-                "      LEFT JOIN ac_activity_time at1 ON at1.id = ass.acitivity_time_start_id\n" +
-                "      LEFT JOIN ac_activity_time at2 ON at2.id = ass.acitivity_time_end_id\n" +
+                "      FROM ac_subject_schedule ass\n" +
+                "      LEFT JOIN ac_activity_time at1 ON at1.id = ass.activity_time_start_id\n" +
+                "      LEFT JOIN ac_activity_time at2 ON at2.id = ass.activity_time_end_id\n" +
                 "      WHERE ass.day_id = md.id\n" +
                 "        AND ass.class_room_id = :classRoomId\n" +
                 "    ), cast('[]' as json))\n" +

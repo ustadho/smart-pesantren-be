@@ -3,11 +3,12 @@ package id.smartpesantren.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.smartpesantren.constant.LogActivityStatus;
-import id.smartpesantren.dto.*;
+import id.smartpesantren.dto.ActivityScheduleByDayDTO;
+import id.smartpesantren.dto.ActivityScheduleDTO;
 import id.smartpesantren.entity.*;
-import id.smartpesantren.repository.SubjectScheduleCustomRepository;
-import id.smartpesantren.repository.SubjectScheduleHistoryRepository;
 import id.smartpesantren.repository.SubjectScheduleRepository;
+import id.smartpesantren.repository.SubjectScheduleCustom2Repository;
+import id.smartpesantren.repository.SubjectScheduleHistoryRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.vm.SubjectScheduleVM;
 import id.smartpesantren.web.rest.vm.SubjectScheduleVMSubjectTeacher;
@@ -29,7 +30,7 @@ public class SubjectScheduleService {
     SubjectScheduleHistoryService subjectScheduleHistoryService;
 
     @Autowired
-    private SubjectScheduleCustomRepository customRepository;
+    private SubjectScheduleCustom2Repository customRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -61,8 +62,12 @@ public class SubjectScheduleService {
         subjectScheduleRepository.save(ss);
         // Save History
         List<SubjectScheduleHistory> histories = new ArrayList<>();
-        for(SubjectScheduleTeacher e: ss.getTeachers()) {
+        for(SubjectScheduleTeacher e: ss.getSubjectTeachers()) {
             SubjectScheduleHistory sh = subjectScheduleHistoryService.fromOrigin(e);
+            sh.setSubjectScheduleId(ss.getId());
+            sh.setActivityTimeStart(new AcademicActivityTime(vm.getActivityStartId()));
+            sh.setActivityTimeEnd(new AcademicActivityTime(vm.getActivityEndId()));
+            sh.setDuration(vm.getDuration());
             sh.setTeacher(e.getTeacher());
             sh.setSubject(e.getSubject());
             if (vm.getId() == null) {
@@ -86,14 +91,15 @@ public class SubjectScheduleService {
         } else {
             ss = subjectScheduleRepository.findById(vm.getId()).get();
         }
-        ss.setActivityTime(new AcademicActivityTime(vm.getActivityTimeId()));
         ss.setDay(new Day(vm.getDayId()));
         ss.setClassRoom(new ClassRoom(vm.getClassRoomId()));
+        ss.setActivityTimeStart(new AcademicActivityTime(vm.getActivityStartId()));
+        ss.setActivityTimeEnd(new AcademicActivityTime(vm.getActivityEndId()));
         ss.setDuration(vm.getDuration());
-        for (Iterator<SubjectScheduleTeacher> iterator = ss.getTeachers().iterator(); iterator.hasNext();) {
+        for (Iterator<SubjectScheduleTeacher> iterator = ss.getSubjectTeachers().iterator(); iterator.hasNext();) {
             SubjectScheduleTeacher d = iterator.next();
             boolean used = false;
-            for(SubjectScheduleVMSubjectTeacher di: vm.getSubjects()) {
+            for(SubjectScheduleVMSubjectTeacher di: vm.getSubjectTeachers()) {
                 if(di.getId() != null && di.getId().equalsIgnoreCase(d.getId())) {
                     used = true;
                     break;
@@ -103,7 +109,7 @@ public class SubjectScheduleService {
                 iterator.remove();
             }
         }
-        for(SubjectScheduleVMSubjectTeacher d: vm.getSubjects()) {
+        for(SubjectScheduleVMSubjectTeacher d: vm.getSubjectTeachers()) {
             SubjectScheduleTeacher st = null;
             if(ss.getId() == null) {
                 st = new SubjectScheduleTeacher();
@@ -113,8 +119,8 @@ public class SubjectScheduleService {
                 } else {
                     // Check if existing detail needs deletion
                     boolean existingDetailFound = false;
-                    for (SubjectScheduleTeacher existingDetail : ss.getTeachers()) {
-                        if (existingDetail.getId().equals(d.getId())) {
+                    for (SubjectScheduleTeacher existingDetail : ss.getSubjectTeachers()) {
+                        if (Objects.equals(existingDetail.getId(), d.getId())) {
                             st = existingDetail;
                             existingDetailFound = true;
                             break;
@@ -130,7 +136,7 @@ public class SubjectScheduleService {
             st.setId(d.getId());
             st.setTeacher(new PersonData(d.getTeacherId()));
             if(st.getId() == null) {
-                ss.getTeachers().add(st);
+                ss.getSubjectTeachers().add(st);
             }
         }
 //        ss.setTeacher(new PersonData(vm.getTeacherId()));
@@ -141,13 +147,15 @@ public class SubjectScheduleService {
     public void deleteById(String id) {
         Optional<SubjectSchedule> ss = subjectScheduleRepository.findById(id);
         if(ss.isPresent()) {
-            for(SubjectScheduleTeacher st: ss.get().getTeachers()) {
-                SubjectScheduleHistory sh = subjectScheduleHistoryService.fromOrigin(st);
-                sh.setLogActivity(LogActivityStatus.DELETE);
-                this.subjectScheduleRepository.deleteById(id);
-                this.subjectScheduleHistoryRepository.save(sh);
+            for(SubjectScheduleTeacher st: ss.get().getSubjectTeachers()) {
+//                SubjectScheduleHistory sh = subjectScheduleHistoryService.fromOrigin(st);
+//                sh.setLogActivity(LogActivityStatus.DELETE);
+//                this.subjectSchedule2Repository.deleteById(id);
+//                this.subjectScheduleHistoryRepository.save(sh);
             }
+            this.subjectScheduleRepository.deleteById(id);
         }
+
     }
 
     public SubjectScheduleVM findById(String id) {
@@ -158,11 +166,10 @@ public class SubjectScheduleService {
             vm.setDayId(s.getDay().getId());
             vm.setDayName(s.getDay().getName());
             vm.setDuration(s.getDuration());
-            vm.setActivityTimeId(s.getActivityTime() == null? null: s.getActivityTime().getId());
-            vm.setActivityTimeStartId(s.getActivityTimeStart() == null? null: s.getActivityTimeStart().getId());
-            vm.setActivityTimeEndId(s.getActivityTimeEnd() == null? null: s.getActivityTimeEnd().getId());
-            if(s.getTeachers() != null) {
-                for(SubjectScheduleTeacher t : s.getTeachers()) {
+            vm.setActivityStartId(s.getActivityTimeStart() == null? null: s.getActivityTimeStart().getId());
+            vm.setActivityEndId(s.getActivityTimeEnd() == null? null: s.getActivityTimeEnd().getId());
+            if(s.getSubjectTeachers() != null) {
+                for(SubjectScheduleTeacher t : s.getSubjectTeachers()) {
                     SubjectScheduleVMSubjectTeacher d = new SubjectScheduleVMSubjectTeacher();
                     d.setId(t.getId());
                     d.setSubjectId(t.getSubject().getId());
@@ -170,7 +177,7 @@ public class SubjectScheduleService {
                     d.setTeacherId(t.getTeacher().getId());
                     d.setTeacherName(t.getTeacher().getName());
                     d.setEmployeeNo(t.getTeacher().getEmployeeNo());
-                    vm.getSubjects().add(d);
+                    vm.getSubjectTeachers().add(d);
                 }
             }
 //            if(s.getActivityTimes() != null) {

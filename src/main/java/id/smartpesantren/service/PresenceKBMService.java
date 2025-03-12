@@ -5,7 +5,6 @@ import id.smartpesantren.repository.PresenceKBMRepository;
 import id.smartpesantren.repository.PresenceKBMStudentRepository;
 import id.smartpesantren.repository.SubjectScheduleRepository;
 import id.smartpesantren.web.rest.errors.InternalServerErrorException;
-import id.smartpesantren.web.rest.vm.ClassRoomStudentVMDetail;
 import id.smartpesantren.web.rest.vm.PresenceKbmVM;
 import id.smartpesantren.web.rest.vm.PresenceKbmVMStudent;
 import org.slf4j.Logger;

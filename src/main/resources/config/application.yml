@@ -137,7 +137,7 @@ spring:
 
 
 server:
-    port: ${APP_PORT}
+    port: ${APP_PORT:10000}
     servlet:
         session:
             cookie:
