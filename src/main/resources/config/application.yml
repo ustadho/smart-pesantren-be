@@ -1,9 +1,9 @@
 logging:
     level:
-        ROOT: INFO
-        io.github.jhipster: INFO
-        id.kas.smartpesantren: INFO
-        org.springframework.security: INFO
+        ROOT: DEBUG
+        io.github.jhipster: DEBUG
+        id.kas.smartpesantren: DEBUG
+        org.springframework.security: DEBUG
     file:
         name: application.log
 management:

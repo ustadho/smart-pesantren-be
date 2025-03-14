@@ -26,6 +26,6 @@ public class PresenceKBMResource {
 
     @GetMapping("detail-students/{id}")
     public List<PresenceSubjectStudentDTO> findDetailStudentsByClassRoomId(@PathVariable("id") String id) {
-        return presenceKBMStudentRepository.findDetailStudentsByClassRoomId(id);
+        return presenceKBMStudentRepository.findDetailStudentsBySubjectTeacherId(id);
     }
 }

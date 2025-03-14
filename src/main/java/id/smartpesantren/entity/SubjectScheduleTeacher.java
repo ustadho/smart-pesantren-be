@@ -36,11 +36,18 @@ public class SubjectScheduleTeacher {
     @ManyToMany
     @JoinTable(
             name = "ac_subject_schedule_student",
-            joinColumns = {@JoinColumn(name = "ac_subject_schedule_teacher_id", referencedColumnName = "id")},
+            joinColumns = {@JoinColumn(name = "subject_schedule_teacher_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "student_id", referencedColumnName = "id")})
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Student> students = new HashSet<>();
+
+    public SubjectScheduleTeacher() {
+    }
+
+    public SubjectScheduleTeacher(String id) {
+        this.id = id;
+    }
 
     public String getId() {
         return id;

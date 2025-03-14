@@ -48,7 +48,7 @@ public class PresenceKBMService {
                 throw new InternalServerErrorException("id absen tidak ditemukan");
             }
         }
-        p.setSubjectSchedule(new SubjectSchedule(vm.getSubjectScheduleId()));
+        p.setSubjectScheduleTeacher(new SubjectScheduleTeacher(vm.getSubjectScheduleTeacherId()));
         p.setPresenceStatus(new PresenceStatus(vm.getStatusId() == null? id.smartpesantren.constant.PresenceStatus.HADIR: vm.getStatusId()));
         p.setTeacher(new PersonData(vm.getTeacherId()));
         p.setNote(vm.getNote());

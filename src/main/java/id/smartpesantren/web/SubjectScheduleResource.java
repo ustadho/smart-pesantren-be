@@ -6,7 +6,9 @@ import id.smartpesantren.repository.SubjectScheduleRepository;
 import id.smartpesantren.repository.UserRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.service.SubjectScheduleService;
+import id.smartpesantren.web.rest.errors.DataNotFoundException;
 import id.smartpesantren.web.rest.vm.SubjectScheduleVM;
+import id.smartpesantren.web.rest.vm.SubjectScheduleVMSubjectTeacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,14 +46,17 @@ public class SubjectScheduleResource {
         subjectScheduleService.deleteById(id);
     }
 
-    @GetMapping("/teachers/{id}")
-    public List<PersonSimpleDTO> findAllTeacher(@PathVariable("id") String academicYear) {
-        return subjectScheduleRepository.findAllTeacherScheduleToday(academicYear);
+    @GetMapping("/teachers")
+    public List<PersonSimpleDTO> findAllTeacher(
+            @RequestParam("academicYear") String academicYear,
+            @RequestParam("dayId") Integer dayId) {
+        return subjectScheduleRepository.findAllTeacherScheduleToday(academicYear, dayId);
     }
 
     @GetMapping("/by-teacher/{id}")
-    public List<MySchedule2DTO> findSubjectScheduleClassRoomByTeacherId(@PathVariable("id") String teacherId) {
-        List<MySchedule2DTO> list = subjectScheduleRepository.findTeacherScheduleToday(teacherId);
+
+    public List<MyScheduleDTO> findSubjectScheduleClassRoomByTeacherId(@PathVariable("id") String teacherId) {
+        List<MyScheduleDTO> list = subjectScheduleRepository.findTeacherScheduleToday(teacherId);
         return list;
     }
 
@@ -61,7 +66,7 @@ public class SubjectScheduleResource {
     }
 
     @GetMapping("my-current-schedule")
-    List<MySchedule2DTO> findMyCurrentSchedule() {
+    List<MyScheduleDTO> findMyCurrentSchedule() {
         return SecurityUtils.getCurrentUserLogin()
                 .flatMap(userRepository::findOneByLogin)
                 .filter(user -> user.getPerson() != null)
@@ -76,6 +81,24 @@ public class SubjectScheduleResource {
                 .filter(user -> user.getPerson() != null)
                 .map(user -> subjectScheduleRepository.findAllMyWeeklySchedule(user.getPerson().getId()))
                 .orElseGet(ArrayList::new);
+    }
+
+    @GetMapping("lookup-unmapped-student/{scheduleId}")
+    public List<IStudentQuery> findAllUnmappedStudent(@PathVariable("scheduleId") String scheduleId) {
+        return subjectScheduleRepository.findAllUnMappedStudentInClassRoom(scheduleId);
+    }
+
+    @GetMapping("lookup-mapped-student/{scheduleId}")
+    public List<IStudentQuery> findAllMappedStudent(@PathVariable("scheduleId") String scheduleId) {
+        return subjectScheduleRepository.findAllMappedStudentInClassRoom(scheduleId);
+    }
+
+    @PutMapping("subject-teacher")
+    public SubjectScheduleVMSubjectTeacher updateSubjectTeacher(@RequestBody @Valid SubjectScheduleVMSubjectTeacher vm) {
+        if(vm.getId() == null) {
+            throw new DataNotFoundException("id data yang akan diupdate tidak ada");
+        }
+        return subjectScheduleService.updateSubjectTeacher(vm);
     }
 
 }

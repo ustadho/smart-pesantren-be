@@ -5,10 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import id.smartpesantren.constant.LogActivityStatus;
 import id.smartpesantren.dto.ActivityScheduleByDayDTO;
 import id.smartpesantren.dto.ActivityScheduleDTO;
+import id.smartpesantren.dto.StudentDTO;
 import id.smartpesantren.entity.*;
-import id.smartpesantren.repository.SubjectScheduleRepository;
-import id.smartpesantren.repository.SubjectScheduleCustom2Repository;
-import id.smartpesantren.repository.SubjectScheduleHistoryRepository;
+import id.smartpesantren.repository.*;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.vm.SubjectScheduleVM;
 import id.smartpesantren.web.rest.vm.SubjectScheduleVMSubjectTeacher;
@@ -31,6 +30,12 @@ public class SubjectScheduleService {
 
     @Autowired
     private SubjectScheduleCustom2Repository customRepository;
+
+    @Autowired
+    private SubjectScheduleTeacherRepository subjectScheduleTeacherRepository;
+
+    @Autowired
+    StudentRepository studentRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -138,6 +143,14 @@ public class SubjectScheduleService {
             if(st.getId() == null) {
                 ss.getSubjectTeachers().add(st);
             }
+
+            if(d.getStudents() != null) {
+                Set<Student> managedStudents = st.getStudents();
+                d.getStudents().stream().forEach(s -> {
+                    managedStudents.add(new Student(s.getId()));
+                });
+                st.setStudents(managedStudents);
+            }
         }
 //        ss.setTeacher(new PersonData(vm.getTeacherId()));
         return ss;
@@ -192,6 +205,24 @@ public class SubjectScheduleService {
 //                }
 //            }
         }
+        return vm;
+    }
+
+    public SubjectScheduleVMSubjectTeacher updateSubjectTeacher(SubjectScheduleVMSubjectTeacher vm) {
+        subjectScheduleTeacherRepository
+                .findOneById(vm.getId())
+                .ifPresent(ss -> {
+                    Set<Student> managedStudents = ss.getStudents();
+                    managedStudents.clear();
+                    vm.getStudents().stream().map(s -> {
+                       return studentRepository.findById(s.getId());
+                    })
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .forEach(managedStudents::add);
+
+                    subjectScheduleTeacherRepository.save(ss);
+                });
         return vm;
     }
 }

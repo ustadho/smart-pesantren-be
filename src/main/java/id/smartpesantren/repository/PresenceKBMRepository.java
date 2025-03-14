@@ -9,5 +9,4 @@ import java.util.Date;
 
 public interface PresenceKBMRepository extends JpaRepository<PresenceKBM, String> {
 
-    public PresenceKBMStudent findByPresenceDateAndSubjectSchedule(Date date, SubjectSchedule s);
 }

@@ -1,5 +1,7 @@
 package id.smartpesantren.web.rest.vm;
 
+import id.smartpesantren.dto.StudentDTO;
+
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -14,6 +16,7 @@ public class SubjectScheduleVM {
     private String activityEndId;
     private Integer duration;
     private Set<SubjectScheduleVMSubjectTeacher> subjectTeachers;
+    private Set<StudentDTO> students;
 
     public String getId() {
         return id;
@@ -79,4 +82,11 @@ public class SubjectScheduleVM {
         this.subjectTeachers = subjectTeachers;
     }
 
+    public Set<StudentDTO> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<StudentDTO> students) {
+        this.students = students;
+    }
 }

@@ -9,7 +9,7 @@ public class PresenceKbmVM {
     private String id;
     private LocalDate presenceDate;
     @NotNull
-    private String subjectScheduleId;
+    private String subjectScheduleTeacherId;
     @NotNull
     private String teacherId;
     private String note;
@@ -33,12 +33,12 @@ public class PresenceKbmVM {
         this.presenceDate = presenceDate;
     }
 
-    public String getSubjectScheduleId() {
-        return subjectScheduleId;
+    public String getSubjectScheduleTeacherId() {
+        return subjectScheduleTeacherId;
     }
 
-    public void setSubjectScheduleId(String subjectScheduleId) {
-        this.subjectScheduleId = subjectScheduleId;
+    public void setSubjectScheduleTeacherId(String subjectScheduleTeacherId) {
+        this.subjectScheduleTeacherId = subjectScheduleTeacherId;
     }
 
     public String getTeacherId() {

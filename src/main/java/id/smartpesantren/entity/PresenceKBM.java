@@ -24,7 +24,7 @@ public class PresenceKBM extends AbstractAuditingEntity {
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "schedule_id", nullable = false)
     @JsonBackReference
-    SubjectSchedule subjectSchedule;
+    SubjectScheduleTeacher subjectScheduleTeacher;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
@@ -57,12 +57,12 @@ public class PresenceKBM extends AbstractAuditingEntity {
         this.presenceDate = presenceDate;
     }
 
-    public SubjectSchedule getSubjectSchedule() {
-        return subjectSchedule;
+    public SubjectScheduleTeacher getSubjectScheduleTeacher() {
+        return subjectScheduleTeacher;
     }
 
-    public void setSubjectSchedule(SubjectSchedule subjectSchedule) {
-        this.subjectSchedule = subjectSchedule;
+    public void setSubjectScheduleTeacher(SubjectScheduleTeacher subjectScheduleTeacher) {
+        this.subjectScheduleTeacher = subjectScheduleTeacher;
     }
 
     public PersonData getTeacher() {
