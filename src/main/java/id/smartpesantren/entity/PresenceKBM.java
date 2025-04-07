@@ -37,6 +37,21 @@ public class PresenceKBM extends AbstractAuditingEntity {
     @Column(columnDefinition = "text")
     private String note;
 
+    @Column(columnDefinition = "text")
+    private String kompetensiDasar;
+
+    @Column(columnDefinition = "text")
+    private String materi;
+
+    @Column(columnDefinition = "text")
+    private String indikator;
+
+    private String fotoAbsen;
+
+    private String pencapaian; //Tuntas
+
+    private String attachment;
+
     @OneToMany(mappedBy = "presenceKBM", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<PresenceKBMStudent> students = new HashSet<>();
@@ -95,5 +110,53 @@ public class PresenceKBM extends AbstractAuditingEntity {
 
     public void setStudents(Set<PresenceKBMStudent> students) {
         this.students = students;
+    }
+
+    public String getKompetensiDasar() {
+        return kompetensiDasar;
+    }
+
+    public void setKompetensiDasar(String kompetensiDasar) {
+        this.kompetensiDasar = kompetensiDasar;
+    }
+
+    public String getMateri() {
+        return materi;
+    }
+
+    public void setMateri(String materi) {
+        this.materi = materi;
+    }
+
+    public String getIndikator() {
+        return indikator;
+    }
+
+    public void setIndikator(String indikator) {
+        this.indikator = indikator;
+    }
+
+    public String getFotoAbsen() {
+        return fotoAbsen;
+    }
+
+    public void setFotoAbsen(String fotoAbsen) {
+        this.fotoAbsen = fotoAbsen;
+    }
+
+    public String getPencapaian() {
+        return pencapaian;
+    }
+
+    public void setPencapaian(String pencapaian) {
+        this.pencapaian = pencapaian;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 }

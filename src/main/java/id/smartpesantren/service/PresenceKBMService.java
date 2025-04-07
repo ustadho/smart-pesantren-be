@@ -7,6 +7,7 @@ import id.smartpesantren.repository.SubjectScheduleRepository;
 import id.smartpesantren.web.rest.errors.InternalServerErrorException;
 import id.smartpesantren.web.rest.vm.PresenceKbmVM;
 import id.smartpesantren.web.rest.vm.PresenceKbmVMStudent;
+import id.smartpesantren.web.rest.vm.PresenceKbmVMTeacher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,30 @@ public class PresenceKBMService {
 
     Logger logger = LoggerFactory.getLogger(PresenceKBMService.class);
 
+    @Transactional
+    public void createOrUpdatePresenceKBMTeacher(PresenceKbmVMTeacher vm) {
+        PresenceKBM p = null;
+        if(vm.getId() == null) {
+            p = new PresenceKBM();
+            p.setPresenceDate(LocalDate.now());
+        } else {
+            Optional<PresenceKBM> op = this.presenceKBMRepository.findById(vm.getId());
+            if(op.isPresent()) {
+                p = op.get();
+            } else {
+                throw new InternalServerErrorException("id absen tidak ditemukan");
+            }
+        }
+        p.setSubjectScheduleTeacher(new SubjectScheduleTeacher(vm.getSubjectScheduleTeacherId()));
+        p.setTeacher(new PersonData(vm.getTeacherId()));
+        p.setMateri(vm.getMateri());
+        p.setFotoAbsen(vm.getFotoAbsen());
+        p.setIndikator(vm.getIndikator());
+        p.setPencapaian(vm.getPencapaian());
+        p.setAttachment(vm.getAttachment());
+        p.setPresenceStatus(new PresenceStatus(vm.getStatusId()));
+        this.presenceKBMRepository.save(p);
+    }
 
     @Transactional
     public void createOrUpdate(PresenceKbmVM vm) {

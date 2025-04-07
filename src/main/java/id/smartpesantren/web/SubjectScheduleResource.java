@@ -101,4 +101,8 @@ public class SubjectScheduleResource {
         return subjectScheduleService.updateSubjectTeacher(vm);
     }
 
+    @GetMapping("{id}")
+    public ScheduleTeacherPresenceDTO findScheduleTeacherById(@PathVariable("id") String id) {
+        return subjectScheduleRepository.findScheduleTeacherById(id);
+    }
 }
