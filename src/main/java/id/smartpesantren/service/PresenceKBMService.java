@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -35,18 +36,27 @@ public class PresenceKBMService {
     Logger logger = LoggerFactory.getLogger(PresenceKBMService.class);
 
     @Transactional
-    public void createOrUpdatePresenceKBMTeacher(PresenceKbmVMTeacher vm) {
+    public PresenceKbmVMTeacher createOrUpdatePresenceKBMTeacher(PresenceKbmVMTeacher vm) {
         PresenceKBM p = null;
         if(vm.getId() == null) {
-            p = new PresenceKBM();
-            p.setPresenceDate(LocalDate.now());
-        } else {
+            // find by subjectScheduleTeacher and presence date first
+            Optional<PresenceKBM> check = presenceKBMRepository.findBySubjectScheduleTeacherAndPresenceDate(new SubjectScheduleTeacher(vm.getSubjectScheduleTeacherId()), vm.getPresenceDate());
+            if(check.isPresent()) {
+                p = check.get();
+            } else {
+                p = new PresenceKBM();
+                p.setPresenceDate(LocalDate.now());
+            }
+        } else if (vm.getId() != null) {
             Optional<PresenceKBM> op = this.presenceKBMRepository.findById(vm.getId());
             if(op.isPresent()) {
                 p = op.get();
             } else {
                 throw new InternalServerErrorException("id absen tidak ditemukan");
             }
+        }
+        if(p == null) {
+            p = new PresenceKBM();
         }
         p.setSubjectScheduleTeacher(new SubjectScheduleTeacher(vm.getSubjectScheduleTeacherId()));
         p.setTeacher(new PersonData(vm.getTeacherId()));
@@ -57,6 +67,9 @@ public class PresenceKBMService {
         p.setAttachment(vm.getAttachment());
         p.setPresenceStatus(new PresenceStatus(vm.getStatusId()));
         this.presenceKBMRepository.save(p);
+
+        vm.setId(p.getId());
+        return vm;
     }
 
     @Transactional

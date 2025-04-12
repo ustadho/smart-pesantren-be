@@ -15,7 +15,7 @@ public class JenisKegiatanVM {
 
     private String description;
 
-    private Date inTime;
+    private String inTime;
 
     private Boolean active;
 
@@ -63,11 +63,11 @@ public class JenisKegiatanVM {
         this.description = description;
     }
 
-    public Date getInTime() {
+    public String getInTime() {
         return inTime;
     }
 
-    public void setInTime(Date inTime) {
+    public void setInTime(String inTime) {
         this.inTime = inTime;
     }
 

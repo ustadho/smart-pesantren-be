@@ -9,7 +9,7 @@ public class JenisKegiatanDTO {
     private String code;
     private String name;
     private String description;
-    private Date inTime;
+    private String inTime;
     private Boolean active;
 
     public JenisKegiatanDTO() {
@@ -18,7 +18,7 @@ public class JenisKegiatanDTO {
     public JenisKegiatanDTO(JenisKegiatan a) {
         this(a.getId(), a.getCode(), a.getName(), a.getDescription(), a.getInTime(), a.getActive());
     }
-    public JenisKegiatanDTO(String id, String code, String name, String description, Date inTime, Boolean active) {
+    public JenisKegiatanDTO(String id, String code, String name, String description, String inTime, Boolean active) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -43,11 +43,11 @@ public class JenisKegiatanDTO {
         this.code = code;
     }
 
-    public Date getInTime() {
+    public String getInTime() {
         return inTime;
     }
 
-    public void setInTime(Date inTime) {
+    public void setInTime(String inTime) {
         this.inTime = inTime;
     }
 
