@@ -1,5 +1,7 @@
 package id.smartpesantren.web.rest.vm;
 
+import id.smartpesantren.dto.StudentDTO;
+
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -10,11 +12,11 @@ public class SubjectScheduleVM {
     @NotNull
     private Integer dayId;
     private String dayName;
-    private String activityTimeId;
-    private String activityTimeStartId;
-    private String activityTimeEndId;
+    private String activityStartId;
+    private String activityEndId;
     private Integer duration;
-    private Set<SubjectScheduleVMSubjectTeacher> subjects;
+    private Set<SubjectScheduleVMSubjectTeacher> subjectTeachers;
+    private Set<StudentDTO> students;
 
     public String getId() {
         return id;
@@ -48,28 +50,20 @@ public class SubjectScheduleVM {
         this.dayName = dayName;
     }
 
-    public String getActivityTimeId() {
-        return activityTimeId;
+    public String getActivityStartId() {
+        return activityStartId;
     }
 
-    public void setActivityTimeId(String activityTimeId) {
-        this.activityTimeId = activityTimeId;
+    public void setActivityStartId(String activityStartId) {
+        this.activityStartId = activityStartId;
     }
 
-    public String getActivityTimeStartId() {
-        return activityTimeStartId;
+    public String getActivityEndId() {
+        return activityEndId;
     }
 
-    public void setActivityTimeStartId(String activityTimeStartId) {
-        this.activityTimeStartId = activityTimeStartId;
-    }
-
-    public String getActivityTimeEndId() {
-        return activityTimeEndId;
-    }
-
-    public void setActivityTimeEndId(String activityTimeEndId) {
-        this.activityTimeEndId = activityTimeEndId;
+    public void setActivityEndId(String activityEndId) {
+        this.activityEndId = activityEndId;
     }
 
     public Integer getDuration() {
@@ -80,12 +74,19 @@ public class SubjectScheduleVM {
         this.duration = duration;
     }
 
-    public Set<SubjectScheduleVMSubjectTeacher> getSubjects() {
-        return subjects;
+    public Set<SubjectScheduleVMSubjectTeacher> getSubjectTeachers() {
+        return subjectTeachers;
     }
 
-    public void setSubjects(Set<SubjectScheduleVMSubjectTeacher> subjects) {
-        this.subjects = subjects;
+    public void setSubjectTeachers(Set<SubjectScheduleVMSubjectTeacher> subjectTeachers) {
+        this.subjectTeachers = subjectTeachers;
     }
 
+    public Set<StudentDTO> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<StudentDTO> students) {
+        this.students = students;
+    }
 }

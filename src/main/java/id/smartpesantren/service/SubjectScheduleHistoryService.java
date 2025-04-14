@@ -1,21 +1,9 @@
 package id.smartpesantren.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import id.smartpesantren.constant.LogActivityStatus;
-import id.smartpesantren.dto.ActivityScheduleDTO;
-import id.smartpesantren.dto.EmployeeSimpleDTO;
 import id.smartpesantren.entity.*;
-import id.smartpesantren.repository.SubjectScheduleCustomRepository;
 import id.smartpesantren.repository.SubjectScheduleHistoryRepository;
-import id.smartpesantren.repository.SubjectScheduleRepository;
-import id.smartpesantren.security.SecurityUtils;
-import id.smartpesantren.web.rest.vm.SubjectScheduleVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class SubjectScheduleHistoryService {
@@ -26,7 +14,8 @@ public class SubjectScheduleHistoryService {
     public SubjectScheduleHistory fromOrigin(SubjectScheduleTeacher s) {
         SubjectScheduleHistory sh = new SubjectScheduleHistory();
         sh.setSubject(s.getSubject());
-        sh.setActivityTime(s.getSchedule().getActivityTime());
+        sh.setActivityTimeStart(s.getSchedule().getActivityTimeStart());
+        sh.setActivityTimeEnd(s.getSchedule().getActivityTimeEnd());
         sh.setDay(s.getSchedule().getDay());
         sh.setClassRoom(s.getSchedule().getClassRoom());
         sh.setSubjectScheduleId(s.getId());

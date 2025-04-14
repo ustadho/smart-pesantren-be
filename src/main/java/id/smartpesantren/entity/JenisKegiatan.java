@@ -28,9 +28,8 @@ public class JenisKegiatan { // Jenis Kegiatan Santri
 
     private Boolean active;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "in_time")
-    private Date inTime;
+    @Column(length = 30)
+    private String inTime;
 
     public JenisKegiatan() {
     }
@@ -87,11 +86,11 @@ public class JenisKegiatan { // Jenis Kegiatan Santri
         this.active = active;
     }
 
-    public Date getInTime() {
+    public String getInTime() {
         return inTime;
     }
 
-    public void setInTime(Date inTime) {
+    public void setInTime(String inTime) {
         this.inTime = inTime;
     }
 }

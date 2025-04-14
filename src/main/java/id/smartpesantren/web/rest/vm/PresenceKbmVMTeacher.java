@@ -1,11 +1,12 @@
 package id.smartpesantren.web.rest.vm;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PresenceKbmVM {
+public class PresenceKbmVMTeacher {
     private String id;
     private LocalDate presenceDate;
     @NotNull
@@ -14,9 +15,12 @@ public class PresenceKbmVM {
     private String teacherId;
     private String note;
     private Integer statusId;
-
-    private List<PresenceKbmVMStudent> students = new ArrayList<>();
-
+    private String kompetensiDasar;
+    private String materi;
+    private String indikator;
+    private String fotoAbsen;
+    private String pencapaian; //Tuntas
+    private String attachment;
     public String getId() {
         return id;
     }
@@ -57,19 +61,59 @@ public class PresenceKbmVM {
         this.note = note;
     }
 
-    public List<PresenceKbmVMStudent> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<PresenceKbmVMStudent> students) {
-        this.students = students;
-    }
-
     public Integer getStatusId() {
         return statusId;
     }
 
     public void setStatusId(Integer statusId) {
         this.statusId = statusId;
+    }
+
+    public String getKompetensiDasar() {
+        return kompetensiDasar;
+    }
+
+    public void setKompetensiDasar(String kompetensiDasar) {
+        this.kompetensiDasar = kompetensiDasar;
+    }
+
+    public String getMateri() {
+        return materi;
+    }
+
+    public void setMateri(String materi) {
+        this.materi = materi;
+    }
+
+    public String getIndikator() {
+        return indikator;
+    }
+
+    public void setIndikator(String indikator) {
+        this.indikator = indikator;
+    }
+
+    public String getFotoAbsen() {
+        return fotoAbsen;
+    }
+
+    public void setFotoAbsen(String fotoAbsen) {
+        this.fotoAbsen = fotoAbsen;
+    }
+
+    public String getPencapaian() {
+        return pencapaian;
+    }
+
+    public void setPencapaian(String pencapaian) {
+        this.pencapaian = pencapaian;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 }

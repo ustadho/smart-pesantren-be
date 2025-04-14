@@ -1,9 +1,6 @@
 package id.smartpesantren.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -29,29 +26,16 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
     Day day;
 
     @ManyToOne
-    @JoinColumn(name = "activity_time_id", nullable = false)
-    private AcademicActivityTime activityTime;
-
-    @ManyToOne
-    @JoinColumn(name = "acitivity_time_start_id")
+    @JoinColumn(name = "activity_time_start_id")
     private AcademicActivityTime activityTimeStart;
 
     @ManyToOne
-    @JoinColumn(name = "acitivity_time_end_id")
+    @JoinColumn(name = "activity_time_end_id")
     private AcademicActivityTime activityTimeEnd;
-
-//    @JsonIgnore
-//    @ManyToMany
-//    @JoinTable(
-//            name = "ac_subject_schedule_teacher",
-//            joinColumns = {@JoinColumn(name = "schedule_id", referencedColumnName = "id")},
-//            inverseJoinColumns = {@JoinColumn(name = "teacher_id", referencedColumnName = "id")})
-//    @BatchSize(size = 20)
-//    private Set<PersonData> teachers = new HashSet<>();
 
     @OneToMany(mappedBy = "schedule", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
-    private Set<SubjectScheduleTeacher> teachers = new HashSet<>();
+    private Set<SubjectScheduleTeacher> subjectTeachers = new HashSet<>();
 
     @Column(columnDefinition = "integer default 1")
     private Integer duration;
@@ -87,14 +71,6 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
         this.day = day;
     }
 
-    public AcademicActivityTime getActivityTime() {
-        return activityTime;
-    }
-
-    public void setActivityTime(AcademicActivityTime activityTime) {
-        this.activityTime = activityTime;
-    }
-
     public AcademicActivityTime getActivityTimeStart() {
         return activityTimeStart;
     }
@@ -111,12 +87,12 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
         this.activityTimeEnd = activityTimeEnd;
     }
 
-    public Set<SubjectScheduleTeacher> getTeachers() {
-        return teachers;
+    public Set<SubjectScheduleTeacher> getSubjectTeachers() {
+        return subjectTeachers;
     }
 
-    public void setTeachers(Set<SubjectScheduleTeacher> teachers) {
-        this.teachers = teachers;
+    public void setSubjectTeachers(Set<SubjectScheduleTeacher> subjectTeachers) {
+        this.subjectTeachers = subjectTeachers;
     }
 
     public Integer getDuration() {

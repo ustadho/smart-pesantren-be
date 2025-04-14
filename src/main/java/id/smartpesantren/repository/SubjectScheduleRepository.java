@@ -1,146 +1,108 @@
 package id.smartpesantren.repository;
 
-import id.smartpesantren.dto.MyScheduleDTO;
-import id.smartpesantren.dto.MyScheduleWeeklyDTO;
-import id.smartpesantren.dto.PersonSimpleDTO;
-import id.smartpesantren.dto.SubjectScheduleClassRoomDTO;
+import id.smartpesantren.dto.*;
 import id.smartpesantren.entity.SubjectSchedule;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule, String> {
-
-    @Query(value = "WITH schedule_data AS (\n" +
-            "    SELECT \n" +
-            "        act.id AS activity_id,\n" +
-            "        CONCAT('Jam ke-', act.seq) AS activity_name,\n" +
-            "        TO_CHAR(act.start_time, 'HH24:MI') AS start_time,\n" +
-            "        TO_CHAR(act.end_time, 'HH24:MI') AS end_time,\n" +
-            "        d.id AS day_id,\n" +
-            "        d.name AS day_name,\n" +
-            "        sch.id AS schedule_id,\n" +
-            "        sub.id AS subject_id,\n" +
-            "        sub.name AS subject_name,\n" +
-            "        p.id AS teacher_id,\n" +
-            "        p.name AS teacher_name\n" +
-            "    FROM ac_activity_time act\n" +
-            "    CROSS JOIN m_day d\n" +
-            "    LEFT JOIN ac_subject_schedule sch \n" +
-            "        ON sch.activity_time_id = act.id AND sch.day_id = d.id \n" +
-            "    LEFT JOIN ac_subject sub \n" +
-            "        ON sub.id = sch.subject_id\n" +
-            "    LEFT JOIN person_data p \n" +
-            "        ON p.id = sch.teacher_id\n" +
-            "    where act.foundation_id  = ?#{principal.foundationId} \n" +
-            "    and act.institution_id = :institutionId \n" +
-            ")\n" +
-            "SELECT json_agg(\n" +
-            "           json_build_object(\n" +
-            "               'activityId', sd.activity_id,\n" +
-            "               'activityName', sd.activity_name,\n" +
-            "               'startTime', sd.start_time,\n" +
-            "               'endTime', sd.end_time,\n" +
-            "               'days', (\n" +
-            "                   SELECT json_agg(\n" +
-            "                              json_build_object(\n" +
-            "                                  'dayId', sdi.day_id,\n" +
-            "                                  'dayName', sdi.day_name,\n" +
-            "                                  'sceduleId', sdi.schedule_id,\n" +
-            "                                  'subjectId', sdi.subject_id,\n" +
-            "                                  'subjectName', sdi.subject_name,\n" +
-            "                                  'teacherId', sdi.teacher_id,\n" +
-            "                                  'teacherName', sdi.teacher_name\n" +
-            "                              )\n" +
-            "                          )\n" +
-            "                   FROM schedule_data sdi\n" +
-            "                   WHERE sdi.activity_id = sd.activity_id\n" +
-            "               )\n" +
-            "           )\n" +
-            "       ) AS result\n" +
-            "FROM (\n" +
-            "    SELECT DISTINCT activity_id, activity_name, start_time, end_time\n" +
-            "    FROM schedule_data\n" +
-            ") sd;\n",
-            nativeQuery = true)
-    public String findAllSchedules(@Param("institutionId") String institutionId);
-
     @Query(value = "select distinct pd.id, pd.name   \n" +
             "from ac_subject_schedule ass\n" +
             "join ac_class_room acr on acr.id = ass.class_room_id\n" +
             "join ac_subject_schedule_teacher acrt on acrt.schedule_id = ass.id\n" +
             "join person_data pd on pd.id=acrt.teacher_id \n" +
             "where acr.academic_year_id = :academicYear\n" +
-            "and ass.day_id = EXTRACT('DOW' FROM CURRENT_DATE)\n" +
+            "and ass.day_id = :dayId\n" +
+            "--and ass.day_id = EXTRACT('DOW' FROM CURRENT_DATE)\n" +
             "order by pd.name", nativeQuery = true)
-    public List<PersonSimpleDTO> findAllTeacherScheduleToday(@Param("academicYear") String academicYear);
+    public List<PersonSimpleDTO> findAllTeacherScheduleToday(@Param("academicYear") String academicYear, @Param("dayId") Integer dayId);
 
-    @Query(value = "select ass.id, s.name \"subjectName\", acr.name \"classRoom\", aat.start_time \"startTime\" , aat.end_time \"endTime\"\n" +
-            "from ac_subject_schedule ass \n" +
-            "join ac_activity_time aat on aat.id=ass.activity_time_id \n" +
-            "join ac_subject s on s.id=ass.subject_id  \n" +
+    @Query(value = "select asst.schedule_id \"scheduleId\", asst.id \"subjectTeacherScheduleId\", ass.class_room_id \"classRoomId\", acr.name \"classRoomName\", asst.subject_id \"subjectId\", \n" +
+            "as2.name \"subjectName\", aat1.start_time \"startTime\", aat2.end_time \"endTime\"\n" +
+            "from ac_subject_schedule_teacher asst \n" +
+            "join ac_subject_schedule ass on ass.id=asst.schedule_id \n" +
             "join ac_class_room acr on acr.id=ass.class_room_id \n" +
-            "where ass.teacher_id = :teacher\n" +
+            "join ac_subject as2 on as2.id = asst.subject_id \n" +
+            "join ac_activity_time aat1 on aat1.id = ass.activity_time_start_id \n" +
+            "join ac_activity_time aat2 on aat2.id=ass.activity_time_end_id\n" +
             "and ass.day_id = EXTRACT('DOW' FROM CURRENT_DATE)\n" +
-            "order by aat.start_time ", nativeQuery = true)
-    public List<SubjectScheduleClassRoomDTO> findSubjectScheduleClassRoomByTeacherId(@Param("teacher") String teacher);
+            "and asst.teacher_id = :teacherId\n" +
+            "order by aat1.start_time ", nativeQuery = true)
+    List<MyScheduleDTO> findTeacherScheduleToday(@Param("teacherId") String teacherId);
 
-    @EntityGraph(attributePaths = {"teachers"})
-    Optional<SubjectSchedule> findOneWithTeacherById(String id);
+    @Query(value = "select st.id, st.schedule_id \"scheduleId\", ass.day_id \"dayId\", md.\"name\" \"dayName\", coalesce(acr.name,'') \"classRoomName\",\n" +
+            "coalesce(i.\"name\") \"institutionName\", st.subject_id \"subjectId\", coalesce(as2.\"name\",'') \"subjectName\", \n" +
+            "aat.start_time \"startTime\", aat2.end_time \"endTime\", coalesce(ass.duration,1)  duration, '' teachers, aat.seq\n" +
+            "from ac_subject_schedule_teacher st\n" +
+            "join ac_subject_schedule ass on ass.id=st.schedule_id\n" +
+            "join m_day md on md.id=ass.day_id \n" +
+            "join ac_class_room acr on acr.id=ass.class_room_id \n" +
+            "join institution i on i.id=acr.institution_id \n" +
+            "join ac_subject as2 on as2.id=st.subject_id \n" +
+            "join ac_activity_time aat on aat.id=ass.activity_time_start_id \n" +
+            "join ac_activity_time aat2 on aat2.id=ass.activity_time_end_id  \n" +
+            "where st.teacher_id=:teacherId  \n" +
+            "order by ass.day_id,  aat.start_time  ", nativeQuery = true)
+    List<MyScheduleWeeklyDTO> findAllMyWeeklySchedule(@Param("teacherId") String teacherId);
 
-    @Query(value =
-            "WITH schedule_data AS (\n" +
-                    "    SELECT \n" +
-                    "        sst.schedule_id AS id,\n" +
-                    "        aat.start_time::::TIME AS start_time,\n" +
-                    "        aat.end_time::::TIME AS end_time,\n" +
-                    "        sst.subject_id,\n" +
-                    "        sub.name AS subject_name,\n" +
-                    "        LAG(aat.end_time::::TIME) OVER (PARTITION BY sst.teacher_id, sst.subject_id ORDER BY aat.start_time::::TIME) AS prev_end_time,\n" +
-                    "        ss.class_room_id, cr.name class_room_name\n" +
-                    "    FROM ac_subject_schedule_teacher sst\n" +
-                    "    JOIN ac_subject_schedule ss ON sst.schedule_id = ss.id\n" +
-                    "    JOIN ac_activity_time aat ON ss.activity_time_id = aat.id\n" +
-                    "    JOIN ac_subject sub ON sst.subject_id = sub.id\n" +
-                    "    join ac_class_room cr on cr.id=ss.class_room_id\n" +
-                    "    where sst.teacher_id=:teacherId\n" +
-                    "    and cr.academic_year_id = (select id from academic_year ay where foundation_id=?#{principal.foundationId} and ay.is_default = true limit 1)\n" +
-                    "    and ss.day_id = extract(dow from current_date)\n" +
-                    "    ORDER BY subject_name, start_time\n" +
-                    "),\n" +
-                    "merged_schedules AS (\n" +
-                    "    SELECT \n" +
-                    "        id, start_time, end_time, subject_id, subject_name, class_room_id, class_room_name,\n" +
-                    "        SUM(CASE \n" +
-                    "            WHEN prev_end_time = start_time THEN 0 ELSE 1 \n" +
-                    "        END) OVER (PARTITION BY subject_name, class_room_id ORDER BY start_time) AS group_id\n" +
-                    "    FROM schedule_data\n" +
-                    ")\n" +
-                    "SELECT \n" +
-                    "    MIN(id) AS \"subjectScheduleId\",\n" +
-                    "    MIN(start_time) AS \"startTime\",\n" +
-                    "    MAX(end_time) AS \"endTime\",\n" +
-                    "    subject_id \"subjectId\",\n" +
-                    "    subject_name \"subjectName\",\n" +
-                    "    class_room_id \"classRoomId\", \n" +
-                    "    class_room_name \"classRoomName\"\n" +
-                    "FROM merged_schedules\n" +
-                    "GROUP BY group_id, subject_id, subject_name, class_room_id, class_room_name\n" +
-                    "ORDER BY \"startTime\"", nativeQuery = true)
-    public List<MyScheduleDTO> findTeacherScheduleToday(@Param("teacherId") String id);
+    @Query(value = "select cs.student_id id , s.nis, s.nisn, s.name, s.dob  \n" +
+            "from ac_class_room_student cs\n" +
+            "join ac_student s on s.id=cs.student_id \n" +
+            "where cs.class_room_id = (\n" +
+            "   select class_room_id from ac_subject_schedule s    join ac_subject_schedule_teacher t on t.schedule_id=s.id    where t.id=:scheduleId\n" +
+            ") and cs.student_id not in(\n" +
+            "\tselect student_id \n" +
+            "\tfrom ac_subject_schedule_student cs \n" +
+            "\tjoin ac_subject_schedule_teacher cst on cst.id=cs.subject_schedule_teacher_id\n" +
+            "\tjoin ac_subject_schedule s on s.id=cst.schedule_id\n" +
+            "\twhere cst.id = :scheduleId\n" +
+            "\tor cst.schedule_id = (select schedule_id from ac_subject_schedule_teacher where id=:scheduleId)\n" +
+            ")\n" +
+            "order by s.name ", nativeQuery = true)
+    List<IStudentQuery> findAllUnMappedStudentInClassRoom(@Param("scheduleId") String teacherScheduleId);
 
-    @Query(value = "select vw.schedule_id \"scheduleId\", vw.day_id \"dayId\", vw.day_name \"dayName\", vw.institution_name \"institutionName\", \n" +
-            "vw.class_room_name \"classRoomName\", ast.subject_id \"subjectId\", s.name \"subjectName\", \n" +
-            "vw.start_time \"startTime\", vw.end_time \"endTime\", vw.duration, vw.teachers\n" +
-            "from vw_schedule_all vw \n" +
-            "join ac_subject_schedule_teacher ast on ast.schedule_id=vw.schedule_id and ast.teacher_id =:teacherId\n" +
-            "join academic_year ay on ay.id = vw.academic_year_id \n" +
-            "join ac_subject s on s.id=ast.subject_id \n" +
-            "and ay.is_default = true\n" +
-            "order by vw.day_id, vw.start_time", nativeQuery = true)
-    public List<MyScheduleWeeklyDTO> findAllMyWeeklySchedule(@Param("teacherId") String id);
+    @Query(value = "select cs.student_id id , s.nis, s.nisn, s.name, s.dob  \n" +
+            "from ac_subject_schedule_student cs \n" +
+            "join ac_student s on s.id=cs.student_id\n" +
+            "where cs.subject_schedule_teacher_id = :scheduleId\n" +
+            "order by s.name ", nativeQuery = true)
+    List<IStudentQuery> findAllMappedStudentInClassRoom(@Param("scheduleId") String teacherScheduleId);
+
+    @Query(value = "with a as (\n" +
+            "   select st.id, st.schedule_id \"scheduleId\", ass.day_id \"dayId\", md.\"name\" \"dayName\", ass.class_room_id \"classRoomId\", coalesce(acr.name,'') \"classRoomName\",\n" +
+            "   coalesce(i.\"name\") \"institutionName\", st.subject_id \"subjectId\", coalesce(as2.\"name\",'') \"subjectName\", \n" +
+            "   aat.start_time \"startTime\", aat2.end_time \"endTime\", coalesce(ass.duration,1)  duration, st.teacher_id \"teacherId\", pd.name \"teacherName\", aat.seq, \n" +
+            "   apk.id presence_id, apk.materi, apk.pencapaian, apk.attachment, apk.foto_absen \"fotoAbsen\", apk.created_by \"createdBy\", apk.created_date \"createdDate\", \n" +
+            "   apk.presence_status_id \"presenceStatusId\", ps.name \"presenceStatusName\"\n" +
+            "   from ac_subject_schedule_teacher st\n" +
+            "   join ac_subject_schedule ass on ass.id=st.schedule_id\n" +
+            "   join m_day md on md.id=ass.day_id \n" +
+            "   join ac_class_room acr on acr.id=ass.class_room_id \n" +
+            "   join institution i on i.id=acr.institution_id \n" +
+            "   join ac_subject as2 on as2.id=st.subject_id \n" +
+            "   join ac_activity_time aat on aat.id=ass.activity_time_start_id \n" +
+            "   join ac_activity_time aat2 on aat2.id=ass.activity_time_end_id\n" +
+            "   join person_data pd on pd.id=st.teacher_id \n" +
+            "   left join ac_presence_kbm apk on apk.presence_date = current_date and apk.schedule_id = st.id\n" +
+            "   left join presence_status ps on ps.id=apk.presence_status_id\n" +
+            "   LEFT JOIN ac_subject_schedule_student ss ON ss.subject_schedule_teacher_id =st.id\n" +
+            "   where st.id=:id\n" +
+            "order by ass.day_id,  aat.start_time\n" +
+            "), cr_count as (\n" +
+            "   select count(1) \n" +
+            "   from ac_class_room_student acrs \n" +
+            "   join a on acrs.class_room_id=a.\"classRoomId\" \n" +
+            "), st_count as (\n" +
+            "   select count(1) \n" +
+            "   from ac_subject_schedule_student asss \n" +
+            "   join a on asss.subject_schedule_teacher_id=a.id\n" +
+            ")\n" +
+            "select a.*, case when st.count > 0 then st.count else cr.count end as \"studentCount\" \n" +
+            "from a \n" +
+            "left join cr_count cr on true \n" +
+            "left join st_count st on true ", nativeQuery = true)
+    ScheduleTeacherPresenceDTO findScheduleTeacherById(@Param("id") String id);
 }

@@ -29,12 +29,18 @@ public class SubjectScheduleHistory extends AbstractAuditingEntity implements Se
     private Subject subject;
 
     @ManyToOne
-    @JoinColumn(name = "activity_time_id", nullable = false)
-    private AcademicActivityTime activityTime;
-
-    @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
     private PersonData teacher;
+
+    @ManyToOne
+    @JoinColumn(name = "activity_time_start_id", nullable = false)
+    private AcademicActivityTime activityTimeStart;
+
+    @ManyToOne
+    @JoinColumn(name = "activity_time_end_id", nullable = false)
+    private AcademicActivityTime activityTimeEnd;
+
+    private Integer duration;
 
     private String logActivity;
 
@@ -85,12 +91,28 @@ public class SubjectScheduleHistory extends AbstractAuditingEntity implements Se
         this.subject = subject;
     }
 
-    public AcademicActivityTime getActivityTime() {
-        return activityTime;
+    public AcademicActivityTime getActivityTimeStart() {
+        return activityTimeStart;
     }
 
-    public void setActivityTime(AcademicActivityTime activityTime) {
-        this.activityTime = activityTime;
+    public void setActivityTimeStart(AcademicActivityTime activityTimeStart) {
+        this.activityTimeStart = activityTimeStart;
+    }
+
+    public AcademicActivityTime getActivityTimeEnd() {
+        return activityTimeEnd;
+    }
+
+    public void setActivityTimeEnd(AcademicActivityTime activityTimeEnd) {
+        this.activityTimeEnd = activityTimeEnd;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public PersonData getTeacher() {

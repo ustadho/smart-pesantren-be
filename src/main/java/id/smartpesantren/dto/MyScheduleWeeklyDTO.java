@@ -3,7 +3,9 @@ package id.smartpesantren.dto;
 import java.util.List;
 
 public interface MyScheduleWeeklyDTO {
+    public String getId();
     public String getScheduleId();
+    public int getSeq();
     public int getDayId();
     public String getDayName();
     public String getClassRoomName();
