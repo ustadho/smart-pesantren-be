@@ -12,14 +12,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AsramaMappingRepository extends JpaRepository<AsramaMapping, String> {
-    @Query(value = "select ams.* \n" +
+    @Query(value = "select a.name \n" +
             "from asrama_mapping_student ams " +
             "join asrama_mapping am on am.id=ams.asrama_mapping_id\n" +
+            "join asrama a on a.id=am.asrama_id\n" +
             "where ams.student_id=:studentId \n " +
             "and am.academic_year_id=:academicYearId limit 1", nativeQuery = true)
-    public AsramaMappingStudent findByStudentAndAcademicYear(@Param("studentId") String studentId, @Param("academicYearId") String academicYearId);
+    public String findByStudentAndAcademicYear(@Param("studentId") String studentId, @Param("academicYearId") String academicYearId);
 
     public AsramaMapping findTop1ByAsramaAndAcademicYear(Asrama asrama, AcademicYear academicYear);
 

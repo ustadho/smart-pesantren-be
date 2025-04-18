@@ -12,6 +12,7 @@ public class AsramaMappingVM {
 
     @NotNull
     public String academicYearId;
+    public String academicYearName;
 
     public String musyrifId;
 
@@ -65,6 +66,14 @@ public class AsramaMappingVM {
 
     public void setAcademicYearId(String academicYearId) {
         this.academicYearId = academicYearId;
+    }
+
+    public String getAcademicYearName() {
+        return academicYearName;
+    }
+
+    public void setAcademicYearName(String academicYearName) {
+        this.academicYearName = academicYearName;
     }
 
     public String getDescription() {

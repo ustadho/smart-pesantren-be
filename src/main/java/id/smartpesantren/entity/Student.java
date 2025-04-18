@@ -128,6 +128,10 @@ public class Student extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "class_room_id")
     private ClassRoom classRoom;
 
+    @ManyToOne
+    @JoinColumn(name = "asrama_id")
+    private Asrama asrama;
+
     @Column(columnDefinition = "integer default 1")
     private Integer status; //0: NOT ACTIVE, 1: ACTIVE, 2: LULUS, 3: PINDAH
 
@@ -498,5 +502,13 @@ public class Student extends AbstractAuditingEntity implements Serializable {
 
     public void setClassRoom(ClassRoom classRoom) {
         this.classRoom = classRoom;
+    }
+
+    public Asrama getAsrama() {
+        return asrama;
+    }
+
+    public void setAsrama(Asrama asrama) {
+        this.asrama = asrama;
     }
 }

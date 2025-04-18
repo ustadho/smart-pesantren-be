@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -33,11 +34,24 @@ public class StudentResource {
                                    @RequestParam(value = "sex", defaultValue = "") String sex,
                                    Pageable p) {
         return repository.filter("%"+q.toUpperCase()+"%",
-                institutionId == ""? null: institutionId,
-                academicYearId == ""? null: academicYearId,
-                categoryId == ""? null: categoryId,
+                institutionId.equalsIgnoreCase("")? null: institutionId,
+                academicYearId.equalsIgnoreCase("")? null: academicYearId,
+                categoryId.equalsIgnoreCase("")? null: categoryId,
                 sex,
                 p);
+    }
+
+    @GetMapping("filter-all")
+    public List<StudentDTO> filter(@RequestParam(value = "q", defaultValue = "") String q,
+                                   @RequestParam(value = "iid", defaultValue = "") String institutionId,
+                                   @RequestParam(value = "y", defaultValue = "") String academicYearId,
+                                   @RequestParam(value = "c", defaultValue = "") String categoryId,
+                                   @RequestParam(value = "sex", defaultValue = "") String sex) {
+        return repository.filterAll("%"+q.toUpperCase()+"%",
+                institutionId.equalsIgnoreCase("")? null: institutionId,
+                academicYearId.equalsIgnoreCase("")? null: academicYearId,
+                categoryId.equalsIgnoreCase("")? null: categoryId,
+                sex);
     }
 
     @PostMapping

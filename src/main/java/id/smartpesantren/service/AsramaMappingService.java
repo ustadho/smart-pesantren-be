@@ -52,13 +52,13 @@ public class AsramaMappingService {
             if(a.getId() == null) {
                 d = new AsramaMappingStudent();
             } else {
-                if(d.getId() == null) {
+                if(vmd.getId() == null) {
                     d = new AsramaMappingStudent();
                 } else {
                     // Check if existing detail needs deletion
                     boolean existingDetailFound = false;
                     for (AsramaMappingStudent existingDetail : a.getStudents()) {
-                        if (existingDetail.getId().equals(d.getId())) {
+                        if (vmd.getId() != null &&  existingDetail.getId().equals(vmd.getId())) {
                             d = existingDetail;
                             existingDetailFound = true;
                             break;
@@ -82,6 +82,9 @@ public class AsramaMappingService {
 
     public AsramaMappingVM findByAsramaAndYearId(String asramaId, String academicYearId) {
         AsramaMapping cr = repository.findTop1ByAsramaAndAcademicYear(new Asrama(asramaId), new AcademicYear(academicYearId));
+        if(cr == null) {
+            return null;
+        }
         return toVM(cr);
     }
 
@@ -97,6 +100,7 @@ public class AsramaMappingService {
         vm.setAsramaName(am.getAsrama().getName());
         vm.setDescription(am.getDescription());
         vm.setAcademicYearId(am.getAcademicYear().getId());
+        vm.setAcademicYearName(am.getAcademicYear().getName());
         vm.setMusyrifId(am.getMusyrif() == null? null: am.getMusyrif().getId());
 
         for(AsramaMappingStudent s: am.getStudents()) {

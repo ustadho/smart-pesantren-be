@@ -1,12 +1,10 @@
 package id.smartpesantren.web;
 
 import id.smartpesantren.dto.AsramaMappingDTO;
-import id.smartpesantren.dto.ClassRoomDTO;
-import id.smartpesantren.entity.AsramaMappingStudent;
-import id.smartpesantren.entity.ClassRoomStudent;
+import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.AsramaMappingRepository;
-import id.smartpesantren.repository.AsramaRepository;
 import id.smartpesantren.service.AsramaMappingService;
+import id.smartpesantren.web.rest.errors.InternalServerErrorException;
 import id.smartpesantren.web.rest.vm.AsramaMappingVM;
 import id.smartpesantren.web.rest.vm.AsramaMappingVMStudent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pengasuhan/asrama-mapping")
@@ -40,8 +39,8 @@ public class AsramaMappingResource {
     }
 
     @GetMapping("/{asramaId}/{academicYearId}")
-    public AsramaMappingVM findByAsramaAndAcademicYear(@PathVariable("asramaId") String id, @PathVariable("academicYearId") String academicYearId) {
-        return service.findById(id);
+    public AsramaMappingVM findByAsramaAndAcademicYear(@PathVariable("asramaId") String asramaId, @PathVariable("academicYearId") String academicYearId) {
+        return service.findByAsramaAndYearId(asramaId, academicYearId);
     }
 
     @GetMapping("/{id}")
@@ -52,16 +51,18 @@ public class AsramaMappingResource {
     @PutMapping
     @Transactional
     public void save(@RequestBody @Valid AsramaMappingVM vm) {
-        //Cek dulu sebelum diinsert
-//        Optional<AsramaMapping> cr = asramaRepository.findById(vm.getId());
-//        if(!cr.isPresent()) {
-//            throw new DataNotFoundException("Tahun akademik tidak dikenal");
-//        }
-        for (AsramaMappingVMStudent d: vm.getStudents()) {
-            if(d.getId() == null) {
-                AsramaMappingStudent cs = repository.findByStudentAndAcademicYear(d.getStudentId(), vm.getAcademicYearId());
-                if (cs != null) {
-                    throw new DuplicateKeyException("Santri tersebut sudah dimasukkan di asrama: " + cs.getAsramaMapping().getAsrama().getName());
+        if(vm == null) {
+            //Cek dulu sebelum diinsert
+            AsramaMapping cr = repository.findTop1ByAsramaAndAcademicYear(new Asrama(vm.getAsramaId()), new AcademicYear(vm.getAcademicYearId()));
+            if (cr != null) {
+                throw new InternalServerErrorException("Data untuk asrama ini sudah dimasukkan");
+            }
+        }
+        for (AsramaMappingVMStudent s: vm.getStudents()) {
+            if(s.getId() == null) {
+                String asrama = repository.findByStudentAndAcademicYear(s.getStudentId(), vm.getAcademicYearId());
+                if (asrama != null) {
+                    throw new InternalServerErrorException("Santri tersebut sudah dimasukkan di asrama: " + asrama);
                 }
             }
         }
