@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface JenisKegiatanRepository extends JpaRepository<JenisKegiatan, String> {
     @Query("select new id.smartpesantren.dto.JenisKegiatanDTO(a) " +
             "from JenisKegiatan a \n" +
@@ -20,5 +22,5 @@ public interface JenisKegiatanRepository extends JpaRepository<JenisKegiatan, St
             "where a.foundation.id=?#{principal.foundationId} \n" +
             "and upper(a.name) like :q \n" +
             "and coalesce(a.active, false) = true")
-    public Iterable<JenisKegiatanDTO> filterAll(@Param("q") String q);
+    public List<JenisKegiatanDTO> filterAll(@Param("q") String q);
 }

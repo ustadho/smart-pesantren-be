@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,7 +40,7 @@ public class JenisKegiatanResource {
     }
 
     @GetMapping("all")
-    Iterable<JenisKegiatanDTO> findAll(@RequestParam(value = "q", required = false, defaultValue = "") String q) {
+    List<JenisKegiatanDTO> findAll(@RequestParam(value = "q", required = false, defaultValue = "") String q) {
         return repository.filterAll("%"+q.toUpperCase()+"%");
     }
 
