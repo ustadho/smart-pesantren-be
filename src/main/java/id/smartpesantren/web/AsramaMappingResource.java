@@ -45,7 +45,7 @@ public class AsramaMappingResource {
 
     @GetMapping("/{id}")
     public AsramaMappingVM findById(@PathVariable("id") String id) {
-        return service.findById(id);
+        return repository.findByMappingId(id).map(service::toVM).orElse(null);
     }
 
     @PutMapping
@@ -62,7 +62,7 @@ public class AsramaMappingResource {
             if(s.getId() == null) {
                 String asrama = repository.findByStudentAndAcademicYear(s.getStudentId(), vm.getAcademicYearId());
                 if (asrama != null) {
-                    throw new InternalServerErrorException("Santri tersebut sudah dimasukkan di asrama: " + asrama);
+                    throw new InternalServerErrorException("Santri '"+s.getStudentName()+"' sudah dimasukkan di asrama: " + asrama);
                 }
             }
         }

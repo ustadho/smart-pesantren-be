@@ -33,4 +33,9 @@ public interface AsramaMappingRepository extends JpaRepository<AsramaMapping, St
     Page<AsramaMappingDTO> filter(@Param("academicYear") String academicYear,
                                   @Param("pesantren") String pesantren,
                                   Pageable pageable);
+
+    @Query("select a from AsramaMapping a \n" +
+            "left join fetch a.musyrifs m \n" +
+            "where a.id=:id")
+    Optional<AsramaMapping> findByMappingId(@Param("id") String id);
 }

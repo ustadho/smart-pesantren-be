@@ -6,6 +6,7 @@ import id.smartpesantren.entity.Student;
 import id.smartpesantren.entity.StudentPresence;
 import id.smartpesantren.repository.StudentPresenceRepository;
 import id.smartpesantren.security.SecurityUtils;
+import id.smartpesantren.web.rest.errors.InternalServerErrorException;
 import id.smartpesantren.web.rest.vm.StudentPresenceVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/student-presence")
@@ -27,6 +29,22 @@ public class StudentPresenceResource {
         StudentPresence sp = fromVM(vm);
         sp = studentPresenceRepository.save(sp);
         return vm;
+    }
+
+    @PutMapping("{id}")
+    public StudentPresenceVM updateStudentPresence(@PathVariable("id") String id, @RequestBody @Valid StudentPresenceVM vm) {
+        StudentPresence sp = fromVM(vm);
+        sp = studentPresenceRepository.save(sp);
+        return vm;
+    }
+
+    @GetMapping("{id}")
+    public StudentPresenceVM findById(@PathVariable("id") String id) {
+        Optional<StudentPresence> optionalPresence = studentPresenceRepository.findById(id);
+        if (optionalPresence.isPresent()) {
+            return new StudentPresenceVM(optionalPresence.get());
+        }
+        return null;
     }
 
     @GetMapping
@@ -44,7 +62,15 @@ public class StudentPresenceResource {
     }
 
     public StudentPresence fromVM(StudentPresenceVM vm) {
-        StudentPresence s = new StudentPresence();
+        StudentPresence s = null;
+        if(vm.getId() != null) {
+            Optional<StudentPresence> optionalPresence = studentPresenceRepository.findById(vm.getId());
+            if (optionalPresence.isPresent()) {
+                s = optionalPresence.get();
+            }
+        } else {
+            s = new StudentPresence();
+        }
         s.setId(vm.getId());
         s.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
         s.setStudent(new Student(vm.getStudentId()));

@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,9 +29,13 @@ public class AsramaMapping {
     @JoinColumn(name = "asrama_id", nullable = false)
     Asrama asrama;
 
-    @ManyToOne
-    @JoinColumn(name = "musyrif_id", nullable = false)
-    PersonData musyrif;
+    @ManyToMany
+    @JoinTable(
+        name = "asrama_mapping_musyrif",
+        joinColumns = @JoinColumn(name = "asrama_mapping_id"),
+        inverseJoinColumns = @JoinColumn(name = "musyrif_id")
+    )
+    List<PersonData> musyrifs;
 
     @Column(columnDefinition = "text")
     private String description;
@@ -71,12 +76,12 @@ public class AsramaMapping {
         this.asrama = asrama;
     }
 
-    public PersonData getMusyrif() {
-        return musyrif;
+    public List<PersonData> getMusyrifs() {
+        return musyrifs;
     }
 
-    public void setMusyrif(PersonData musyrif) {
-        this.musyrif = musyrif;
+    public void setMusyrifs(List<PersonData> musyrifs) {
+        this.musyrifs = musyrifs;
     }
 
     public String getDescription() {

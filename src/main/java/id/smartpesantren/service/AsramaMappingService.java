@@ -2,9 +2,6 @@ package id.smartpesantren.service;
 
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.AsramaMappingRepository;
-import id.smartpesantren.repository.AsramaRepository;
-import id.smartpesantren.repository.ClassRoomRepository;
-import id.smartpesantren.repository.ClassRoomStudentRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.vm.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +29,14 @@ public class AsramaMappingService {
         a.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
         a.setAcademicYear(new AcademicYear(vm.getAcademicYearId()));
         a.setAsrama(new Asrama(vm.getAsramaId()));
-        a.setMusyrif(new PersonData(vm.getMusyrifId()));
+        // Ubah agar support manyToMany
+        if(vm.getMusyrifIds() != null) {
+            a.setMusyrifs(vm.getMusyrifIds().stream().map(PersonData::new).collect(java.util.stream.Collectors.toList()));
+        } else if(vm.getMusyrifId() != null) {
+            a.setMusyrifs(java.util.Collections.singletonList(new PersonData(vm.getMusyrifId())));
+        } else {
+            a.setMusyrifs(null);
+        }
 
         for (Iterator<AsramaMappingStudent> iterator = a.getStudents().iterator(); iterator.hasNext();) {
             AsramaMappingStudent d = iterator.next();
@@ -101,7 +105,10 @@ public class AsramaMappingService {
         vm.setDescription(am.getDescription());
         vm.setAcademicYearId(am.getAcademicYear().getId());
         vm.setAcademicYearName(am.getAcademicYear().getName());
-        vm.setMusyrifId(am.getMusyrif() == null? null: am.getMusyrif().getId());
+        vm.setMusyrifIds(
+            am.getMusyrifs() == null ? null :
+            am.getMusyrifs().stream().map(PersonData::getId).collect(java.util.stream.Collectors.toList())
+        );
 
         for(AsramaMappingStudent s: am.getStudents()) {
             AsramaMappingVMStudent d = new AsramaMappingVMStudent();

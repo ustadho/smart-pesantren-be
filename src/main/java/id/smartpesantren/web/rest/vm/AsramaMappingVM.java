@@ -16,6 +16,9 @@ public class AsramaMappingVM {
 
     public String musyrifId;
 
+    // Tambah field untuk manyToMany
+    private List<String> musyrifIds;
+
     private String description;
 
     public List<AsramaMappingVMStudent> students = new ArrayList<>();
@@ -50,6 +53,14 @@ public class AsramaMappingVM {
 
     public void setMusyrifId(String musyrifId) {
         this.musyrifId = musyrifId;
+    }
+
+    public List<String> getMusyrifIds() {
+        return musyrifIds;
+    }
+
+    public void setMusyrifIds(List<String> musyrifIds) {
+        this.musyrifIds = musyrifIds;
     }
 
     public List<AsramaMappingVMStudent> getStudents() {
