@@ -8,12 +8,13 @@ import id.smartpesantren.repository.StudentPresenceRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.web.rest.vm.StudentPresenceVM;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @RestController
 @RequestMapping("api/student-presence")
@@ -28,6 +29,20 @@ public class StudentPresenceResource {
         return vm;
     }
 
+    @GetMapping
+    public Page<StudentPresenceVM> filter(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate,
+            @RequestParam("studentId") String studentId, @RequestParam("presenceStatusId") String presenceStatusId, Pageable p) throws ParseException {
+            if (startDate != null && endDate != null) {
+            }   
+        return studentPresenceRepository.filter(
+                startDate.equalsIgnoreCase("")? null: format.parse(startDate),
+                endDate.equalsIgnoreCase("")? null: format.parse(endDate),
+                presenceStatusId.equalsIgnoreCase("") || presenceStatusId.equalsIgnoreCase("0")? null: Integer.parseInt(presenceStatusId),
+                studentId.equalsIgnoreCase("")? null: studentId,
+                p
+        );
+    }
+
     public StudentPresence fromVM(StudentPresenceVM vm) {
         StudentPresence s = new StudentPresence();
         s.setId(vm.getId());
@@ -39,4 +54,6 @@ public class StudentPresenceResource {
         s.setNote(vm.getNote());
         return s;
     }
+
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 }
