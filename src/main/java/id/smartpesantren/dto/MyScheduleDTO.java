@@ -9,4 +9,5 @@ public interface MyScheduleDTO {
     public String getSubjectName();
     public String getStartTime();
     public String getEndTime();
+    public String getInstitutionName();
 }

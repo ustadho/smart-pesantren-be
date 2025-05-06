@@ -21,17 +21,18 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
     public List<PersonSimpleDTO> findAllTeacherScheduleToday(@Param("academicYear") String academicYear, @Param("dayId") Integer dayId);
 
     @Query(value = "select asst.schedule_id \"scheduleId\", asst.id \"subjectTeacherScheduleId\", ass.class_room_id \"classRoomId\", acr.name \"classRoomName\", asst.subject_id \"subjectId\", \n" +
-            "as2.name \"subjectName\", aat1.start_time \"startTime\", aat2.end_time \"endTime\"\n" +
+            "as2.name \"subjectName\", aat1.start_time \"startTime\", aat2.end_time \"endTime\", coalesce(i.name,'') \"institutionName\" \n" +
             "from ac_subject_schedule_teacher asst \n" +
             "join ac_subject_schedule ass on ass.id=asst.schedule_id \n" +
             "join ac_class_room acr on acr.id=ass.class_room_id \n" +
             "join ac_subject as2 on as2.id = asst.subject_id \n" +
             "join ac_activity_time aat1 on aat1.id = ass.activity_time_start_id \n" +
             "join ac_activity_time aat2 on aat2.id=ass.activity_time_end_id\n" +
-            "and ass.day_id = EXTRACT('DOW' FROM CURRENT_DATE)\n" +
+            "join institution i on i.id=acr.institution_id\n" +
+            "and ass.day_id = :dayId\n" +
             "and asst.teacher_id = :teacherId\n" +
             "order by aat1.start_time ", nativeQuery = true)
-    List<MyScheduleDTO> findTeacherScheduleToday(@Param("teacherId") String teacherId);
+    List<MyScheduleDTO> findTeacherScheduleToday(@Param("teacherId") String teacherId, @Param("dayId") Integer dayId);
 
     @Query(value = "select st.id, st.schedule_id \"scheduleId\", ass.day_id \"dayId\", md.\"name\" \"dayName\", coalesce(acr.name,'') \"classRoomName\",\n" +
             "coalesce(i.\"name\") \"institutionName\", st.subject_id \"subjectId\", coalesce(as2.\"name\",'') \"subjectName\", \n" +

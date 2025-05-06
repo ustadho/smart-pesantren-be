@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,10 +55,16 @@ public class SubjectScheduleResource {
         return subjectScheduleRepository.findAllTeacherScheduleToday(academicYear, dayId);
     }
 
-    @GetMapping("/by-teacher/{id}")
+    @GetMapping("/by-teacher")
+    public List<MyScheduleDTO> findSubjectScheduleClassRoomByTeacherId(
+            @RequestParam("teacherId") String teacherId, @RequestParam("dayId") String dayId) {
+        LocalDate today = LocalDate.now();
+        DayOfWeek dayOfWeek = today.getDayOfWeek();
+        int dow = dayOfWeek.getValue() % 7;
 
-    public List<MyScheduleDTO> findSubjectScheduleClassRoomByTeacherId(@PathVariable("id") String teacherId) {
-        List<MyScheduleDTO> list = subjectScheduleRepository.findTeacherScheduleToday(teacherId);
+        List<MyScheduleDTO> list = subjectScheduleRepository.findTeacherScheduleToday(
+                teacherId,
+                dayId == null || dayId.equalsIgnoreCase("")? dow : Integer.parseInt(dayId));
         return list;
     }
 
@@ -67,10 +75,13 @@ public class SubjectScheduleResource {
 
     @GetMapping("my-current-schedule")
     List<MyScheduleDTO> findMyCurrentSchedule() {
+        LocalDate today = LocalDate.now();
+        DayOfWeek dayOfWeek = today.getDayOfWeek();
+        int dow = dayOfWeek.getValue() % 7; //menyesuaikan postgres dimana senin index ke 0
         return SecurityUtils.getCurrentUserLogin()
                 .flatMap(userRepository::findOneByLogin)
                 .filter(user -> user.getPerson() != null)
-                .map(user -> subjectScheduleRepository.findTeacherScheduleToday("%"+user.getPerson().getId()+"%"))
+                .map(user -> subjectScheduleRepository.findTeacherScheduleToday("%"+user.getPerson().getId()+"%", dow))
                 .orElseGet(ArrayList::new);
     }
 
