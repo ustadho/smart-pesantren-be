@@ -4,17 +4,16 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AsramaMappingVM {
+public class HalaqohVM {
     private String id;
     @NotNull
-    public String asramaId;
-    public String asramaName;
+    public String pesantrenId;
+    public String pesantrenName;
 
     @NotNull
     public String academicYearId;
     public String academicYearName;
 
-    public String musyrifId;
 
     // Tambah field untuk manyToMany
     private List<String> musyrifIds;
@@ -29,30 +28,6 @@ public class AsramaMappingVM {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getAsramaId() {
-        return asramaId;
-    }
-
-    public void setAsramaId(String asramaId) {
-        this.asramaId = asramaId;
-    }
-
-    public String getAsramaName() {
-        return asramaName;
-    }
-
-    public void setAsramaName(String asramaName) {
-        this.asramaName = asramaName;
-    }
-
-    public String getMusyrifId() {
-        return musyrifId;
-    }
-
-    public void setMusyrifId(String musyrifId) {
-        this.musyrifId = musyrifId;
     }
 
     public List<String> getMusyrifIds() {
@@ -93,5 +68,21 @@ public class AsramaMappingVM {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public @NotNull String getPesantrenId() {
+        return pesantrenId;
+    }
+
+    public void setPesantrenId(@NotNull String pesantrenId) {
+        this.pesantrenId = pesantrenId;
+    }
+
+    public String getPesantrenName() {
+        return pesantrenName;
+    }
+
+    public void setPesantrenName(String pesantrenName) {
+        this.pesantrenName = pesantrenName;
     }
 }

@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "asrama_mapping")
-public class AsramaMapping {
+@Table(name = "halaqoh")
+public class Halaqoh {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
@@ -26,13 +26,13 @@ public class AsramaMapping {
     private AcademicYear academicYear;
 
     @ManyToOne
-    @JoinColumn(name = "asrama_id", nullable = false)
-    Asrama asrama;
+    @JoinColumn(name = "pesantren_id", nullable = false)
+    Pesantren pesantren;
 
     @ManyToMany
     @JoinTable(
-        name = "asrama_mapping_musyrif",
-        joinColumns = @JoinColumn(name = "asrama_mapping_id"),
+        name = "halaqoh_musyrif",
+        joinColumns = @JoinColumn(name = "halaqoh_id"),
         inverseJoinColumns = @JoinColumn(name = "musyrif_id")
     )
     List<PersonData> musyrifs;
@@ -40,9 +40,9 @@ public class AsramaMapping {
     @Column(columnDefinition = "text")
     private String description;
 
-    @OneToMany(mappedBy = "asramaMapping", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "halaqoh", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
-    private Set<AsramaMappingStudent> students = new HashSet<>();
+    private Set<HalaqohStudent> students = new HashSet<>();
 
     public String getId() {
         return id;
@@ -68,12 +68,12 @@ public class AsramaMapping {
         this.academicYear = academicYear;
     }
 
-    public Asrama getAsrama() {
-        return asrama;
+    public Pesantren getPesantren() {
+        return pesantren;
     }
 
-    public void setAsrama(Asrama asrama) {
-        this.asrama = asrama;
+    public void setPesantren(Pesantren pesantren) {
+        this.pesantren = pesantren;
     }
 
     public List<PersonData> getMusyrifs() {
@@ -92,11 +92,11 @@ public class AsramaMapping {
         this.description = description;
     }
 
-    public Set<AsramaMappingStudent> getStudents() {
+    public Set<HalaqohStudent> getStudents() {
         return students;
     }
 
-    public void setStudents(Set<AsramaMappingStudent> students) {
+    public void setStudents(Set<HalaqohStudent> students) {
         this.students = students;
     }
 }

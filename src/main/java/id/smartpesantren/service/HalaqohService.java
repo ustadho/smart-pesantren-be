@@ -1,9 +1,14 @@
 package id.smartpesantren.service;
 
+import id.smartpesantren.dto.HalaqohDTO;
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.AsramaMappingRepository;
+import id.smartpesantren.repository.HalaqohRepository;
 import id.smartpesantren.security.SecurityUtils;
-import id.smartpesantren.web.rest.vm.*;
+import id.smartpesantren.web.rest.vm.AsramaMappingVM;
+import id.smartpesantren.web.rest.vm.AsramaMappingVMStudent;
+import id.smartpesantren.web.rest.vm.HalaqohVM;
+import id.smartpesantren.web.rest.vm.PesantrenVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,32 +19,31 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AsramaMappingService {
+public class HalaqohService {
     @Autowired
-    AsramaMappingRepository repository;
+    HalaqohRepository repository;
 
     @Transactional
-    public void save(AsramaMappingVM vm) {
-        AsramaMapping a = null;
+    public void save(HalaqohVM vm) {
+        Halaqoh a = null;
         if(vm.getId() != null) {
             a = repository.findById(vm.getId()).get();
         } else {
-            a = new AsramaMapping();
+            a = new Halaqoh();
         }
         a.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
         a.setAcademicYear(new AcademicYear(vm.getAcademicYearId()));
-        a.setAsrama(new Asrama(vm.getAsramaId()));
+        a.setPesantren(new Pesantren(vm.getPesantrenId()));
+        a.setDescription(vm.getDescription());
         // Ubah agar support manyToMany
         if(vm.getMusyrifIds() != null) {
             a.setMusyrifs(vm.getMusyrifIds().stream().map(PersonData::new).collect(java.util.stream.Collectors.toList()));
-        } else if(vm.getMusyrifId() != null) {
-            a.setMusyrifs(java.util.Collections.singletonList(new PersonData(vm.getMusyrifId())));
         } else {
             a.setMusyrifs(null);
         }
 
-        for (Iterator<AsramaMappingStudent> iterator = a.getStudents().iterator(); iterator.hasNext();) {
-            AsramaMappingStudent d = iterator.next();
+        for (Iterator<HalaqohStudent> iterator = a.getStudents().iterator(); iterator.hasNext();) {
+            HalaqohStudent d = iterator.next();
             boolean used = false;
             for(AsramaMappingVMStudent di: vm.getStudents()) {
                 if(di.getId() != null && di.getId().equalsIgnoreCase(d.getId())) {
@@ -52,16 +56,16 @@ public class AsramaMappingService {
             }
         }
         for(AsramaMappingVMStudent vmd: vm.getStudents()) {
-            AsramaMappingStudent d = null;
+            HalaqohStudent d = null;
             if(a.getId() == null) {
-                d = new AsramaMappingStudent();
+                d = new HalaqohStudent();
             } else {
                 if(vmd.getId() == null) {
-                    d = new AsramaMappingStudent();
+                    d = new HalaqohStudent();
                 } else {
                     // Check if existing detail needs deletion
                     boolean existingDetailFound = false;
-                    for (AsramaMappingStudent existingDetail : a.getStudents()) {
+                    for (HalaqohStudent existingDetail : a.getStudents()) {
                         if (vmd.getId() != null &&  existingDetail.getId().equals(vmd.getId())) {
                             d = existingDetail;
                             existingDetailFound = true;
@@ -73,9 +77,9 @@ public class AsramaMappingService {
                     }
                 }
             }
-            d.setAsramaMapping(a);
             d.setId(d.getId());
             d.setStudent(new Student(vmd.getStudentId()));
+            d.setHalaqoh(a);
             if(d.getId() == null) {
                 a.getStudents().add(d);
             }
@@ -84,24 +88,24 @@ public class AsramaMappingService {
         repository.save(a);
     }
 
-    public AsramaMappingVM findByAsramaAndYearId(String asramaId, String academicYearId) {
-        AsramaMapping cr = repository.findTop1ByAsramaAndAcademicYear(new Asrama(asramaId), new AcademicYear(academicYearId));
-        if(cr == null) {
+    public HalaqohVM findByPesantrenAndYearId(String pesantrenId, String academicYearId) {
+        Halaqoh a = repository.findTop1ByPesantrenAndAcademicYear(new Pesantren(pesantrenId), new AcademicYear(academicYearId));
+        if(a == null) {
             return null;
         }
-        return toVM(cr);
+        return toVM(a);
     }
 
-    public AsramaMappingVM findById(String id) {
-        Optional<AsramaMapping> cr = repository.findById(id);
+    public HalaqohVM findById(String id) {
+        Optional<Halaqoh> cr = repository.findByHalaqohId(id);
         return toVM(cr.get());
     }
 
-    public AsramaMappingVM toVM(AsramaMapping am) {
-        AsramaMappingVM vm = new AsramaMappingVM();
+    public HalaqohVM    toVM(Halaqoh am) {
+        HalaqohVM vm = new HalaqohVM();
         vm.setId(am.getId());
-        vm.setAsramaId(am.getAsrama().getId());
-        vm.setAsramaName(am.getAsrama().getName());
+        vm.setPesantrenId(am.getPesantren().getId());
+        vm.setPesantrenName(am.getPesantren().getName());
         vm.setDescription(am.getDescription());
         vm.setAcademicYearId(am.getAcademicYear().getId());
         vm.setAcademicYearName(am.getAcademicYear().getName());
@@ -110,7 +114,7 @@ public class AsramaMappingService {
             am.getMusyrifs().stream().map(PersonData::getId).collect(java.util.stream.Collectors.toList())
         );
 
-        for(AsramaMappingStudent s: am.getStudents()) {
+        for(HalaqohStudent s: am.getStudents()) {
             AsramaMappingVMStudent d = new AsramaMappingVMStudent();
             d.setId(s.getId());
             d.setStudentId(s.getStudent().getId());

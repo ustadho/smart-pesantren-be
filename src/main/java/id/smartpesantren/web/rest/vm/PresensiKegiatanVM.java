@@ -1,16 +1,24 @@
 package id.smartpesantren.web.rest.vm;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import id.smartpesantren.entity.PresensiKegiatan;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public class PresensiKegiatanVM {
     private String id;
     private String jenisKegiatanId;
     private String jenisKegiatanName;
-    private LocalDate tanggal;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private Date tanggal;
     private String santriId;
     private String santriName;
+    private String santriNis;
+    private String santriNisn;
+    private String santriClassName;
     private String penilaian;
     private String catatan;
 
@@ -23,6 +31,9 @@ public class PresensiKegiatanVM {
         setJenisKegiatanName(p.getJenisKegiatan().getName());
         setSantriId(p.getSantri().getId());
         setSantriName(p.getSantri().getName());
+        setSantriNis(p.getSantri().getNis());
+        setSantriNisn(p.getSantri().getNisn());
+        setSantriClassName(p.getSantri().getClassRoom().getName());
         setCatatan(p.getCatatan());
         setTanggal(p.getTanggal());
         setPenilaian(p.getPenilaian());
@@ -52,11 +63,11 @@ public class PresensiKegiatanVM {
         this.jenisKegiatanName = jenisKegiatanName;
     }
 
-    public LocalDate getTanggal() {
+    public Date getTanggal() {
         return tanggal;
     }
 
-    public void setTanggal(LocalDate tanggal) {
+    public void setTanggal(Date tanggal) {
         this.tanggal = tanggal;
     }
 
@@ -90,5 +101,29 @@ public class PresensiKegiatanVM {
 
     public void setCatatan(String catatan) {
         this.catatan = catatan;
+    }
+
+    public String getSantriNis() {
+        return santriNis;
+    }
+
+    public void setSantriNis(String santriNis) {
+        this.santriNis = santriNis;
+    }
+
+    public String getSantriNisn() {
+        return santriNisn;
+    }
+
+    public void setSantriNisn(String santriNisn) {
+        this.santriNisn = santriNisn;
+    }
+
+    public String getSantriClassName() {
+        return santriClassName;
+    }
+
+    public void setSantriClassName(String santriClassName) {
+        this.santriClassName = santriClassName;
     }
 }

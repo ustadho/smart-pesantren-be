@@ -4,6 +4,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "presensi_kegiatan")
@@ -18,8 +20,9 @@ public class PresensiKegiatan extends AbstractAuditingEntity {
     @JoinColumn(name = "foundation_id", nullable = false)
     Foundation foundation;
 
-    @Column(nullable = false, columnDefinition = "date default current_date")
-    private LocalDate tanggal;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, columnDefinition = "timestamp without time zone")
+    private Date tanggal;
 
     @ManyToOne
     @JoinColumn(name = "santri_id", nullable = false)
@@ -50,11 +53,11 @@ public class PresensiKegiatan extends AbstractAuditingEntity {
         this.foundation = foundation;
     }
 
-    public LocalDate getTanggal() {
+    public Date getTanggal() {
         return tanggal;
     }
 
-    public void setTanggal(LocalDate tanggal) {
+    public void setTanggal(Date tanggal) {
         this.tanggal = tanggal;
     }
 
