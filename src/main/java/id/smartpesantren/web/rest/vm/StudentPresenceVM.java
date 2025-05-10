@@ -8,11 +8,13 @@ public class StudentPresenceVM {
     private String id;
     private String studentId;
     private String studentName;
-    private String nis;
-    private String nisn;
+    private String studentNis;
+    private String studentNisn;
+    private String studentClassRoom;
     private Integer presenceStatusId;
     private String presenceStatusName;
     private Date date;
+    private Integer numDays;
     private String note;
     private String attachment;
 
@@ -23,13 +25,16 @@ public class StudentPresenceVM {
         setId(p.getId());
         setStudentId(p.getStudent().getId());
         setStudentName(p.getStudent().getName());
-        setNis(p.getStudent().getNis());
-        setNisn(p.getStudent().getNisn());
+        setStudentNis(p.getStudent().getNis());
+        setStudentNisn(p.getStudent().getNisn());
+        setStudentClassRoom(p.getStudent().getClassRoom() == null ? "" : p.getStudent().getClassRoom().getName());
         setPresenceStatusId(p.getPresenceStatus().getId());
         setPresenceStatusName(p.getPresenceStatus().getName());
         setDate(p.getDate());
+        setNumDays(p.getNumDays());
         setNote(p.getNote());
         setAttachment(p.getAttachment());
+
     }
 
     public String getId() {
@@ -56,20 +61,28 @@ public class StudentPresenceVM {
         this.studentName = studentName;
     }
 
-    public String getNis() {
-        return nis;
+    public String getStudentNis() {
+        return studentNis;
     }
 
-    public void setNis(String nis) {
-        this.nis = nis;
+    public void setStudentNis(String studentNis) {
+        this.studentNis = studentNis;
     }
 
-    public String getNisn() {
-        return nisn;
+    public String getStudentNisn() {
+        return studentNisn;
     }
 
-    public void setNisn(String nisn) {
-        this.nisn = nisn;
+    public void setStudentNisn(String studentNisn) {
+        this.studentNisn = studentNisn;
+    }
+
+    public String getStudentClassRoom() {
+        return studentClassRoom;
+    }
+
+    public void setStudentClassRoom(String studentClassRoom) {
+        this.studentClassRoom = studentClassRoom;
     }
 
     public String getPresenceStatusName() {
@@ -94,6 +107,14 @@ public class StudentPresenceVM {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Integer getNumDays() {
+        return numDays;
+    }
+
+    public void setNumDays(Integer numDays) {
+        this.numDays = numDays;
     }
 
     public String getNote() {

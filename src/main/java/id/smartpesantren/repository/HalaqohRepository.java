@@ -11,14 +11,14 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface HalaqohRepository extends JpaRepository<Halaqoh, String> {
-    @Query(value = "select a.name \n" +
+    @Query(value = "select a.description \n" +
             "from halaqoh_student s " +
             "join halaqoh a on a.id=s.halaqoh_id\n" +
             "where s.student_id=:studentId \n " +
             "and a.academic_year_id=:academicYearId limit 1", nativeQuery = true)
     public String findByStudentAndAcademicYear(@Param("studentId") String studentId, @Param("academicYearId") String academicYearId);
 
-    public Halaqoh findTop1ByPesantrenAndAcademicYear(Pesantren asrama, AcademicYear academicYear);
+    public Halaqoh findTop1ByPesantrenAndAcademicYear(Pesantren pesantren, AcademicYear academicYear);
 
     @Query("select new id.smartpesantren.dto.HalaqohDTO(a) \n " +
             "from Halaqoh a " +

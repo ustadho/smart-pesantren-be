@@ -34,6 +34,7 @@ public class HalaqohService {
         a.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
         a.setAcademicYear(new AcademicYear(vm.getAcademicYearId()));
         a.setPesantren(new Pesantren(vm.getPesantrenId()));
+        a.setDescription(vm.getDescription());
         // Ubah agar support manyToMany
         if(vm.getMusyrifIds() != null) {
             a.setMusyrifs(vm.getMusyrifIds().stream().map(PersonData::new).collect(java.util.stream.Collectors.toList()));
@@ -78,6 +79,7 @@ public class HalaqohService {
             }
             d.setId(d.getId());
             d.setStudent(new Student(vmd.getStudentId()));
+            d.setHalaqoh(a);
             if(d.getId() == null) {
                 a.getStudents().add(d);
             }

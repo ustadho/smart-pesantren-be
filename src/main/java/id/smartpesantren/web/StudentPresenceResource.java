@@ -75,10 +75,15 @@ public class StudentPresenceResource {
         s.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
         s.setStudent(new Student(vm.getStudentId()));
         s.setDate(vm.getDate());
+        s.setNumDays(vm.getNumDays());
         s.setPresenceStatus(new PresenceStatus(vm.getPresenceStatusId()));
         s.setAttachment(vm.getAttachment());
         s.setNote(vm.getNote());
         return s;
+    }
+
+    private StudentPresenceVM toVM(StudentPresence s) {
+        return new StudentPresenceVM(s);
     }
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");

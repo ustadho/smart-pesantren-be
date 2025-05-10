@@ -9,6 +9,7 @@ public class HalaqohDTO {
     private String academicYearCode;
     private String pesantrenId;
     private String pesantrenName;
+    private String description;
     private Integer studentCount;
 
     public HalaqohDTO() {
@@ -21,6 +22,7 @@ public class HalaqohDTO {
         setPesantrenId(a.getPesantren().getId());
         setPesantrenName(a.getPesantren().getName());
         setStudentCount(a.getStudents()==null? 0: a.getStudents().size());
+        setDescription(a.getDescription());
     }
 
     public String getId() {
@@ -69,5 +71,13 @@ public class HalaqohDTO {
 
     public void setStudentCount(Integer studentCount) {
         this.studentCount = studentCount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

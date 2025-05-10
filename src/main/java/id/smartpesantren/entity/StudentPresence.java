@@ -2,7 +2,6 @@ package id.smartpesantren.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.naming.Name;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -31,6 +30,9 @@ public class StudentPresence extends AbstractAuditingEntity implements Serializa
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date date;
+
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    private Integer numDays;
 
     @Column(columnDefinition = "text")
     private String note;
@@ -76,6 +78,14 @@ public class StudentPresence extends AbstractAuditingEntity implements Serializa
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Integer getNumDays() {
+        return numDays;
+    }
+
+    public void setNumDays(Integer numDays) {
+        this.numDays = numDays;
     }
 
     public String getNote() {
