@@ -4,15 +4,17 @@ import java.math.BigDecimal;
 
 public class KBMAssesmentVM {
     private String id;
-    private String academicYearId;
+    private String classRoomId;
     private Integer semester;;
     private String studentId;
     private String studentName;
     private String studentNis;
     private String studentNisn;
+    private String subjectId;
+    private String subjectName;
     private BigDecimal nilaiTugas;
-    private BigDecimal nilaiUts;
-    private BigDecimal nilaiUas;
+    private BigDecimal nilaiUTS;
+    private BigDecimal nilaiUAS;
     private BigDecimal nilaiAkhir;
 
     public String getId() {
@@ -23,12 +25,28 @@ public class KBMAssesmentVM {
         this.id = id;
     }
 
-    public String getAcademicYearId() {
-        return academicYearId;
+    public String getClassRoomId() {
+        return classRoomId;
     }
 
-    public void setAcademicYearId(String academicYearId) {
-        this.academicYearId = academicYearId;
+    public void setClassRoomId(String classRoomId) {
+        this.classRoomId = classRoomId;
+    }
+
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public Integer getSemester() {
@@ -79,20 +97,20 @@ public class KBMAssesmentVM {
         this.nilaiTugas = nilaiTugas;
     }
 
-    public BigDecimal getNilaiUts() {
-        return nilaiUts;
+    public BigDecimal getNilaiUTS() {
+        return nilaiUTS;
     }
 
-    public void setNilaiUts(BigDecimal nilaiUts) {
-        this.nilaiUts = nilaiUts;
+    public void setNilaiUTS(BigDecimal nilaiUTS) {
+        this.nilaiUTS = nilaiUTS;
     }
 
-    public BigDecimal getNilaiUas() {
-        return nilaiUas;
+    public BigDecimal getNilaiUAS() {
+        return nilaiUAS;
     }
 
-    public void setNilaiUas(BigDecimal nilaiUas) {
-        this.nilaiUas = nilaiUas;
+    public void setNilaiUAS(BigDecimal nilaiUAS) {
+        this.nilaiUAS = nilaiUAS;
     }
 
     public BigDecimal getNilaiAkhir() {

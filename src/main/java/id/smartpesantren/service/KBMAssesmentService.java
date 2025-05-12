@@ -1,9 +1,6 @@
 package id.smartpesantren.service;
 
-import id.smartpesantren.entity.AcademicYear;
-import id.smartpesantren.entity.Foundation;
-import id.smartpesantren.entity.KBMAssesment;
-import id.smartpesantren.entity.Student;
+import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.KBMAssesmentRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.service.dto.KBMAssesmentVM;
@@ -16,18 +13,23 @@ public class KBMAssesmentService {
     KBMAssesmentRepository kbmAssesmentRepository;
 
     public KBMAssesmentVM createOrUpdate(KBMAssesmentVM vm) {
-        KBMAssesment k = new KBMAssesment();
-        k.setId(vm.getId());
+        KBMAssesment k = null;
+        if(vm.getId() != null) {
+            k = kbmAssesmentRepository.findById(vm.getId()).get();
+        } else {
+            k = new KBMAssesment();
+        }
         k.setNilaiTugas(vm.getNilaiTugas());
-        k.setNilaiUts(vm.getNilaiUts());
-        k.setNilaiUas(vm.getNilaiUas());
+        k.setNilaiUts(vm.getNilaiUTS());
+        k.setNilaiUas(vm.getNilaiUAS());
         k.setNilaiAkhir(vm.getNilaiAkhir());
         k.setSemester(vm.getSemester());
         k.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));
-        k.setAcademicYear(new AcademicYear(vm.getAcademicYearId()));
+        k.setClassRoom(new ClassRoom(vm.getClassRoomId()));
+        k.setSubject(new Subject(vm.getSubjectId()));
         k.setStudent(new Student(vm.getStudentId()));
         kbmAssesmentRepository.save(k);
-
+        vm.setId(k.getId());
         return vm;
     }
 }

@@ -20,15 +20,19 @@ public class KBMAssesment extends AbstractAuditingEntity implements Serializable
     Foundation foundation;
 
     @ManyToOne
-    @JoinColumn(name = "academic_year_id", nullable = false)
-    AcademicYear academicYear;
-
-    @Column(nullable = false)
-    private Integer semester;;
+    @JoinColumn(name = "class_room_id", nullable = false)
+    ClassRoom classRoom;
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     Student student;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_id", nullable = false)
+    Subject subject;
+
+    @Column(nullable = false)
+    private Integer semester;;
 
     private BigDecimal nilaiTugas;
     private BigDecimal nilaiUts;
@@ -51,12 +55,20 @@ public class KBMAssesment extends AbstractAuditingEntity implements Serializable
         this.foundation = foundation;
     }
 
-    public AcademicYear getAcademicYear() {
-        return academicYear;
+    public ClassRoom getClassRoom() {
+        return classRoom;
     }
 
-    public void setAcademicYear(AcademicYear academicYear) {
-        this.academicYear = academicYear;
+    public void setClassRoom(ClassRoom classRoom) {
+        this.classRoom = classRoom;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
     public Integer getSemester() {
