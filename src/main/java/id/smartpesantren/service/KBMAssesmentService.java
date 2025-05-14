@@ -7,6 +7,8 @@ import id.smartpesantren.service.dto.KBMAssesmentVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class KBMAssesmentService {
     @Autowired
@@ -15,7 +17,10 @@ public class KBMAssesmentService {
     public KBMAssesmentVM createOrUpdate(KBMAssesmentVM vm) {
         KBMAssesment k = null;
         if(vm.getId() != null) {
-            k = kbmAssesmentRepository.findById(vm.getId()).get();
+            Optional<KBMAssesment> o = kbmAssesmentRepository.findById(vm.getId());
+            if(o.isPresent()) {
+                k = o.get();
+            }
         } else {
             k = new KBMAssesment();
         }

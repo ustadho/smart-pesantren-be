@@ -1,5 +1,6 @@
 package id.smartpesantren.web;
 
+import id.smartpesantren.dto.KBMAssesmentListQuery;
 import id.smartpesantren.dto.KBMAssesmentStudentQuery;
 import id.smartpesantren.repository.KBMAssesmentRepository;
 import id.smartpesantren.service.KBMAssesmentService;
@@ -35,4 +36,10 @@ public class KBMAssesmentResource {
         return list;
     }
 
+    @GetMapping("/list-by-academic-teacher")
+    List<KBMAssesmentListQuery> findAssesmentListByYearAndTeacher(@RequestParam("academicYearId") String academicYearId,
+                                                                  @RequestParam("teacherId") String teacherId,
+                                                                  @RequestParam("semester") Integer semester) {
+        return repository.findAssesmentListByYearAndTeacherAndSemester(academicYearId, teacherId, semester);
+    }
 }
