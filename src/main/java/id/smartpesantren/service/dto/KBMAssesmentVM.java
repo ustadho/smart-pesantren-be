@@ -12,9 +12,11 @@ public class KBMAssesmentVM {
     private String studentNisn;
     private String subjectId;
     private String subjectName;
-    private BigDecimal nilaiTugas;
-    private BigDecimal nilaiUTS;
-    private BigDecimal nilaiUAS;
+    private BigDecimal nilaiHarian;
+    private BigDecimal nilaiKetrampilan;
+    private BigDecimal nilaiSikap;
+    private BigDecimal nilaiPts;
+    private BigDecimal nilaiPas;
     private BigDecimal nilaiAkhir;
 
     public String getId() {
@@ -89,28 +91,44 @@ public class KBMAssesmentVM {
         this.studentNisn = studentNisn;
     }
 
-    public BigDecimal getNilaiTugas() {
-        return nilaiTugas;
+    public BigDecimal getNilaiHarian() {
+        return nilaiHarian;
     }
 
-    public void setNilaiTugas(BigDecimal nilaiTugas) {
-        this.nilaiTugas = nilaiTugas;
+    public void setNilaiHarian(BigDecimal nilaiHarian) {
+        this.nilaiHarian = nilaiHarian;
     }
 
-    public BigDecimal getNilaiUTS() {
-        return nilaiUTS;
+    public BigDecimal getNilaiKetrampilan() {
+        return nilaiKetrampilan;
     }
 
-    public void setNilaiUTS(BigDecimal nilaiUTS) {
-        this.nilaiUTS = nilaiUTS;
+    public void setNilaiKetrampilan(BigDecimal nilaiKetrampilan) {
+        this.nilaiKetrampilan = nilaiKetrampilan;
     }
 
-    public BigDecimal getNilaiUAS() {
-        return nilaiUAS;
+    public BigDecimal getNilaiSikap() {
+        return nilaiSikap;
     }
 
-    public void setNilaiUAS(BigDecimal nilaiUAS) {
-        this.nilaiUAS = nilaiUAS;
+    public void setNilaiSikap(BigDecimal nilaiSikap) {
+        this.nilaiSikap = nilaiSikap;
+    }
+
+    public BigDecimal getNilaiPts() {
+        return nilaiPts;
+    }
+
+    public void setNilaiPts(BigDecimal nilaiPts) {
+        this.nilaiPts = nilaiPts;
+    }
+
+    public BigDecimal getNilaiPas() {
+        return nilaiPas;
+    }
+
+    public void setNilaiPas(BigDecimal nilaiPas) {
+        this.nilaiPas = nilaiPas;
     }
 
     public BigDecimal getNilaiAkhir() {

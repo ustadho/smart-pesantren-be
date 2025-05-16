@@ -7,8 +7,10 @@ public interface KBMAssesmentStudentQuery {
     public String getStudentName();
     public String getStudentNis();
     public String getId();
-    public BigDecimal getNilaiTugas();
-    public BigDecimal getNilaiUTS();
-    public BigDecimal getNilaiUAS();
+    public BigDecimal getNilaiHarian();
+    public BigDecimal getNilaiKetrampilan();
+    public BigDecimal getNilaiSikap();
+    public BigDecimal getNilaiPts();
+    public BigDecimal getNilaiPas();
     public BigDecimal getNilaiAkhir();
 }

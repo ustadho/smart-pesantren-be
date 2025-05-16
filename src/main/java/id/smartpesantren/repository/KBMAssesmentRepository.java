@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface KBMAssesmentRepository extends JpaRepository<KBMAssesment, String> {
-    @Query(value = "select acrs.student_id \"studentId\", as2.name \"studentName\", as2.nis \"studentNis\", ka.id, coalesce(ka.nilai_tugas, 0) \"nilaiTugas\", \n" +
-            "coalesce(ka.nilai_uts,0) \"nilaiUTS\", coalesce(ka.nilai_uas,0) \"nilaiUAS\", coalesce(ka.nilai_akhir,0) \"nilaiAkhir\"\n" +
+    @Query(value = "select acrs.student_id \"studentId\", as2.name \"studentName\", as2.nis \"studentNis\", ka.id, coalesce(ka.nilai_harian, 0) \"nilaiHarian\", \n" +
+            "coalesce(ka.nilai_ketrampilan,0) \"nilaiKetrampilan\", coalesce(ka.nilai_sikap,0) \"nilaiSikap\", coalesce(ka.nilai_pts,0) \"nilaiPts\", coalesce(ka.nilai_pas,0) \"nilaiPas\", coalesce(ka.nilai_akhir,0) \"nilaiAkhir\"\n" +
             "from ac_class_room_student acrs \n" +
             "left join ac_student as2 on as2.id = acrs.student_id \n" +
             "left join kbm_assesment ka on ka.student_id = acrs.student_id and ka.semester=:semester and ka.subject_id = :subjectId\n" +

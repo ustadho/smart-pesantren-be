@@ -24,9 +24,11 @@ public class KBMAssesmentService {
         } else {
             k = new KBMAssesment();
         }
-        k.setNilaiTugas(vm.getNilaiTugas());
-        k.setNilaiUts(vm.getNilaiUTS());
-        k.setNilaiUas(vm.getNilaiUAS());
+        k.setNilaiHarian(vm.getNilaiHarian());
+        k.setNilaiKetrampilan(vm.getNilaiKetrampilan());
+        k.setNilaiSikap(vm.getNilaiSikap());
+        k.setNilaiPts(vm.getNilaiPts());
+        k.setNilaiPas(vm.getNilaiPas());
         k.setNilaiAkhir(vm.getNilaiAkhir());
         k.setSemester(vm.getSemester());
         k.setFoundation(new Foundation(SecurityUtils.getFoundationId().get()));

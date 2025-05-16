@@ -34,9 +34,11 @@ public class KBMAssesment extends AbstractAuditingEntity implements Serializable
     @Column(nullable = false)
     private Integer semester;;
 
-    private BigDecimal nilaiTugas;
-    private BigDecimal nilaiUts;
-    private BigDecimal nilaiUas;
+    private BigDecimal nilaiHarian;
+    private BigDecimal nilaiKetrampilan;
+    private BigDecimal nilaiSikap;
+    private BigDecimal nilaiPts;
+    private BigDecimal nilaiPas;
     private BigDecimal nilaiAkhir;
 
     public String getId() {
@@ -87,28 +89,44 @@ public class KBMAssesment extends AbstractAuditingEntity implements Serializable
         this.student = student;
     }
 
-    public BigDecimal getNilaiTugas() {
-        return nilaiTugas;
+    public BigDecimal getNilaiHarian() {
+        return nilaiHarian;
     }
 
-    public void setNilaiTugas(BigDecimal nilaiTugas) {
-        this.nilaiTugas = nilaiTugas;
+    public void setNilaiHarian(BigDecimal nilaiHarian) {
+        this.nilaiHarian = nilaiHarian;
     }
 
-    public BigDecimal getNilaiUts() {
-        return nilaiUts;
+    public BigDecimal getNilaiKetrampilan() {
+        return nilaiKetrampilan;
     }
 
-    public void setNilaiUts(BigDecimal nilaiUts) {
-        this.nilaiUts = nilaiUts;
+    public void setNilaiKetrampilan(BigDecimal nilaiKetrampilan) {
+        this.nilaiKetrampilan = nilaiKetrampilan;
     }
 
-    public BigDecimal getNilaiUas() {
-        return nilaiUas;
+    public BigDecimal getNilaiSikap() {
+        return nilaiSikap;
     }
 
-    public void setNilaiUas(BigDecimal nilaiUas) {
-        this.nilaiUas = nilaiUas;
+    public void setNilaiSikap(BigDecimal nilaiSikap) {
+        this.nilaiSikap = nilaiSikap;
+    }
+
+    public BigDecimal getNilaiPts() {
+        return nilaiPts;
+    }
+
+    public void setNilaiPts(BigDecimal nilaiPts) {
+        this.nilaiPts = nilaiPts;
+    }
+
+    public BigDecimal getNilaiPas() {
+        return nilaiPas;
+    }
+
+    public void setNilaiPas(BigDecimal nilaiPas) {
+        this.nilaiPas = nilaiPas;
     }
 
     public BigDecimal getNilaiAkhir() {
