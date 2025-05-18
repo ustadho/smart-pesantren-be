@@ -32,7 +32,7 @@ public interface PersonDataRepository extends JpaRepository<PersonData, String> 
             "and (coalesce(:jobPosition,'')='' OR jp.id=:jobPosition) \n" +
             "and (coalesce(:category,'')='' OR ec.id=:category) \n" +
             "and a.isEmployee = true \n" +
-            "and upper(a.name) like :q ")
+            "and (upper(a.name) like :q OR a.employeeNo like :q) \n")
     Page<EmployeeDTO> filterEmployee(@Param("category") String category, @Param("unor") String unor,
                                      @Param("jobPosition") String jobPosition, @Param("q") String q, Pageable p);
 
