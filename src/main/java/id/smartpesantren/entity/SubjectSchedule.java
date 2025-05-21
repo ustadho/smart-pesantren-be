@@ -1,10 +1,12 @@
 package id.smartpesantren.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,6 +41,15 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
 
     @Column(columnDefinition = "integer default 1")
     private Integer duration;
+
+    @Column(name = "deleted_by", length = 50)
+    @JsonIgnore
+    private String deletedBy;
+
+    @Column(name = "deleted_date", columnDefinition= "TIMESTAMP WITH TIME ZONE")
+    @JsonIgnore
+    private Instant deletedDate;
+
 
     public SubjectSchedule() {
     }
@@ -101,5 +112,21 @@ public class SubjectSchedule extends AbstractAuditingEntity implements Serializa
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public String getDeletedBy() {
+        return deletedBy;
+    }
+
+    public void setDeletedBy(String deletedBy) {
+        this.deletedBy = deletedBy;
+    }
+
+    public Instant getDeletedDate() {
+        return deletedDate;
+    }
+
+    public void setDeletedDate(Instant deletedDate) {
+        this.deletedDate = deletedDate;
     }
 }

@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.time.Instant;
 
 @Entity
 @Table(name = "ac_subject_schedule_teacher")
@@ -48,6 +49,13 @@ public class SubjectScheduleTeacher {
     public SubjectScheduleTeacher(String id) {
         this.id = id;
     }
+    @Column(name = "deleted_by", length = 50)
+    @JsonIgnore
+    private String deletedBy;
+
+    @Column(name = "deleted_date", columnDefinition= "TIMESTAMP WITH TIME ZONE")
+    @JsonIgnore
+    private Instant deletedDate;
 
     public String getId() {
         return id;
@@ -87,5 +95,21 @@ public class SubjectScheduleTeacher {
 
     public void setStudents(Set<Student> students) {
         this.students = students;
+    }
+
+    public String getDeletedBy() {
+        return deletedBy;
+    }
+
+    public void setDeletedBy(String deletedBy) {
+        this.deletedBy = deletedBy;
+    }
+
+    public Instant getDeletedDate() {
+        return deletedDate;
+    }
+
+    public void setDeletedDate(Instant deletedDate) {
+        this.deletedDate = deletedDate;
     }
 }

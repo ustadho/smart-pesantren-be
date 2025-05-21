@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -160,11 +161,15 @@ public class SubjectScheduleService {
     public void deleteById(String id) {
         Optional<SubjectSchedule> ss = subjectScheduleRepository.findById(id);
         if(ss.isPresent()) {
+            SubjectSchedule s = ss.get();
+            s.setDeletedBy(SecurityUtils.getCurrentUserLogin().get());
+            s.setDeletedDate(Instant.now());
+            this.subjectScheduleRepository.save(s);
+
             for(SubjectScheduleTeacher st: ss.get().getSubjectTeachers()) {
-//                SubjectScheduleHistory sh = subjectScheduleHistoryService.fromOrigin(st);
-//                sh.setLogActivity(LogActivityStatus.DELETE);
-//                this.subjectSchedule2Repository.deleteById(id);
-//                this.subjectScheduleHistoryRepository.save(sh);
+                SubjectScheduleHistory sh = subjectScheduleHistoryService.fromOrigin(st);
+                sh.setLogActivity(LogActivityStatus.DELETE);
+                this.subjectScheduleHistoryRepository.save(sh);
             }
             this.subjectScheduleRepository.deleteById(id);
         }

@@ -146,7 +146,8 @@ public class SubjectScheduleCustom2Repository {
                 "      LEFT JOIN ac_activity_time at1 ON at1.id = ass.activity_time_start_id\n" +
                 "      LEFT JOIN ac_activity_time at2 ON at2.id = ass.activity_time_end_id\n" +
                 "      WHERE ass.day_id = md.id\n" +
-                "        AND ass.class_room_id = :classRoomId\n" +
+                "      AND ass.class_room_id = :classRoomId\n" +
+                "      AND ass.deleted_date is null\n" +
                 "    ), cast('[]' as json))\n" +
                 "  ) AS data\n" +
                 "  FROM m_day md\n" +
