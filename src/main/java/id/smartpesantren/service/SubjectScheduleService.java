@@ -171,7 +171,6 @@ public class SubjectScheduleService {
                 sh.setLogActivity(LogActivityStatus.DELETE);
                 this.subjectScheduleHistoryRepository.save(sh);
             }
-            this.subjectScheduleRepository.deleteById(id);
         }
 
     }
