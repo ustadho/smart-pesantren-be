@@ -15,7 +15,7 @@ public interface PresenceKBMStudentRepository extends JpaRepository<PresenceKBMS
                     "\tselect count(student_id) from ac_subject_schedule_student where subject_schedule_teacher_id=:id\n" +
                     "), \n" +
                     "a as (\n" +
-                    "\tselect p.id, pd.student_id, pd.presence_status_id, ps.\"name\" presence_status_name,  pd.note, p.presence_date, pd.attachment  \n" +
+                    "\tselect pd.id, pd.student_id, pd.presence_status_id, ps.\"name\" presence_status_name,  pd.note, p.presence_date, pd.attachment  \n" +
                     "\tfrom ac_presence_kbm p \n" +
                     "\tjoin ac_presence_kbm_student pd on pd.presence_id=p.id \n" +
                     "\tleft join presence_status ps on pd.presence_status_id = ps.id \n" +

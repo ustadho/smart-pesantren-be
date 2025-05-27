@@ -79,6 +79,7 @@ public class StudentPresenceResource {
         s.setPresenceStatus(new PresenceStatus(vm.getPresenceStatusId()));
         s.setAttachment(vm.getAttachment());
         s.setNote(vm.getNote());
+        s.setNumDays(vm.getNumDays() == null? 1: vm.getNumDays());
         return s;
     }
 
