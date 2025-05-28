@@ -1,11 +1,14 @@
 package id.smartpesantren.service.dto;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class TahfidzSetoranVM {
+    private String id;
     private String studentId;
     private String studentName;
-    private String tanggal;
+    private String studentNis;
+    private Date tanggal;
     private String waktu;
     private Integer targetMulai;
     private Integer targetSampai;
@@ -21,6 +24,35 @@ public class TahfidzSetoranVM {
     private String murajaah;
 
     private BigDecimal nilai;
+
+    public TahfidzSetoranVM() {
+    }
+
+    public TahfidzSetoranVM(String id, String studentId, String studentName, String studentNis, Date tanggal, String waktu, Integer targetMulai, Integer targetSampai, String qiraah, String hifdz, Integer tikrar, Integer setorUlangDari, Integer setorUlangSampai, String murajaah, BigDecimal nilai) {
+        this.id = id;
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.studentNis = studentNis;
+        this.tanggal = tanggal;
+        this.waktu = waktu;
+        this.targetMulai = targetMulai;
+        this.targetSampai = targetSampai;
+        this.qiraah = qiraah;
+        this.hifdz = hifdz;
+        this.tikrar = tikrar;
+        this.setorUlangDari = setorUlangDari;
+        this.setorUlangSampai = setorUlangSampai;
+        this.murajaah = murajaah;
+        this.nilai = nilai;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getStudentId() {
         return studentId;
@@ -38,11 +70,19 @@ public class TahfidzSetoranVM {
         this.studentName = studentName;
     }
 
-    public String getTanggal() {
+    public String getStudentNis() {
+        return studentNis;
+    }
+
+    public void setStudentNis(String studentNis) {
+        this.studentNis = studentNis;
+    }
+
+    public Date getTanggal() {
         return tanggal;
     }
 
-    public void setTanggal(String tanggal) {
+    public void setTanggal(Date tanggal) {
         this.tanggal = tanggal;
     }
 
