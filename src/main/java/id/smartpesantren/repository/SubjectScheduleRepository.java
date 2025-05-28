@@ -76,7 +76,7 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
             "   select st.id, st.schedule_id \"scheduleId\", ass.day_id \"dayId\", md.\"name\" \"dayName\", ass.class_room_id \"classRoomId\", coalesce(acr.name,'') \"classRoomName\",\n" +
             "   coalesce(i.\"name\") \"institutionName\", st.subject_id \"subjectId\", coalesce(as2.\"name\",'') \"subjectName\", \n" +
             "   aat.start_time \"startTime\", aat2.end_time \"endTime\", coalesce(ass.duration,1)  duration, st.teacher_id \"teacherId\", pd.name \"teacherName\", aat.seq, \n" +
-            "   apk.id presence_id, apk.materi, apk.pencapaian, apk.attachment, apk.foto_absen \"fotoAbsen\", apk.created_by \"createdBy\", apk.created_date \"createdDate\", \n" +
+            "   apk.id \"presenceId\", apk.materi, apk.pencapaian, apk.attachment, apk.foto_absen \"fotoAbsen\", apk.created_by \"createdBy\", apk.created_date \"createdDate\", \n" +
             "   apk.presence_status_id \"presenceStatusId\", ps.name \"presenceStatusName\"\n" +
             "   from ac_subject_schedule_teacher st\n" +
             "   join ac_subject_schedule ass on ass.id=st.schedule_id\n" +
