@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "tahfidz_setoran")
-public class TahfidzSetoran {
+public class TahfidzSetoran extends AbstractAuditingEntity{
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
