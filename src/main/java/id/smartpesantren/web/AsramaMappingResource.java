@@ -4,6 +4,7 @@ import id.smartpesantren.dto.AsramaMappingDTO;
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.AsramaMappingRepository;
 import id.smartpesantren.service.AsramaMappingService;
+import id.smartpesantren.service.dto.AsramaMappingList;
 import id.smartpesantren.web.rest.errors.InternalServerErrorException;
 import id.smartpesantren.web.rest.vm.AsramaMappingVM;
 import id.smartpesantren.web.rest.vm.AsramaMappingVMStudent;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pengasuhan/asrama-mapping")
@@ -74,4 +75,8 @@ public class AsramaMappingResource {
         repository.deleteById(id);
     }
 
+    @GetMapping("/list")
+    List<AsramaMappingList> findAllByAcademicYearAndSex(@RequestParam("academicYearId") String academicYear, @RequestParam(value = "sex", defaultValue = "") String sex) {
+        return repository.findAllByAcademicYearAndSex(academicYear, sex);
+    }
 }
