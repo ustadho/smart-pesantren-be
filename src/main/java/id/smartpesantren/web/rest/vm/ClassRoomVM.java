@@ -26,6 +26,8 @@ public class ClassRoomVM {
     private String locationId;
     private String homeTeacherId;
     private String curriculumId;
+    private Integer targetTahfidz;
+    private String targetTahfidzInfo;
 
     public ClassRoomVM() {
     }
@@ -44,6 +46,8 @@ public class ClassRoomVM {
         setCurriculumId(c.getCurriculum().getId());
         setLocationId(c.getLocation().getId());
         setHomeTeacherId(c.getHomeRoomTeacher().getId());
+        setTargetTahfidz(c.getTargetTahfidz() ==null ? null: c.getTargetTahfidz().getId());
+        setTargetTahfidzInfo(c.getTargetTahfidz() == null? null: "Hal: "+c.getTargetTahfidz().getId()+" / Target: "+c.getTargetTahfidz().getJmlHalaman()+" Hal. ("+c.getTargetTahfidz().getKonvJuz()+" Juz "+c.getTargetTahfidz().getKonvHalaman()+" Hal.)");
     }
 
     public String getId() {
@@ -148,5 +152,21 @@ public class ClassRoomVM {
 
     public void setCurriculumId(String curriculumId) {
         this.curriculumId = curriculumId;
+    }
+
+    public Integer getTargetTahfidz() {
+        return targetTahfidz;
+    }
+
+    public void setTargetTahfidz(Integer targetTahfidz) {
+        this.targetTahfidz = targetTahfidz;
+    }
+
+    public String getTargetTahfidzInfo() {
+        return targetTahfidzInfo;
+    }
+
+    public void setTargetTahfidzInfo(String targetTahfidzInfo) {
+        this.targetTahfidzInfo = targetTahfidzInfo;
     }
 }

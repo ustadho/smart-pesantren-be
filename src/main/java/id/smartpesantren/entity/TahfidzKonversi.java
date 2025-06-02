@@ -1,7 +1,5 @@
 package id.smartpesantren.entity;
 
-import org.checkerframework.common.reflection.qual.ClassBound;
-
 import javax.persistence.*;
 
 @Entity
@@ -9,7 +7,7 @@ import javax.persistence.*;
 public class TahfidzKonversi {
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-    private Integer noHalaman;
+    private Integer id;
 
     @Column(nullable = false)
     private Integer jmlHalaman;
@@ -29,12 +27,22 @@ public class TahfidzKonversi {
     @Column(nullable = false)
     private Integer jmlAyat;
 
-    public Integer getNoHalaman() {
-        return noHalaman;
+    @Column(nullable = false)
+    private Integer noSurat;
+
+    public TahfidzKonversi() {
     }
 
-    public void setNoHalaman(Integer noHalaman) {
-        this.noHalaman = noHalaman;
+    public TahfidzKonversi(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getJmlHalaman() {
@@ -83,5 +91,17 @@ public class TahfidzKonversi {
 
     public void setJmlAyat(Integer jmlAyat) {
         this.jmlAyat = jmlAyat;
+    }
+
+    public Integer getNoSurat() {
+        return noSurat;
+    }
+
+    public void setNoSurat(Integer noSurat) {
+        this.noSurat = noSurat;
+    }
+
+    public static String getDescription(TahfidzKonversi tk) {
+        return "Hal: "+tk.getId() +" / Target: " + tk.getJmlHalaman() + " Hal. ("+ tk.getKonvJuz() +" Juz "+tk.getKonvHalaman() +" Hal.)";
     }
 }

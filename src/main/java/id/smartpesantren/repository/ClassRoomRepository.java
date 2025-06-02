@@ -35,10 +35,12 @@ public interface ClassRoomRepository extends JpaRepository<ClassRoom, String> {
             "order by c.level asc, a.name")
     public List<ClassRoomDTO> findAllByAcademicYear(@Param("institutionId") String institutionId, @Param("academicYearId") String academicYearId);
 
-    @Query("select new id.smartpesantren.dto.ClassRoomDTO(a) \n" +
+    @Query("select new id.smartpesantren.dto.ClassRoomDTO(a.id, b.id, b.name, a.institution.name, c.educationLevel.name, c.level, a.code, a.name, " +
+            "a.sex, case when a.sex='M' then 'Putra' else 'Putri' end, a.capacity, a.description, a.room, l.name) \n" +
             "from ClassRoom a \n" +
             "join a.academicYear b \n" +
             "join a.classLevel c \n" +
+            "join a.location l \n" +
             "where (coalesce(:year,'') ='' OR b.id=:year) \n" +
             "and a.foundation.id=?#{principal.foundationId} \n" +
             "and (coalesce(:institutionId,'')='' OR a.institution.id=:institutionId) \n" +
