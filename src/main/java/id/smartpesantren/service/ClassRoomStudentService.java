@@ -3,6 +3,7 @@ package id.smartpesantren.service;
 import id.smartpesantren.entity.ClassRoom;
 import id.smartpesantren.entity.ClassRoomStudent;
 import id.smartpesantren.entity.Student;
+import id.smartpesantren.entity.TahfidzKonversi;
 import id.smartpesantren.repository.ClassRoomRepository;
 import id.smartpesantren.repository.ClassRoomStudentRepository;
 import id.smartpesantren.web.rest.vm.ClassRoomStudentVM;
@@ -61,6 +62,7 @@ public class ClassRoomStudentService {
             }
             cs.setClassRoom(cr);
             cs.setId(d.getId());
+            cs.setTargetTahfidz(d.getTargetTahfidzId() ==null? null: new TahfidzKonversi(d.getTargetTahfidzId()));
             cs.setStudent(new Student(d.getStudentId()));
             if(cs.getId() == null) {
                 cr.getStudents().add(cs);
@@ -74,6 +76,9 @@ public class ClassRoomStudentService {
         Optional<ClassRoom> cr = classRoomRepository.findById(id);
         ClassRoomStudentVM vm = new ClassRoomStudentVM();
         vm.setClassRoomId(cr.get().getId());
+        vm.setClassRoomName(cr.get().getName());
+        vm.setTargetTahfidzId(cr.get().getTargetTahfidz() == null? null: cr.get().getTargetTahfidz().getId());
+        vm.setTargetTahfidzDesc(cr.get().getTargetTahfidz() == null? null: TahfidzKonversi.getDescription(cr.get().getTargetTahfidz()));
 
         for(ClassRoomStudent s: cr.get().getStudents()) {
             ClassRoomStudentVMDetail d = new ClassRoomStudentVMDetail();
@@ -83,6 +88,8 @@ public class ClassRoomStudentService {
             d.setStudentNisn(s.getStudent().getNisn());
             d.setStudentNis(s.getStudent().getNis());
             d.setJoinYear(s.getStudent().getJoinYear().getCode());
+            d.setTargetTahfidzId(s.getTargetTahfidz() == null? null: s.getTargetTahfidz().getId());
+            d.setTargetTahfidzDesc(s.getTargetTahfidz() == null? null: TahfidzKonversi.getDescription(s.getTargetTahfidz()));
             vm.getStudents().add(d);
         }
 //        vm.getStudents().stream().sorted(Comparator.comparing(t -> t.getName()));

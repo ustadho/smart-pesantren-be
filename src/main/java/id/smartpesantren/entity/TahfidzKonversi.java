@@ -1,7 +1,5 @@
 package id.smartpesantren.entity;
 
-import org.checkerframework.common.reflection.qual.ClassBound;
-
 import javax.persistence.*;
 
 @Entity
@@ -9,7 +7,7 @@ import javax.persistence.*;
 public class TahfidzKonversi {
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-    private Integer noHalaman;
+    private Integer id;
 
     @Column(nullable = false)
     private Integer jmlHalaman;
@@ -20,21 +18,37 @@ public class TahfidzKonversi {
     @Column(nullable = false)
     private Integer konvHalaman;
 
-    @Column(columnDefinition = "text")
-    private String namaSurat;
+    @Column(nullable = false)
+    private Integer awalNoSurat;
 
     @Column(columnDefinition = "text")
-    private String namaSuratArab;
+    private String awalNamaSurat;
 
     @Column(nullable = false)
-    private Integer jmlAyat;
+    private Integer awalAyatSurat;
 
-    public Integer getNoHalaman() {
-        return noHalaman;
+    @Column(nullable = false)
+    private Integer akhirNoSurat;
+
+    @Column(columnDefinition = "text")
+    private String akhirNamaSurat;
+
+    @Column(nullable = false)
+    private Integer akhirAyatSurat;
+
+    public TahfidzKonversi() {
     }
 
-    public void setNoHalaman(Integer noHalaman) {
-        this.noHalaman = noHalaman;
+    public TahfidzKonversi(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getJmlHalaman() {
@@ -61,27 +75,55 @@ public class TahfidzKonversi {
         this.konvHalaman = konvHalaman;
     }
 
-    public String getNamaSurat() {
-        return namaSurat;
+    public String getAwalNamaSurat() {
+        return awalNamaSurat;
     }
 
-    public void setNamaSurat(String namaSurat) {
-        this.namaSurat = namaSurat;
+    public void setAwalNamaSurat(String awalNamaSurat) {
+        this.awalNamaSurat = awalNamaSurat;
     }
 
-    public String getNamaSuratArab() {
-        return namaSuratArab;
+    public Integer getAwalNoSurat() {
+        return awalNoSurat;
     }
 
-    public void setNamaSuratArab(String namaSuratArab) {
-        this.namaSuratArab = namaSuratArab;
+    public void setAwalNoSurat(Integer awalNoSurat) {
+        this.awalNoSurat = awalNoSurat;
     }
 
-    public Integer getJmlAyat() {
-        return jmlAyat;
+    public String getAkhirNamaSurat() {
+        return akhirNamaSurat;
     }
 
-    public void setJmlAyat(Integer jmlAyat) {
-        this.jmlAyat = jmlAyat;
+    public void setAkhirNamaSurat(String akhirNamaSurat) {
+        this.akhirNamaSurat = akhirNamaSurat;
+    }
+
+    public Integer getAkhirAyatSurat() {
+        return akhirAyatSurat;
+    }
+
+    public void setAkhirAyatSurat(Integer akhirAyatSurat) {
+        this.akhirAyatSurat = akhirAyatSurat;
+    }
+
+    public Integer getAwalAyatSurat() {
+        return awalAyatSurat;
+    }
+
+    public void setAwalAyatSurat(Integer awalAyatSurat) {
+        this.awalAyatSurat = awalAyatSurat;
+    }
+
+    public Integer getAkhirNoSurat() {
+        return akhirNoSurat;
+    }
+
+    public void setAkhirNoSurat(Integer akhirNoSurat) {
+        this.akhirNoSurat = akhirNoSurat;
+    }
+
+    public static String getDescription(TahfidzKonversi tk) {
+        return "Hal: "+tk.getId() +" / Target: " + tk.getJmlHalaman() + " Hal. ("+ tk.getKonvJuz() +" Juz "+tk.getKonvHalaman() +" Hal.)";
     }
 }

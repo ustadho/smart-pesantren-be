@@ -25,9 +25,4 @@ public class TahfidzSuratResource {
         return tahfidzSuratRepository.findAll();
     }
 
-    @GetMapping("konversi")
-    public TahfidzKonversi findByNoHalaman(String code) {
-        Optional<TahfidzKonversi> findByNoHalaman = tahfidzKonversiRepository.findByNoHalaman(code);
-        return findByNoHalaman.orElse(null);
-    }
 }

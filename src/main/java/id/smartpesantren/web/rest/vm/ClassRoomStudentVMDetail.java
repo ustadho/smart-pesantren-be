@@ -10,6 +10,8 @@ public class ClassRoomStudentVMDetail {
     private String studentNisn;
     private String joinYear;
     private String attachment;
+    private Integer targetTahfidzId;
+    private String targetTahfidzDesc;
 
     public ClassRoomStudentVMDetail() {
     }
@@ -76,5 +78,21 @@ public class ClassRoomStudentVMDetail {
 
     public void setAttachment(String attachment) {
         this.attachment = attachment;
+    }
+
+    public Integer getTargetTahfidzId() {
+        return targetTahfidzId;
+    }
+
+    public void setTargetTahfidzId(Integer targetTahfidzId) {
+        this.targetTahfidzId = targetTahfidzId;
+    }
+
+    public String getTargetTahfidzDesc() {
+        return targetTahfidzDesc;
+    }
+
+    public void setTargetTahfidzDesc(String targetTahfidzDesc) {
+        this.targetTahfidzDesc = targetTahfidzDesc;
     }
 }

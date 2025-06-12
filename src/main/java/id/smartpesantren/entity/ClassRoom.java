@@ -65,6 +65,10 @@ public class ClassRoom extends AbstractAuditingEntity implements Serializable {
     @JsonManagedReference
     private Set<ClassRoomStudent> students = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "target_tahfidz_id")
+    private TahfidzKonversi targetTahfidz;
+
     public ClassRoom(String id) {
         this.id = id;
     }
@@ -190,5 +194,13 @@ public class ClassRoom extends AbstractAuditingEntity implements Serializable {
 
     public void setStudents(Set<ClassRoomStudent> students) {
         this.students = students;
+    }
+
+    public TahfidzKonversi getTargetTahfidz() {
+        return targetTahfidz;
+    }
+
+    public void setTargetTahfidz(TahfidzKonversi targetTahfidz) {
+        this.targetTahfidz = targetTahfidz;
     }
 }

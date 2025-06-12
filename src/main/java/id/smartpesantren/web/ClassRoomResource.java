@@ -92,6 +92,7 @@ public class ClassRoomResource {
             d.setHomeRoomTeacher(new PersonData(vm.getHomeTeacherId()));
             d.setLocation(new Location(vm.getLocationId()));
             d.setCurriculum(new Curriculum(vm.getCurriculumId()));
+            d.setTargetTahfidz(new TahfidzKonversi(vm.getTargetTahfidz()));
 
             repository.saveAndFlush(d);
             vm.setId(d.getId());
@@ -139,6 +140,7 @@ public class ClassRoomResource {
         current.setHomeRoomTeacher(new PersonData(vm.getHomeTeacherId()));
         current.setLocation(new Location(vm.getLocationId()));
         current.setCurriculum(new Curriculum(vm.getCurriculumId()));
+        current.setTargetTahfidz(new TahfidzKonversi(vm.getTargetTahfidz()));
         repository.save(current);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createAlert( "classLevel.updated", current.getId()))

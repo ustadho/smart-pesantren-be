@@ -114,6 +114,10 @@ public class EmployeeService {
                 pd.getWorkingHours().add(det);
             }
         }
+        pd.setWorkingHour(vm.getWorkingHourId() == null? null: new WorkingHour(vm.getWorkingHourId()));
+        pd.setWorkingShift(vm.getWorkingShift());
+        pd.setEducationLevel(vm.getEducationLevelId() == null? null: new EducationLevel(vm.getEducationLevelId()));
+        pd.setPresenceLocation(vm.getPresenceLocationId() == null? null: new Location(vm.getPresenceLocationId()));
 
         return pd;
     }

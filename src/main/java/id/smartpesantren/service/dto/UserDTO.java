@@ -81,6 +81,8 @@ public class UserDTO {
             dto.setPhone(user.getPerson().getPhone());
             dto.setEmail(user.getPerson().getEmail());
             dto.setPhoto(user.getPerson().getPhoto());
+            dto.setJobPosition(user.getPerson().getJobPosition() == null? null: user.getPerson().getJobPosition().getName());
+            dto.setPresenceLocation(user.getPerson().getPresenceLocation() == null? null: user.getPerson().getPresenceLocation().getName());
             setPersonData(dto);
         }
     }

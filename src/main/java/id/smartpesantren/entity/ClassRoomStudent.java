@@ -27,6 +27,10 @@ public class ClassRoomStudent extends AbstractAuditingEntity implements Serializ
     @Column(columnDefinition = "text")
     private String notes;
 
+    @ManyToOne
+    @JoinColumn(name = "target_tahfidz_id")
+    TahfidzKonversi targetTahfidz;
+
     public String getId() {
         return id;
     }
@@ -57,5 +61,13 @@ public class ClassRoomStudent extends AbstractAuditingEntity implements Serializ
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public TahfidzKonversi getTargetTahfidz() {
+        return targetTahfidz;
+    }
+
+    public void setTargetTahfidz(TahfidzKonversi targetTahfidz) {
+        this.targetTahfidz = targetTahfidz;
     }
 }
