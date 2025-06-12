@@ -144,6 +144,10 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "working_hour_id")
     private WorkingHour workingHour;
 
+    @ManyToOne
+    @JoinColumn(name = "presence_location_id")
+    private Location presenceLocation;
+
     @OneToMany(mappedBy = "person", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<EmployeeFormalEducaton> formalEducations = new HashSet<>();
@@ -506,6 +510,14 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     public void setWorkingHour(WorkingHour workingHour) {
         this.workingHour = workingHour;
+    }
+
+    public Location getPresenceLocation() {
+        return presenceLocation;
+    }
+
+    public void setPresenceLocation(Location presenceLocation) {
+        this.presenceLocation = presenceLocation;
     }
 
     public String getEmail() {

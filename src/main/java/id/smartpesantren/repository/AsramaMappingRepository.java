@@ -40,7 +40,7 @@ public interface AsramaMappingRepository extends JpaRepository<AsramaMapping, St
             "where a.id=:id")
     Optional<AsramaMapping> findByMappingId(@Param("id") String id);
 
-    @Query(value = "select am.id, a.name, cp.name pesantren, count(ams.id) \"jumlahSantri\", string_agg(distinct pd.name, ', ') as musyrifs \n" +
+    @Query(value = "select am.id, a.name, cp.name pesantren, count(distinct ams.id) \"jumlahSantri\", string_agg(distinct pd.name, ', ') as musyrifs \n" +
             "from asrama_mapping am \n" +
             "join asrama a on a.id=am.asrama_id \n" +
             "left join c_pesantren cp on a.pesantren_id=cp.id  \n" +

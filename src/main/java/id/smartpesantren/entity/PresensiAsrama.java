@@ -38,7 +38,8 @@ public class PresensiAsrama extends AbstractAuditingEntity {
     PresenceStatus presenceStatus;
 
     @Column(columnDefinition = "text")
-    private String catatan;
+    private String note;
+    private String attachment;
 
     public String getId() {
         return id;
@@ -96,11 +97,19 @@ public class PresensiAsrama extends AbstractAuditingEntity {
         this.presenceStatus = presenceStatus;
     }
 
-    public String getCatatan() {
-        return catatan;
+    public String getNote() {
+        return note;
     }
 
-    public void setCatatan(String catatan) {
-        this.catatan = catatan;
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 }
