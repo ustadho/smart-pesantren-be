@@ -138,6 +138,14 @@ public class Student extends AbstractAuditingEntity implements Serializable {
     @Column(columnDefinition = "varchar(50) default 'Orang Tua'")
     private String tinggalBersama;
 
+    @JoinColumn(name = "tahfidz_target_id")
+    @ManyToOne
+    private TahfidzKonversi tahfidzTarget;
+
+    @JoinColumn(name = "tahfidz_capaian_id")
+    @ManyToOne
+    private TahfidzKonversi tahfidzCapaian;
+
     public Student() {
     }
 
@@ -486,6 +494,22 @@ public class Student extends AbstractAuditingEntity implements Serializable {
 
     public void setTinggalBersama(String tinggalBersama) {
         this.tinggalBersama = tinggalBersama;
+    }
+
+    public TahfidzKonversi getTahfidzTarget() {
+        return tahfidzTarget;
+    }
+
+    public void setTahfidzTarget(TahfidzKonversi tahfidzTarget) {
+        this.tahfidzTarget = tahfidzTarget;
+    }
+
+    public TahfidzKonversi getTahfidzCapaian() {
+        return tahfidzCapaian;
+    }
+
+    public void setTahfidzCapaian(TahfidzKonversi tahfidzCapaian) {
+        this.tahfidzCapaian = tahfidzCapaian;
     }
 
     public String getNotes() {

@@ -5,6 +5,7 @@ import id.smartpesantren.entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -53,4 +54,14 @@ public interface StudentRepository extends JpaRepository<Student, String> {
                                       @Param("academicYear") String academicYear,
                                       @Param("categoryId") String categoryId,
                                       @Param("sex") String sex);
+
+    @Modifying
+    @Query(value = "update ac_student set tahfidz_target_id=?1\n" +
+            "where id=?2", nativeQuery = true)
+    public void updateTahfidzTarget(Integer tahfidzTargetId, String studentId);
+
+    @Modifying
+    @Query(value = "update ac_student set tahfidz_capaian_id=?1\n" +
+            "where id=?2", nativeQuery = true)
+    public void updateTahfidzCapaian(Integer tahfidzCapaianId, String studentId);
 }

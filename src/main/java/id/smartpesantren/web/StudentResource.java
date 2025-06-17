@@ -4,6 +4,7 @@ import id.smartpesantren.dto.StudentDTO;
 import id.smartpesantren.entity.Student;
 import id.smartpesantren.repository.StudentRepository;
 import id.smartpesantren.service.StudentService;
+import id.smartpesantren.service.dto.StudentTahfidzDTO;
 import id.smartpesantren.web.rest.errors.DataNotFoundException;
 import id.smartpesantren.web.rest.utils.HeaderUtil;
 import id.smartpesantren.web.rest.vm.StudentVM;
@@ -88,4 +89,8 @@ public class StudentResource {
         repository.deleteById(id);
     }
 
+    @GetMapping("/tahfidz/{studentId}")
+    public ResponseEntity<StudentTahfidzDTO> search(@PathVariable(value = "studentId") String studentId) {
+        return ResponseEntity.ok(service.getTahfidz(studentId));
+    }
 }
