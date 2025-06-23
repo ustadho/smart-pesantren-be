@@ -15,6 +15,7 @@ public interface MutabaahHistoryQuery {
     public Integer getDariHalamanId();
     public Integer getSampaiHalamanId();
     public Integer getJmlHalaman();
+    public String getNilai();
     public String getCreatedBy();
     public Instant getCreatedDate();
 }
