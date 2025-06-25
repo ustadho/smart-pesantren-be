@@ -18,13 +18,14 @@ public interface StudentRepository extends JpaRepository<Student, String> {
             "CASE WHEN a.status = '1' THEN 'Aktif' " +
             "   WHEN a.status='2' then 'Lulus' " +
             "   WHEN a.status='3' then 'Pindah' " +
-            "ELSE 'Non Aktif' END) \n " +
+            "ELSE 'Non Aktif' END, a.classRoom.name) \n " +
             "from Student a " +
             "where a.foundation.id=?#{principal.foundationId}\n" +
             "and (coalesce(:iid,'')='' OR a.institution.id=:iid) \n"+
             "and (coalesce(:academicYear,'')='' OR a.joinYear.id=:academicYear) \n"+
             "and (coalesce(:categoryId,'')='' OR a.category.id=:categoryId) \n"+
             "and (coalesce(:sex,'')='' OR a.sex=:sex) \n"+
+            "and (coalesce(:cid,'')='' OR a.classRoom.id=:cid) \n"+
             "and (upper(coalesce(a.name,'')) like :q) \n"
     )
     public Page<StudentDTO> filter(@Param("q") String q,
@@ -32,6 +33,7 @@ public interface StudentRepository extends JpaRepository<Student, String> {
                                    @Param("academicYear") String academicYear,
                                    @Param("categoryId") String categoryId,
                                    @Param("sex") String sex,
+                                   @Param("cid") String classRoomId,
                                    Pageable p);
 
     @Query("select new id.smartpesantren.dto.StudentDTO(a.id, a.nis, a.nisn, a.name, " +
@@ -40,7 +42,7 @@ public interface StudentRepository extends JpaRepository<Student, String> {
             "CASE WHEN a.status = '1' THEN 'Aktif' " +
             "   WHEN a.status='2' then 'Lulus' " +
             "   WHEN a.status='3' then 'Pindah' " +
-            "ELSE 'Non Aktif' END) \n " +
+            "ELSE 'Non Aktif' END, a.classRoom.name) \n " +
             "from Student a " +
             "where a.foundation.id=?#{principal.foundationId}\n" +
             "and (coalesce(:iid,'')='' OR a.institution.id=:iid) \n"+

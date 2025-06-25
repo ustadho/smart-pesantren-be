@@ -16,11 +16,12 @@ public class StudentDTO {
     private String institution;
     private String category;
     private String status;
+    private String classRoom;
 
     public StudentDTO() {
     }
 
-    public StudentDTO(String id, String nis, String nisn, String name, String sex, Date dob, String joinYear, String institution, String category, String status) {
+    public StudentDTO(String id, String nis, String nisn, String name, String sex, Date dob, String joinYear, String institution, String category, String status, String classRoom) {
         this.id = id;
         this.nis = nis;
         this.nisn = nisn;
@@ -31,6 +32,7 @@ public class StudentDTO {
         this.institution = institution;
         this.category = category;
         this.status = status;
+        this.classRoom = classRoom;
     }
 
     public StudentDTO(Student s) {
@@ -43,6 +45,7 @@ public class StudentDTO {
         setJoinYear(s.getJoinYear().getCode());
         setInstitution(s.getInstitution().getName());
         setCategory(s.getCategory()== null? "": s.getCategory().getName());
+        setClassRoom(s.getClassRoom() == null? "": s.getClassRoom().getName());
 
         String status = "";
         if(s.getStatus() != null && s.getStatus() == StudentStatus.NOT_ACTIVE) {
@@ -138,5 +141,13 @@ public class StudentDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getClassRoom() {
+        return classRoom;
+    }
+
+    public void setClassRoom(String classRoom) {
+        this.classRoom = classRoom;
     }
 }

@@ -122,6 +122,10 @@ public class HalaqohService {
             d.setStudentNisn(s.getStudent().getNisn());
             d.setStudentNis(s.getStudent().getNis());
             d.setJoinYear(s.getStudent().getJoinYear().getCode());
+            if(s.getStudent().getTahfidzTarget() != null) {
+                d.setTargetTahfidzId(s.getStudent().getTahfidzTarget().getId());
+                d.setTargetTahfidzDesc(TahfidzKonversi.getDescription(s.getStudent().getTahfidzTarget()));
+            }
             vm.getStudents().add(d);
         }
 //        vm.getStudents().stream().sorted(Comparator.comparing(t -> t.getName()));
