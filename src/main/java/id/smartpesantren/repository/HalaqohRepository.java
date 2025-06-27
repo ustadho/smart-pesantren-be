@@ -1,6 +1,7 @@
 package id.smartpesantren.repository;
 
 import id.smartpesantren.dto.HalaqohDTO;
+import id.smartpesantren.dto.HalaqohLookupQuery;
 import id.smartpesantren.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface HalaqohRepository extends JpaRepository<Halaqoh, String> {
@@ -32,4 +34,40 @@ public interface HalaqohRepository extends JpaRepository<Halaqoh, String> {
             "left join fetch a.musyrifs m \n" +
             "where a.id=:id")
     Optional<Halaqoh> findByHalaqohId(@Param("id") String id);
+
+    @Query(value = "select hm.halaqoh_id  \n" +
+            "from halaqoh_musyrif hm \n" +
+            "join halaqoh h on h.id=hm.halaqoh_id \n" +
+            "where hm.musyrif_id = ?1\n" +
+            "and h.academic_year_id = (select id from academic_year ay where ay.is_default = true order by end_date desc limit 1)",
+    nativeQuery = true)
+    String findActiveHalaqohIdByMusyrifId(String personId);
+
+    @Query(value = "select count(1)\n" +
+            "from halaqoh_musyrif hm \n" +
+            "join halaqoh h on h.id=hm.halaqoh_id \n" +
+            "where hm.musyrif_id = :musyrifId\n" +
+            "and h.academic_year_id = :academicYearId", nativeQuery = true)
+    public Integer checkExistsMusyrifAndAcademicYear(@Param("musyrifId") String musyrifId, @Param("academicYearId") String academicYearId);
+
+    @Query(value = "with hs as (\n" +
+            "\tselect hs.halaqoh_id, count(hs.id) student_count\n" +
+            "\tfrom halaqoh h\n" +
+            "\tjoin halaqoh_student hs on hs.halaqoh_id=h.id\n" +
+            "\tjoin c_pesantren cp  on cp.id=h.pesantren_id \n" +
+            "\twhere (coalesce(?1, '')='' OR cp.sex=?1  )\n" +
+            "and h.academic_year_id = (select id from academic_year ay where ay.is_default = true order by end_date desc limit 1)\n" +
+            "\tgroup by hs.halaqoh_id\n" +
+            ") \n" +
+            "\n" +
+            "select hm.halaqoh_id \"halaqohId\",coalesce(h.description,'') \"halaqohDesc\", hm.musyrif_id \"pembimbingId\", pd.name  \"pembimbingName\", coalesce(hs.student_count,0) \"studentCount\"\n" +
+            "from halaqoh_musyrif hm \n" +
+            "join halaqoh h on h.id=hm.halaqoh_id \n" +
+            "join c_pesantren cp  on cp.id=h.pesantren_id \n" +
+            "join person_data pd on pd.id=hm.musyrif_id \n" +
+            "left join hs on hs.halaqoh_id=h.id\n" +
+            "where (coalesce(?1, '')='' OR cp.sex=?1 ) \n " +
+            "and h.academic_year_id = (select id from academic_year ay where ay.is_default = true order by end_date desc limit 1)\n" +
+            "order by pd.name", nativeQuery = true)
+    public List<HalaqohLookupQuery> lookup(String sex);
 }

@@ -44,6 +44,13 @@ public class Halaqoh {
     @JsonManagedReference
     private Set<HalaqohStudent> students = new HashSet<>();
 
+    public Halaqoh() {
+    }
+
+    public Halaqoh(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }
