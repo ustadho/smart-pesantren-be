@@ -6,6 +6,7 @@ import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.HalaqohRepository;
 import id.smartpesantren.service.AsramaMappingService;
 import id.smartpesantren.service.HalaqohService;
+import id.smartpesantren.service.dto.StudentListQuery;
 import id.smartpesantren.web.rest.errors.InternalServerErrorException;
 import id.smartpesantren.web.rest.vm.AsramaMappingVM;
 import id.smartpesantren.web.rest.vm.AsramaMappingVMStudent;
@@ -13,6 +14,7 @@ import id.smartpesantren.web.rest.vm.HalaqohVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,6 +90,11 @@ public class HalaqohResource {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable("id") String id) {
         repository.deleteById(id);
+    }
+
+    @GetMapping("santri-list/{halaqohId}")
+    public List<StudentListQuery> findSantriByHalaqohId(@PathVariable("halaqohId") String halaqohId) {
+        return repository.findStudentByHalaqohId(halaqohId);
     }
 
 }

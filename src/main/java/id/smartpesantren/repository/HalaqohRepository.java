@@ -3,6 +3,7 @@ package id.smartpesantren.repository;
 import id.smartpesantren.dto.HalaqohDTO;
 import id.smartpesantren.dto.HalaqohLookupQuery;
 import id.smartpesantren.entity.*;
+import id.smartpesantren.service.dto.StudentListQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -70,4 +71,14 @@ public interface HalaqohRepository extends JpaRepository<Halaqoh, String> {
             "and h.academic_year_id = (select id from academic_year ay where ay.is_default = true order by end_date desc limit 1)\n" +
             "order by pd.name", nativeQuery = true)
     public List<HalaqohLookupQuery> lookup(String sex);
+
+    @Query(value = "SELECT hs.student_id id, s.name , s.nis, s.nisn, s.dob, coalesce(cr.name,'') \"classRoom\", ay.name \"joinYear\", s.photo\n" +
+            "FROM halaqoh_student hs \n" +
+            "join ac_student s on s.id=hs.student_id \n" +
+            "left join ac_class_room cr on cr.id=s.class_room_id \n" +
+            "left join academic_year ay on ay.id=s.join_year_id \n" +
+            "where hs.halaqoh_id = :halaqohId\n" +
+            "order by s.name", nativeQuery = true)
+    public List<StudentListQuery> findStudentByHalaqohId(@Param("halaqohId") String halaqohId);
+
 }

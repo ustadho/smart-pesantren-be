@@ -1,6 +1,7 @@
 package id.smartpesantren.service.dto;
 
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.util.Date;
 
 public class PresensiHalaqohVM {
@@ -20,7 +21,7 @@ public class PresensiHalaqohVM {
     private String pembimbingName;
     private Integer presenceStatusId;
     private String presenceStatusName;
-    private Date presenceDate;
+    private Instant presenceDate;
     private String presenceNote;
     private String attachment;
     private Integer jumlahSantri;
@@ -109,11 +110,11 @@ public class PresensiHalaqohVM {
         this.presenceStatusName = presenceStatusName;
     }
 
-    public Date getPresenceDate() {
+    public Instant getPresenceDate() {
         return presenceDate;
     }
 
-    public void setPresenceDate(Date presenceDate) {
+    public void setPresenceDate(Instant presenceDate) {
         this.presenceDate = presenceDate;
     }
 

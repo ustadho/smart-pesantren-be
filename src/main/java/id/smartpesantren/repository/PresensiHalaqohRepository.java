@@ -14,18 +14,19 @@ public interface PresensiHalaqohRepository extends JpaRepository<PresensiHalaqoh
             "\tjoin person_data pd on pd.id=hm.musyrif_id \n" +
             "\twhere h.id = :halaqohId\n" +
             "), p as (\n" +
-            "\tselect tt.id tahfidz_time_id, tt.name, tt.start_time, tt.end_time, php.id, php.tanggal, php.created_date, php.catatan, php.attachment, php.presence_status_id, ps.name presence_status_name\n" +
+            "\tselect tt.id tahfidz_time_id, tt.name, tt.start_time, tt.end_time, ph.id, ph.tanggal, ph.created_date, ph.catatan, ph.attachment, ph.presence_status_id, ps.name presence_status_name\n" +
             "\tfrom a \n" +
             "\tjoin tahfidz_time tt on true\n" +
-            "\tleft join presensi_halaqoh_pembimbing php on php.halaqoh_id = a.id\n" +
-            "\tand cast(php.tanggal as date) = cast(:tanggal as date) and tt.id=php.tahfidz_time_id\n" +
-            "\tleft join presence_status ps on ps.id=php.presence_status_id\n" +
+            "\tleft join presensi_halaqoh ph on ph.halaqoh_id = a.id\n" +
+            "\tand cast(ph.tanggal as date) = cast(:tanggal as date) and tt.id=ph.tahfidz_time_id\n" +
+            "\tleft join presence_status ps on ps.id=ph.presence_status_id\n" +
             "\twhere tt.id = :tahfidzTimeId\n" +
             ")\n" +
             "select a.id \"halaqohId\", a.description \"halaqohName\", a.musyrif_id \"pembimbingId\", a.name \"pembimbingName\", \n" +
             "p.tahfidz_time_id \"tahfidzTimeId\", p.name \"tahfidzTimeName\", p.start_time \"startTime\", p.end_time \"endTime\",\n" +
             "p.id \"presenceId\", p.created_date \"presenceDate\", p.catatan \"presenceNote\", p.attachment \"presenceAttachment\", \n" +
-            "p.presence_status_id \"presenceStatusId\", p.presence_status_name \"presenceStatusName\" \n" +
+            "p.presence_status_id \"presenceStatusId\", p.presence_status_name \"presenceStatusName\", \n" +
+            "coalesce((select count(1) from halaqoh_student hs where halaqoh_id =:halaqohId),0) \"jumlahSantri\"  " +
             "from a, p ", nativeQuery = true)
     public PresensiHalaqohQuery findPresenceByHalaqohIdAndTahfidzTimeId(@Param("halaqohId") String halaqohId,
                                                                         @Param("tanggal") String tanggal,

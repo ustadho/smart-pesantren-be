@@ -9,6 +9,7 @@ public class StudentTahfidzDTO {
     private String studentNisn;
     private String studentGender;
     private String joinYear;
+    private String photo;
 
     private TahfidzKonversi tahfidzTarget;
     private TahfidzKonversi tahfidzCapaian;
@@ -75,5 +76,13 @@ public class StudentTahfidzDTO {
 
     public void setTahfidzCapaian(TahfidzKonversi tahfidzCapaian) {
         this.tahfidzCapaian = tahfidzCapaian;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "presensi_halaqoh_pembimbing",
+@Table(name = "presensi_halaqoh",
         uniqueConstraints = @UniqueConstraint(
         columnNames = {"halaqoh_id", "tanggal", "tahfidz_time_id"}
     )
