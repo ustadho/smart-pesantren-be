@@ -19,13 +19,24 @@ public interface TahfidzKonversiRepository extends JpaRepository<TahfidzKonversi
     List<TahfidzKonversi> findAllKonversiGreaterThanJml(@Param("jml") Integer jml);
 
     @Query(
-            value = "SELECT total_juz \"totalJuz\", jml_halaman AS \"jumlahHalaman\", " +
-                    "awal_halaman AS \"awalHalaman\", " +
-                    "akhir_halaman AS \"akhirHalaman\" " +
-                    "FROM fn_rekap_halaman_by_juz( " +
-                    "       string_to_array(:juzs, ',')::::int[] " +
-                    ")",
+            value =
+                    "WITH a AS ( " +
+                    "   SELECT juz, COUNT(id) AS halaman_count, MIN(id) AS min_halaman, MAX(id) AS max_halaman " +
+                    "   FROM tahfidz_konversi " +
+                    "   WHERE juz = ANY(string_to_array(:juzs, ',')::::int[]) " +
+                    "   GROUP BY juz " +
+                    ") " +
+                    "SELECT " +
+                    "   COUNT(juz)::::integer AS \"totalJuz\", " +
+                    "   SUM(halaman_count)::::integer AS \"jumlahHalaman\", " +
+                    "   MIN(min_halaman) AS \"awalHalaman\", " +
+                    "   MAX(max_halaman) AS \"akhirHalaman\" " +
+                    "FROM a",
             nativeQuery = true
     )
     TahfidzKonversiRekapJuzQuery rekapJuz(@Param("juzs") String juzs);
+
+    @Query(value = "select t.id from tahfidz_konversi t " +
+            "WHERE juz = ANY(string_to_array(:juzs, ',')::::int[]) order by t.id", nativeQuery = true)
+    List<Integer> findAllPageInJuz(@Param("juzs") String juzs);
 }

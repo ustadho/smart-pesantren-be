@@ -1,9 +1,13 @@
 package id.smartpesantren.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "mutabaah")
@@ -34,15 +38,15 @@ public class Mutabaah extends AbstractAuditingEntity {
     private Date tanggal;
 
     @ManyToOne
-    @JoinColumn(name = "waktu_id", nullable = false)
+    @JoinColumn(name = "waktu_id")
     private TahfidzTime waktu;
 
     @ManyToOne
-    @JoinColumn(name = "dari_halaman_id", nullable = false)
+    @JoinColumn(name = "dari_halaman_id")
     private TahfidzKonversi dari;
 
     @ManyToOne
-    @JoinColumn(name = "sampai_halaman_id", nullable = false)
+    @JoinColumn(name = "sampai_halaman_id")
     private TahfidzKonversi sampai;
 
     @Column(columnDefinition = "int default 0")
@@ -51,8 +55,18 @@ public class Mutabaah extends AbstractAuditingEntity {
     @Column(length = 1)
     private String nilai;
 
+    @Column(columnDefinition = "decimal(10,2) default 0")
+    private BigDecimal nilaiAngka;
+
+    @Column(columnDefinition = "int default 0")
+    private Integer jumlahJuz;
+
     @Column(columnDefinition = "text")
     private String catatan;
+
+    @OneToMany(mappedBy = "mutabaah", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<MutabaahUjian> ujians = new HashSet<>();
 
     public String getId() {
         return id;
@@ -142,11 +156,35 @@ public class Mutabaah extends AbstractAuditingEntity {
         this.nilai = nilai;
     }
 
+    public BigDecimal getNilaiAngka() {
+        return nilaiAngka;
+    }
+
+    public void setNilaiAngka(BigDecimal nilaiAngka) {
+        this.nilaiAngka = nilaiAngka;
+    }
+
+    public Integer getJumlahJuz() {
+        return jumlahJuz;
+    }
+
+    public void setJumlahJuz(Integer jumlahJuz) {
+        this.jumlahJuz = jumlahJuz;
+    }
+
     public String getCatatan() {
         return catatan;
     }
 
     public void setCatatan(String catatan) {
         this.catatan = catatan;
+    }
+
+    public Set<MutabaahUjian> getUjians() {
+        return ujians;
+    }
+
+    public void setUjians(Set<MutabaahUjian> ujians) {
+        this.ujians = ujians;
     }
 }

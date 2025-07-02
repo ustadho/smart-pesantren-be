@@ -3,6 +3,7 @@ package id.smartpesantren.web;
 import id.smartpesantren.dto.MutabaahHistoryQuery;
 import id.smartpesantren.repository.MutabaahRepository;
 import id.smartpesantren.service.MutabaahService;
+import id.smartpesantren.web.rest.vm.MutabaahUjianVM;
 import id.smartpesantren.web.rest.vm.MutabaahVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,11 @@ public class MutabaahResource {
     @PostMapping
     private void createMutabaah(@RequestBody MutabaahVM vm) {
         mutabaahService.save(vm);
+    }
+
+    @PostMapping("ujian")
+    private void createOrUpdateUjian(@RequestBody MutabaahUjianVM vm) {
+        mutabaahService.saveUjian(vm);
     }
 
     @GetMapping("history")

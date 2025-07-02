@@ -36,11 +36,19 @@ public class TahfidzKonversiResouce {
         return ResponseEntity.ok(tahfidzKonversiRepository.findByJmlHalaman(jumlah).get());
     }
 
-    @GetMapping("/rekap-juz")
-    public ResponseEntity<TahfidzKonversiRekapJuzQuery> rekapJuz(
+    @GetMapping("/juz-summary")
+    public ResponseEntity<TahfidzKonversiRekapJuzQuery> findJuzSummary(
             @RequestParam String juzs) {
 
         TahfidzKonversiRekapJuzQuery result = tahfidzKonversiRepository.rekapJuz(juzs);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/juz-all-page")
+    public ResponseEntity<List<Integer>> findAllPageInJuz(
+            @RequestParam String juzs) {
+
+        List<Integer> result = tahfidzKonversiRepository.findAllPageInJuz(juzs);
         return ResponseEntity.ok(result);
     }
 }
