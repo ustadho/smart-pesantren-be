@@ -71,7 +71,7 @@ public class HalaqohResource {
             }
         }
         vm.getMusyrifIds().forEach(musyrifId -> {
-            Integer checkMusyrif = repository.checkExistsMusyrifAndAcademicYear(musyrifId, vm.getAcademicYearId());
+            Integer checkMusyrif = repository.checkExistsMusyrifAndAcademicYear(musyrifId, vm.getAcademicYearId(), vm.getId());
             if(checkMusyrif > 0) {
                 throw new InternalServerErrorException("Musyrif tersebut sudah dimasukkan di halaqoh tahun ajaran ini");
             }

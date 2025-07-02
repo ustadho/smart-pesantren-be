@@ -48,8 +48,9 @@ public interface HalaqohRepository extends JpaRepository<Halaqoh, String> {
             "from halaqoh_musyrif hm \n" +
             "join halaqoh h on h.id=hm.halaqoh_id \n" +
             "where hm.musyrif_id = :musyrifId\n" +
-            "and h.academic_year_id = :academicYearId", nativeQuery = true)
-    public Integer checkExistsMusyrifAndAcademicYear(@Param("musyrifId") String musyrifId, @Param("academicYearId") String academicYearId);
+            "and h.academic_year_id = :academicYearId \n" +
+            "and h.id != :halaqohId", nativeQuery = true)
+    public Integer checkExistsMusyrifAndAcademicYear(@Param("musyrifId") String musyrifId, @Param("academicYearId") String academicYearId, @Param("halaqohId") String halaqohId);
 
     @Query(value = "with hs as (\n" +
             "\tselect hs.halaqoh_id, count(hs.id) student_count\n" +
