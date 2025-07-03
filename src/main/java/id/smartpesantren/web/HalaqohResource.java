@@ -1,10 +1,12 @@
 package id.smartpesantren.web;
 
 import id.smartpesantren.dto.HalaqohDTO;
+import id.smartpesantren.dto.HalaqohLookupQuery;
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.HalaqohRepository;
 import id.smartpesantren.service.AsramaMappingService;
 import id.smartpesantren.service.HalaqohService;
+import id.smartpesantren.service.dto.StudentListQuery;
 import id.smartpesantren.web.rest.errors.InternalServerErrorException;
 import id.smartpesantren.web.rest.vm.AsramaMappingVM;
 import id.smartpesantren.web.rest.vm.AsramaMappingVMStudent;
@@ -12,10 +14,12 @@ import id.smartpesantren.web.rest.vm.HalaqohVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pengasuhan/halaqoh")
@@ -25,6 +29,12 @@ public class HalaqohResource {
 
     @Autowired
     HalaqohService service;
+
+
+    @GetMapping("/lookup")
+    public List<HalaqohLookupQuery> lookup(@RequestParam(value = "sex", defaultValue = "") String sex) {
+        return repository.lookup(sex);
+    }
 
     @GetMapping("")
     public Page<HalaqohDTO> filter(@RequestParam(value = "academicYear", defaultValue = "") String academicYear,
@@ -43,6 +53,8 @@ public class HalaqohResource {
         return service.findByPesantrenAndYearId(pesantrenId, academicYearId);
     }
 
+
+
     @GetMapping("/{id}")
     public HalaqohVM findById(@PathVariable("id") String id) {
         return repository.findByHalaqohId(id).map(service::toVM).orElse(null);
@@ -51,13 +63,19 @@ public class HalaqohResource {
     @PutMapping
     @Transactional
     public void save(@RequestBody @Valid HalaqohVM vm) {
-        if(vm == null) {
+        if(vm.getId() == null) {
             //Cek dulu sebelum diinsert
             Halaqoh cr = repository.findTop1ByPesantrenAndAcademicYear(new Pesantren(vm.getPesantrenId()), new AcademicYear(vm.getAcademicYearId()));
             if (cr != null) {
                 throw new InternalServerErrorException("Data untuk asrama ini sudah dimasukkan");
             }
         }
+        vm.getMusyrifIds().forEach(musyrifId -> {
+            Integer checkMusyrif = repository.checkExistsMusyrifAndAcademicYear(musyrifId, vm.getAcademicYearId(), vm.getId());
+            if(checkMusyrif > 0) {
+                throw new InternalServerErrorException("Musyrif tersebut sudah dimasukkan di halaqoh tahun ajaran ini");
+            }
+        });
         for (AsramaMappingVMStudent s: vm.getStudents()) {
             if(s.getId() == null) {
                 String asrama = repository.findByStudentAndAcademicYear(s.getStudentId(), vm.getAcademicYearId());
@@ -72,6 +90,11 @@ public class HalaqohResource {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable("id") String id) {
         repository.deleteById(id);
+    }
+
+    @GetMapping("santri-list/{halaqohId}")
+    public List<StudentListQuery> findSantriByHalaqohId(@PathVariable("halaqohId") String halaqohId) {
+        return repository.findStudentByHalaqohId(halaqohId);
     }
 
 }

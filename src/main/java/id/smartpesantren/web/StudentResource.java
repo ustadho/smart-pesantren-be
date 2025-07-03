@@ -4,6 +4,7 @@ import id.smartpesantren.dto.StudentDTO;
 import id.smartpesantren.entity.Student;
 import id.smartpesantren.repository.StudentRepository;
 import id.smartpesantren.service.StudentService;
+import id.smartpesantren.service.dto.StudentTahfidzDTO;
 import id.smartpesantren.web.rest.errors.DataNotFoundException;
 import id.smartpesantren.web.rest.utils.HeaderUtil;
 import id.smartpesantren.web.rest.vm.StudentVM;
@@ -32,12 +33,13 @@ public class StudentResource {
                                    @RequestParam(value = "y", defaultValue = "") String academicYearId,
                                    @RequestParam(value = "c", defaultValue = "") String categoryId,
                                    @RequestParam(value = "sex", defaultValue = "") String sex,
+                                   @RequestParam(value = "cid", defaultValue = "") String cid, //ClassRoomId
                                    Pageable p) {
         return repository.filter("%"+q.toUpperCase()+"%",
                 institutionId.equalsIgnoreCase("")? null: institutionId,
                 academicYearId.equalsIgnoreCase("")? null: academicYearId,
                 categoryId.equalsIgnoreCase("")? null: categoryId,
-                sex,
+                sex, cid,
                 p);
     }
 
@@ -88,4 +90,8 @@ public class StudentResource {
         repository.deleteById(id);
     }
 
+    @GetMapping("/tahfidz/{studentId}")
+    public ResponseEntity<StudentTahfidzDTO> search(@PathVariable(value = "studentId") String studentId) {
+        return ResponseEntity.ok(service.getTahfidz(studentId));
+    }
 }

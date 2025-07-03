@@ -61,6 +61,7 @@ public class UserDTO {
 
     private String personId;
     private PersonDTO personData;
+    private String halaqohId;
 
     public UserDTO() {
         // Empty constructor needed for MapStruct.
@@ -244,6 +245,14 @@ public class UserDTO {
 
     public void setPersonData(PersonDTO personData) {
         this.personData = personData;
+    }
+
+    public String getHalaqohId() {
+        return halaqohId;
+    }
+
+    public void setHalaqohId(String halaqohId) {
+        this.halaqohId = halaqohId;
     }
 
     @Override

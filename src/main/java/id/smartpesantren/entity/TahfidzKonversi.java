@@ -36,6 +36,8 @@ public class TahfidzKonversi {
     @Column(nullable = false)
     private Integer akhirAyatSurat;
 
+    private Integer juz;
+
     public TahfidzKonversi() {
     }
 
@@ -125,5 +127,13 @@ public class TahfidzKonversi {
 
     public static String getDescription(TahfidzKonversi tk) {
         return "Hal: "+tk.getId() +" / Target: " + tk.getJmlHalaman() + " Hal. ("+ tk.getKonvJuz() +" Juz "+tk.getKonvHalaman() +" Hal.)";
+    }
+
+    public Integer getJuz() {
+        return juz;
+    }
+
+    public void setJuz(Integer juz) {
+        this.juz = juz;
     }
 }

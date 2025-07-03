@@ -1,11 +1,10 @@
 package id.smartpesantren.service;
 
-import id.smartpesantren.entity.ClassRoom;
-import id.smartpesantren.entity.ClassRoomStudent;
-import id.smartpesantren.entity.Student;
-import id.smartpesantren.entity.TahfidzKonversi;
+import id.smartpesantren.entity.*;
+import id.smartpesantren.repository.AcademicYearRepository;
 import id.smartpesantren.repository.ClassRoomRepository;
 import id.smartpesantren.repository.ClassRoomStudentRepository;
+import id.smartpesantren.repository.StudentRepository;
 import id.smartpesantren.web.rest.vm.ClassRoomStudentVM;
 import id.smartpesantren.web.rest.vm.ClassRoomStudentVMDetail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,16 @@ public class ClassRoomStudentService {
     @Autowired
     ClassRoomRepository classRoomRepository;
 
+    @Autowired
+    AcademicYearRepository academicYearRepository;
+
+    @Autowired
+    StudentRepository studentRepository;
+
     @Transactional
     public void save(ClassRoomStudentVM vm) {
         ClassRoom cr =  classRoomRepository.findById(vm.getClassRoomId()).get();
+        AcademicYear year = academicYearRepository.findById(cr.getAcademicYear().getId()).get();
         for (Iterator<ClassRoomStudent> iterator = cr.getStudents().iterator(); iterator.hasNext();) {
             ClassRoomStudent d = iterator.next();
             boolean used = false;
@@ -66,6 +72,10 @@ public class ClassRoomStudentService {
             cs.setStudent(new Student(d.getStudentId()));
             if(cs.getId() == null) {
                 cr.getStudents().add(cs);
+            }
+
+            if(cr.getAcademicYear().getId().equals(year.getId())) {
+                studentRepository.updateTahfidzTarget(d.getTargetTahfidzId(), d.getStudentId());
             }
         }
 

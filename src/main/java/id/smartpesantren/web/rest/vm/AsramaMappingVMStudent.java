@@ -11,6 +11,8 @@ public class AsramaMappingVMStudent {
     private String joinYear;
     private String attachment;
     private String notes;
+    private Integer targetTahfidzId;
+    private String targetTahfidzDesc;
 
     public AsramaMappingVMStudent() {
     }
@@ -77,5 +79,21 @@ public class AsramaMappingVMStudent {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public Integer getTargetTahfidzId() {
+        return targetTahfidzId;
+    }
+
+    public void setTargetTahfidzId(Integer targetTahfidzId) {
+        this.targetTahfidzId = targetTahfidzId;
+    }
+
+    public String getTargetTahfidzDesc() {
+        return targetTahfidzDesc;
+    }
+
+    public void setTargetTahfidzDesc(String targetTahfidzDesc) {
+        this.targetTahfidzDesc = targetTahfidzDesc;
     }
 }

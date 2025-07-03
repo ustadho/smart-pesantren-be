@@ -2,6 +2,7 @@ package id.smartpesantren.web;
 
 import com.codahale.metrics.annotation.Timed;
 import id.smartpesantren.entity.User;
+import id.smartpesantren.repository.HalaqohRepository;
 import id.smartpesantren.repository.UserRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.service.MailService;
@@ -39,12 +40,14 @@ public class AccountResource {
     private final UserService userService;
 
     private final MailService mailService;
+    private final HalaqohRepository halaqohRepository;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, HalaqohRepository halaqohRepository) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.halaqohRepository = halaqohRepository;
     }
 
     /**
@@ -108,9 +111,17 @@ public class AccountResource {
     @GetMapping("/account")
     @Timed
     public UserDTO getAccount() {
-        return userService.getUserWithAuthorities()
+
+        UserDTO user =  userService.getUserWithAuthorities()
                 .map(UserDTO::new)
                 .orElseThrow(() -> new InternalServerErrorException("User could not be found"));
+        if(user != null && user.getPersonId() != null) {
+            String halaqohId = halaqohRepository.findActiveHalaqohIdByMusyrifId(user.getPersonId());
+            if (halaqohId != null) {
+                user.setHalaqohId(halaqohId);
+            }
+        }
+        return user;
     }
 
     /**

@@ -4,6 +4,7 @@ import id.smartpesantren.constant.Sex;
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.StudentRepository;
 import id.smartpesantren.security.SecurityUtils;
+import id.smartpesantren.service.dto.StudentTahfidzDTO;
 import id.smartpesantren.web.rest.errors.InternalServerErrorException;
 import id.smartpesantren.web.rest.vm.GuardianVM;
 import id.smartpesantren.web.rest.vm.StudentVM;
@@ -179,5 +180,27 @@ public class StudentService {
         vm.setPhoto(st.getPhoto());
         vm.setNotes(st.getNotes());
         return vm;
+    }
+
+    public StudentTahfidzDTO getTahfidz(String studentId) {
+        StudentTahfidzDTO res = null;
+        Optional<Student>  s = repository.findById(studentId);
+        if(s.isPresent()) {
+            res = new StudentTahfidzDTO();
+            res.setStudentId(s.get().getId());
+            res.setStudentName(s.get().getName());
+            res.setStudentNis(s.get().getNis());
+            res.setStudentNisn(s.get().getNisn());
+            res.setStudentGender(s.get().getSex());
+            res.setJoinYear(s.get().getJoinYear() == null? null: s.get().getJoinYear().getId());
+
+            if(s.get().getTahfidzTarget() != null) {
+                res.setTahfidzTarget(s.get().getTahfidzTarget());
+            }
+            if(s.get().getTahfidzCapaian() != null) {
+                res.setTahfidzCapaian(s.get().getTahfidzCapaian());
+            }
+        }
+        return res;
     }
 }
