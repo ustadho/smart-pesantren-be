@@ -3,6 +3,7 @@ package id.smartpesantren.web;
 import id.smartpesantren.dto.*;
 import id.smartpesantren.repository.SubjectScheduleHistoryRepository;
 import id.smartpesantren.repository.SubjectScheduleRepository;
+import id.smartpesantren.repository.SubjectScheduleTeacherRepository;
 import id.smartpesantren.repository.UserRepository;
 import id.smartpesantren.security.SecurityUtils;
 import id.smartpesantren.service.SubjectScheduleService;
@@ -10,11 +11,13 @@ import id.smartpesantren.web.rest.errors.DataNotFoundException;
 import id.smartpesantren.web.rest.vm.SubjectScheduleVM;
 import id.smartpesantren.web.rest.vm.SubjectScheduleVMSubjectTeacher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +32,9 @@ public class SubjectScheduleResource {
 
     @Autowired
     SubjectScheduleHistoryRepository subjectScheduleHistoryRepository;
+
+    @Autowired
+    SubjectScheduleTeacherRepository subjectScheduleTeacherRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -115,5 +121,12 @@ public class SubjectScheduleResource {
     @GetMapping("{id}")
     public ScheduleTeacherPresenceDTO findScheduleTeacherById(@PathVariable("id") String id) {
         return subjectScheduleRepository.findScheduleTeacherById(id);
+    }
+
+    @GetMapping("/teacher-schedule-list")
+    List<ScheduleTeacherListQuery> findScheduleTeacherList(@RequestParam("teacherId") String teacherId,
+                                                           @RequestParam("all") String all,
+                                                           @RequestParam("scheduleDate") String scheduleDate) {
+        return subjectScheduleTeacherRepository.findScheduleTeacherList(teacherId, all.equalsIgnoreCase("true"), scheduleDate);
     }
 }
