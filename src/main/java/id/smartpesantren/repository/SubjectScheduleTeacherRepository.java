@@ -1,6 +1,7 @@
 package id.smartpesantren.repository;
 
 import id.smartpesantren.dto.ScheduleTeacherListQuery;
+import id.smartpesantren.dto.ScheduleTeacherSubjectListQuery;
 import id.smartpesantren.entity.SubjectScheduleTeacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -46,4 +47,31 @@ public interface SubjectScheduleTeacherRepository extends JpaRepository<SubjectS
     public List<ScheduleTeacherListQuery> findScheduleTeacherList(@Param("teacherId") String teacherId,
                                                                   @Param("all") boolean all,
                                                                   @Param("scheduleDate") String scheduleDate);
+
+
+    @Query(value = "with a as (\n" +
+            "\tselect  ass.id, cl.level, ass.day_id, \n" +
+            "\tcase ass.day_id when 0 then 'Ahad' when 1 then 'Senin' when 2 then 'Selasa' when 3 then 'Rabu' when 4 then 'Kamis' when 5 then 'Jumat' when 6 then 'Sabtu' end \"dayName\", \n" +
+            "\tas2.\"name\" \"subjectName\", atb.seq - ata.seq  + 1 jumlah_jam, coalesce(i.name) \"institutionName\" , cr.\"name\" \"classRoom\", case when cr.sex='F' then 'Putri' else 'Putra' end sex\n" +
+            "\tfrom ac_subject_schedule_teacher st \n" +
+            "\tjoin ac_subject_schedule ass on ass.id=st.schedule_id \n" +
+            "\tjoin ac_activity_time ata on ata.id = ass.activity_time_start_id \n" +
+            "\tjoin ac_activity_time atb on atb.id = ass.activity_time_end_id\n" +
+            "\tjoin ac_subject as2 on as2.id=st.subject_id \n" +
+            "\tjoin ac_class_room cr on cr.id=ass.class_room_id \n" +
+            "\tjoin ac_class_level cl on cl.id=cr.level_id\n" +
+            "\tjoin institution i on i.id=cr.institution_id \n" +
+            "\twhere st.teacher_id = :teacherId\n" +
+            "\tAND (0=:dayId OR ass.day_id=:dayId)\n" +
+            "\torder by ass.day_id, ata.seq\n" +
+            "), b as (\t\n" +
+            "select a.level, a.\"institutionName\", a.\"classRoom\", a.sex, a.\"subjectName\", sum(jumlah_jam) \"jumlahJam\", " +
+            "string_agg(distinct a.day_id||';'||a.\"dayName\", ', ' order by a.day_id||';'||a.\"dayName\") as days\n" +
+            "from a \n" +
+            "group by a.\"institutionName\", a.\"classRoom\", a.sex, a.\"subjectName\", a.level\n" +
+            ")\n" +
+            "select b.\"classRoom\", b.sex, b.\"subjectName\", b.\"jumlahJam\" , \n" +
+            "regexp_replace(b.days,'\\d+;','','g') days, b.\"institutionName\" " +
+            "from b order by b.level", nativeQuery = true)
+    public List<ScheduleTeacherSubjectListQuery> findScheduleTeacherSubjectList(@Param("teacherId") String teacherId,@Param("dayId") Integer dayId);
 }

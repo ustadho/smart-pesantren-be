@@ -129,4 +129,9 @@ public class SubjectScheduleResource {
                                                            @RequestParam("scheduleDate") String scheduleDate) {
         return subjectScheduleTeacherRepository.findScheduleTeacherList(teacherId, all.equalsIgnoreCase("true"), scheduleDate);
     }
+
+    @GetMapping("/teacher-schedule-subjects")
+    List<ScheduleTeacherSubjectListQuery> findScheduleTeacherSubjectList(@RequestParam("teacherId") String teacherId,@RequestParam("dayId") Integer dayId) {
+        return subjectScheduleTeacherRepository.findScheduleTeacherSubjectList(teacherId, dayId);
+    }
 }
