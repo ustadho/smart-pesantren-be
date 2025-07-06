@@ -30,7 +30,7 @@ public interface SubjectScheduleTeacherRepository extends JpaRepository<SubjectS
             "\t  )::::date AS tanggal\n" +
             "\tFROM w\n" +
             ")\n" +
-            "select  ass.id, w.tanggal \"scheduleDate\",ass.day_id \"dayId\", as2.\"name\" \"subjectName\", ata.seq::::text || case when ata.seq=atb.seq then '' else '-'||atb.seq::::text end \"timeSeq\",\n" +
+            "select  ass.id, st.id \"scheduleTeacherId\",w.tanggal \"scheduleDate\",ass.day_id \"dayId\", as2.\"name\" \"subjectName\", ata.seq::::text || case when ata.seq=atb.seq then '' else '-'||atb.seq::::text end \"timeSeq\",\n" +
             "ata.start_time \"startTime\", atb.end_time \"endTime\", coalesce(i.name) \"institutionName\" , cr.\"name\" \"classRoom\", case when cr.sex='F' then 'Putri' else 'Putra' end sex, \n" +
             "apk.created_date \"presenceDate\"\n" +
             "from ac_subject_schedule_teacher st \n" +
@@ -41,7 +41,7 @@ public interface SubjectScheduleTeacherRepository extends JpaRepository<SubjectS
             "join ac_class_room cr on cr.id=ass.class_room_id \n" +
             "join institution i on i.id=cr.institution_id \n" +
             "join w on EXTRACT(DOW FROM w.tanggal)=ass.day_id and (:all IS true OR w.tanggal=cast(:scheduleDate as date))\n" +
-            "left join ac_presence_kbm apk on apk.schedule_id = st.schedule_id and apk.presence_date=w.tanggal \n" +
+            "left join ac_presence_kbm apk on apk.schedule_id = st.id and apk.presence_date=w.tanggal \n" +
             "where st.teacher_id = :teacherId\n" +
             "and cr.academic_year_id in (select id from academic_year where is_default=true and foundation_id=?#{principal.foundationId})\n" +
             "order by ass.day_id, ata.seq", nativeQuery = true)
@@ -61,9 +61,9 @@ public interface SubjectScheduleTeacherRepository extends JpaRepository<SubjectS
             "\t  )::::date AS tanggal\n" +
             "\tFROM w\n" +
             ")\n" +
-            "select  ass.id, w.tanggal \"scheduleDate\",ass.day_id \"dayId\", as2.\"name\" \"subjectName\", ata.seq::::text || case when ata.seq=atb.seq then '' else '-'||atb.seq::::text end \"timeSeq\",\n" +
+            "select  ass.id, st.id \"scheduleTeacherId\",  w.tanggal \"scheduleDate\",ass.day_id \"dayId\", as2.\"name\" \"subjectName\", ata.seq::::text || case when ata.seq=atb.seq then '' else '-'||atb.seq::::text end \"timeSeq\",\n" +
             "ata.start_time \"startTime\", atb.end_time \"endTime\", coalesce(i.name) \"institutionName\" , cr.\"name\" \"classRoom\", case when cr.sex='F' then 'Putri' else 'Putra' end sex, \n" +
-            "apk.created_date \"presenceDate\"\n" +
+            "apk.id \"presenceId\", apk.created_date \"presenceDate\"\n" +
             "from ac_subject_schedule_teacher st \n" +
             "join ac_subject_schedule ass on ass.id=st.schedule_id \n" +
             "join ac_activity_time ata on ata.id = ass.activity_time_start_id \n" +
@@ -72,7 +72,7 @@ public interface SubjectScheduleTeacherRepository extends JpaRepository<SubjectS
             "join ac_class_room cr on cr.id=ass.class_room_id \n" +
             "join institution i on i.id=cr.institution_id \n" +
             "join w on EXTRACT(DOW FROM w.tanggal)=ass.day_id \n" +
-            "left join ac_presence_kbm apk on apk.schedule_id = st.schedule_id and apk.presence_date=w.tanggal \n" +
+            "left join ac_presence_kbm apk on apk.schedule_id = st.id and cast(apk.presence_date as date)=w.tanggal \n" +
             "where st.teacher_id = :teacherId\n" +
             "and st.subject_id = :subjectId\n" +
             "and ass.class_room_id = :classRoomId\n" +
@@ -110,6 +110,6 @@ public interface SubjectScheduleTeacherRepository extends JpaRepository<SubjectS
             ")\n" +
             "select b.\"classRoomId\", b.\"classRoomName\", b.sex, b.\"subjectId\", b.\"subjectName\", b.\"jumlahJam\" , b.\"jumlahJadwal\", \n" +
             "regexp_replace(b.days,'\\d+;','','g') days, b.\"institutionName\" " +
-            "from b order by b.level", nativeQuery = true)
+            "from b order by b.level, b.\"classRoomName\"", nativeQuery = true)
     public List<ScheduleTeacherSubjectListQuery> findScheduleTeacherSubjectList(@Param("teacherId") String teacherId,@Param("dayId") Integer dayId);
 }

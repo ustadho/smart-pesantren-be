@@ -1,5 +1,7 @@
 package id.smartpesantren.service;
 
+import id.smartpesantren.dto.PresenceKbmStudentDetailVM;
+import id.smartpesantren.dto.PresenceKbmStudentVM;
 import id.smartpesantren.entity.*;
 import id.smartpesantren.repository.PresenceKBMRepository;
 import id.smartpesantren.repository.PresenceKBMStudentRepository;
@@ -138,6 +140,71 @@ public class PresenceKBMService {
         }
         presenceKBMRepository.save(p);
         vm.setId(p.getId());
+    }
+
+    @Transactional
+    public PresenceKbmStudentVM createOrUpdatePresenceKBMStudents(@Valid PresenceKbmStudentVM vm) {
+        if(vm.getId() == null) {
+            throw new InternalServerErrorException("id absen tidak ditemukan");
+        }
+        this.presenceKBMRepository.findById(vm.getId()).ifPresent(p -> {
+            p.setStudentCount(vm.getStudentCount());
+            p.setAlphaCount(vm.getAlphaCount());
+            p.setSakitCount(vm.getSakitCount());
+            p.setIzinCount(vm.getIzinCount());
+
+            for (Iterator<PresenceKBMStudent> iterator = p.getStudents().iterator(); iterator.hasNext();) {
+                PresenceKBMStudent d = iterator.next();
+                boolean used = false;
+                for(PresenceKBMStudent di: p.getStudents()) {
+                    if(di.getId() != null && di.getId().equalsIgnoreCase(d.getId())) {
+                        used = true;
+                        break;
+                    }
+                }
+                if(!used) {
+                    iterator.remove();
+                }
+            }
+
+            for(PresenceKbmStudentDetailVM d: vm.getDetails()) {
+                PresenceKBMStudent cs = null;
+                if(p.getId() == null) {
+                    cs = new PresenceKBMStudent();
+                } else {
+                    if(d.getId() == null) {
+                        cs = new PresenceKBMStudent();
+                    } else {
+                        // Check if existing detail needs deletion
+                        boolean existingDetailFound = false;
+                        for (PresenceKBMStudent existingDetail : p.getStudents()) {
+                            if (existingDetail.getId().equals(d.getId())) {
+                                cs = existingDetail;
+                                existingDetailFound = true;
+                                break;
+                            }
+                        }
+                        if(!existingDetailFound) {
+                            System.out.println("detail not exists");
+                            cs = new PresenceKBMStudent(); // Inisialisasi cs jika detail tidak ditemukan
+                        }
+                    }
+                }
+                cs.setPresenceKBM(p);
+                cs.setId(d.getId());
+                cs.setStudent(new Student(d.getStudentId()));
+                cs.setNote(d.getNote());
+//                cs.setAttachment(d.getAttachment());
+                cs.setPresenceStatus(new PresenceStatus(d.getStatusId()));
+                if(cs.getId() == null) {
+                    p.getStudents().add(cs);
+                }
+            }
+            this.presenceKBMRepository.save(p);
+            vm.setId(p.getId());
+        });
+
+        return vm;
     }
 }
 

@@ -7,6 +7,7 @@ import java.util.Date;
 
 public interface ScheduleTeacherListQuery {
     public String getId();
+    public String getScheduleTeacherId();
     public LocalDate getScheduleDate();
     public Integer getDayId();
     public String getSubjectName();
@@ -16,5 +17,6 @@ public interface ScheduleTeacherListQuery {
     public String getInstitutionName();
     public String getClassRoom();
     public String getSex();
+    public String getPresenceId();
     public Instant getPresenceDate();
 }
