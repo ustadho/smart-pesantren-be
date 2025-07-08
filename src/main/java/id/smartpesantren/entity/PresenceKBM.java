@@ -71,6 +71,13 @@ public class PresenceKBM extends AbstractAuditingEntity {
     @JsonManagedReference
     private Set<PresenceKBMStudent> students = new HashSet<>();
 
+    public PresenceKBM() {
+    }
+
+    public PresenceKBM(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

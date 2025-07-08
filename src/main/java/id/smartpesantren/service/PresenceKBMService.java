@@ -68,6 +68,7 @@ public class PresenceKBMService {
         p.setPencapaian(vm.getPencapaian());
         p.setAttachment(vm.getAttachment());
         p.setPresenceStatus(new PresenceStatus(vm.getStatusId()));
+        p.setPertemuanKe(vm.getPertemuanKe());
         this.presenceKBMRepository.save(p);
 
         vm.setId(p.getId());

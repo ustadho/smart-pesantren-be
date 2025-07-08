@@ -21,6 +21,8 @@ public class PresenceKbmVMTeacher {
     private String fotoAbsen;
     private String pencapaian; //Tuntas
     private String attachment;
+    private Integer pertemuanKe;
+    private List<PresenceKbmVMStudent> students = new ArrayList<>();
     public String getId() {
         return id;
     }
@@ -115,5 +117,13 @@ public class PresenceKbmVMTeacher {
 
     public void setAttachment(String attachment) {
         this.attachment = attachment;
+    }
+
+    public Integer getPertemuanKe() {
+        return pertemuanKe;
+    }
+
+    public void setPertemuanKe(Integer pertemuanKe) {
+        this.pertemuanKe = pertemuanKe;
     }
 }

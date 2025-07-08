@@ -64,7 +64,7 @@ public interface PresenceKBMRepository extends JpaRepository<PresenceKBM, String
             "\tcoalesce(b.alpha, 0) as \"alphaCount\", \n" +
             "\tcoalesce(b.izin, 0) as \"izinCount\", \n" +
             "\tcoalesce(b.sakit, 0) as \"sakitCount\", \n" +
-            "\tcoalesce((select count(1) from ac_presence_kbm where apk.schedule_id = st.id)+1,1) \"pertemuanKe\"\n" +
+            "\tcoalesce(apk.pertemuan_ke, (select count(1) from ac_presence_kbm where schedule_id = st.id)+1) \"pertemuanKe\"\n" +
             "from ac_subject_schedule_teacher st \n" +
             "join ac_subject_schedule ass on ass.id = st.schedule_id \n" +
             "join ac_activity_time ata on ata.id = ass.activity_time_start_id \n" +
