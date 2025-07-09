@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pengasuhan/asrama-mapping")
@@ -45,8 +47,13 @@ public class AsramaMappingResource {
     }
 
     @GetMapping("/{id}")
-    public AsramaMappingVM findById(@PathVariable("id") String id) {
-        return repository.findByMappingId(id).map(service::toVM).orElse(null);
+    public ResponseEntity<AsramaMappingVM> findById(@PathVariable("id") String id) {
+//        return repository.findByMappingId(id).map(service::toVM).orElse(null);
+
+        Optional<AsramaMappingVM> asramaMappingVM = service.getAsramaMappingVMById(id);
+        return asramaMappingVM
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping

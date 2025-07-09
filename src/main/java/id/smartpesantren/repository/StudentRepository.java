@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentRepository extends JpaRepository<Student, String> {
     @Query("select new id.smartpesantren.dto.StudentDTO(a.id, a.nis, a.nisn, a.name, " +
@@ -66,4 +67,12 @@ public interface StudentRepository extends JpaRepository<Student, String> {
     @Query(value = "update ac_student set tahfidz_capaian_id=?1\n" +
             "where id=?2", nativeQuery = true)
     public void updateTahfidzCapaian(Integer tahfidzCapaianId, String studentId);
+
+    @Query("from Student s \n" +
+            "left join fetch s.father f " +
+            "left join fetch s.mother m " +
+            "left join fetch s.fatherGuardian fg " +
+            "left join fetch s.motherGuardian mg " +
+            "where s.id=?1")
+    Optional<Student> findByStudentId(String id);
 }

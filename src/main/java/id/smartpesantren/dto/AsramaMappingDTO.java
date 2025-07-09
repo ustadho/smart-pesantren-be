@@ -12,10 +12,25 @@ public class AsramaMappingDTO {
     private String pesantren;
     private String sex;
     private String sexLabel;
-    private Integer capacity;
-    private Integer studentCount;
+    private Short capacity;
+    private Long studentCount;
 
     public AsramaMappingDTO() {
+    }
+
+    public AsramaMappingDTO(String id, String academicYearId, String academicYearCode, String asramaId, String asramaName, String buildingName,
+                            String pesantren, Short capacity, String sex, Long studentCount) {
+        setId(id);
+        setAcademicYearId(academicYearId);
+        setAcademicYearCode(academicYearCode);
+        setAsramaId(asramaId);
+        setAsramaName(asramaName);
+        setBuildingName(buildingName);
+        setPesantren(pesantren);
+        setCapacity(capacity);
+        setSex(sex);
+        setSexLabel(sex.equalsIgnoreCase("M")? "Putra": "Putri");
+        setStudentCount(studentCount);
     }
 
     public AsramaMappingDTO(AsramaMapping a) {
@@ -26,10 +41,10 @@ public class AsramaMappingDTO {
         setAsramaName(a.getAsrama().getName());
         setBuildingName(a.getAsrama().getBuilding().getName());
         setPesantren(a.getAsrama().getPesantren().getName());
-        setCapacity(a.getAsrama().getCapacity().intValue());
+        setCapacity(a.getAsrama().getCapacity().shortValue());
         setSex(a.getAsrama().getPesantren().getSex());
         setSexLabel(a.getAsrama().getPesantren().getSex() == null? "": (a.getAsrama().getPesantren().getSex().equalsIgnoreCase("M")? "Putra": "Putri"));
-        setStudentCount(a.getStudents()==null? 0: a.getStudents().size());
+//        setStudentCount(a.getStudents()==null? 0: (Long)a.getStudents().size());
     }
 
     public String getId() {
@@ -104,19 +119,19 @@ public class AsramaMappingDTO {
         this.sexLabel = sexLabel;
     }
 
-    public Integer getCapacity() {
+    public Short getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(Integer capacity) {
+    public void setCapacity(Short capacity) {
         this.capacity = capacity;
     }
 
-    public Integer getStudentCount() {
+    public Long getStudentCount() {
         return studentCount;
     }
 
-    public void setStudentCount(Integer studentCount) {
+    public void setStudentCount(Long studentCount) {
         this.studentCount = studentCount;
     }
 }

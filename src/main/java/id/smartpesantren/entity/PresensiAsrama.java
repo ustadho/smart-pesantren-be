@@ -6,7 +6,9 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "presensi_asrama")
+@Table(name = "presensi_asrama", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"tanggal", "santri_id"})
+})
 public class PresensiAsrama extends AbstractAuditingEntity {
     @Id
     @GeneratedValue(generator = "system-uuid")

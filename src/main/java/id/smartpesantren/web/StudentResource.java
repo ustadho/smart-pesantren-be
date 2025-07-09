@@ -73,7 +73,7 @@ public class StudentResource {
 
     @GetMapping("/{id}")
     public StudentVM findById(@PathVariable("id") String id) {
-        Optional<Student> exist = repository.findById(id);
+        Optional<Student> exist = repository.findByStudentId(id);
         if(exist.isPresent()) {
             StudentVM vm = service.fromStudent(exist.get());
             return vm;

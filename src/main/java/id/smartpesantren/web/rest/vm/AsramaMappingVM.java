@@ -23,6 +23,18 @@ public class AsramaMappingVM {
 
     public List<AsramaMappingVMStudent> students = new ArrayList<>();
 
+    public AsramaMappingVM(String id, String asramaId, String asramaName, String academicYearId, String academicYearName, String description) {
+        this.id = id;
+        this.asramaId = asramaId;
+        this.asramaName = asramaName;
+        this.academicYearId = academicYearId;
+        this.academicYearName = academicYearName;
+        this.description = description;
+    }
+
+    public AsramaMappingVM() {
+    }
+
     public String getId() {
         return id;
     }

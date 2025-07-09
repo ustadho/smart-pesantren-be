@@ -14,6 +14,20 @@ public class AsramaMappingVMStudent {
     private Integer targetTahfidzId;
     private String targetTahfidzDesc;
 
+    public AsramaMappingVMStudent(String id, String studentId, String studentName, String studentNis, String studentNisn,
+                                  String joinYear, String attachment, String notes, Integer targetTahfidzId, String targetTahfidzDesc) {
+        this.id = id;
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.studentNis = studentNis;
+        this.studentNisn = studentNisn;
+        this.joinYear = joinYear;
+        this.attachment = attachment;
+        this.notes = notes;
+        this.targetTahfidzId = targetTahfidzId;
+        this.targetTahfidzDesc = targetTahfidzDesc;
+    }
+
     public AsramaMappingVMStudent() {
     }
 

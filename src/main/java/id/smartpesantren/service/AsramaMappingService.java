@@ -125,4 +125,21 @@ public class AsramaMappingService {
         students.sort(Comparator.comparing(AsramaMappingVMStudent::getStudentName));
         return vm;
     }
+
+    public Optional<AsramaMappingVM> getAsramaMappingVMById(String id) {
+        Optional<AsramaMappingVM> asramaMappingVM = repository.findAsramaMappingVMById(id);
+
+        asramaMappingVM.ifPresent(vm -> {
+            // Isi students
+            List<AsramaMappingVMStudent> studentsVM = repository.findStudentsVMByAsramaMappingId(id);
+            vm.setStudents(studentsVM);
+
+            // Isi musyrifIds
+            List<String> musyrifIds = repository.findMusyrifNamesByAsramaMappingId(id);
+            vm.setMusyrifIds(musyrifIds);
+        });
+
+        return asramaMappingVM;
+    }
+
 }

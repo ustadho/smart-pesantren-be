@@ -49,7 +49,7 @@ public class Student extends AbstractAuditingEntity implements Serializable {
     @Column(nullable = false)
     private String sex; //F: Female: M: Male
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pob_id")
     private City pob;
 
@@ -82,7 +82,7 @@ public class Student extends AbstractAuditingEntity implements Serializable {
     private String rt;
     private String rw;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sub_district_id")
     private SubDistrict subDistrict;
 
@@ -95,7 +95,7 @@ public class Student extends AbstractAuditingEntity implements Serializable {
     private Integer height; // Tinggi badan
     private Integer weight; // Berat badan
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "origin_school_id")
     private ReferalInstitution originSchool;
 
@@ -103,19 +103,19 @@ public class Student extends AbstractAuditingEntity implements Serializable {
     private String certificateNo; //No. Seri Ijazah (Jika Sudah Memiliki)
     private String skhunNo; //No. Seri SKHUN (Jika Memiliki)
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "father_id")
     private PersonData father;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mother_id")
     private PersonData mother;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "father_guardian_id")
     private PersonData fatherGuardian;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mother_guardian_id")
     private PersonData motherGuardian;
 
@@ -139,11 +139,11 @@ public class Student extends AbstractAuditingEntity implements Serializable {
     private String tinggalBersama;
 
     @JoinColumn(name = "tahfidz_target_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TahfidzKonversi tahfidzTarget;
 
     @JoinColumn(name = "tahfidz_capaian_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TahfidzKonversi tahfidzCapaian;
 
     public Student() {

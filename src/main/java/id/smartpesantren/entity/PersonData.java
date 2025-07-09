@@ -66,7 +66,7 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     // Place of Birth
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pob_city_id")
     private City pob;
 
@@ -100,7 +100,7 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     @Column(name = "permanent_postal_code")
     private String permanentPostalCode;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "permanent_subdistrict_id")
     private SubDistrict permanentSubDistrict;
 
@@ -112,7 +112,7 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
     @Column(name = "residential_rw")
     private String residentialRW;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "residential_subdistrict_id")
     private SubDistrict residentialSubDistrict;
 
@@ -124,7 +124,7 @@ public class PersonData extends AbstractAuditingEntity implements Serializable {
 
     private String faculty;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "referal_institution_id")
     private ReferalInstitution referalInstitution;
 
