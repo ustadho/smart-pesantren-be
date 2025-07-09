@@ -52,9 +52,31 @@ public class PresenceKBM extends AbstractAuditingEntity {
 
     private String attachment;
 
+    @Column(columnDefinition = "integer default 1")
+    private Integer pertemuanKe;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer studentCount;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer sakitCount;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer izinCount;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer alphaCount;
+
     @OneToMany(mappedBy = "presenceKBM", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<PresenceKBMStudent> students = new HashSet<>();
+
+    public PresenceKBM() {
+    }
+
+    public PresenceKBM(String id) {
+        this.id = id;
+    }
 
     public String getId() {
         return id;
@@ -158,5 +180,45 @@ public class PresenceKBM extends AbstractAuditingEntity {
 
     public void setAttachment(String attachment) {
         this.attachment = attachment;
+    }
+
+    public Integer getPertemuanKe() {
+        return pertemuanKe;
+    }
+
+    public void setPertemuanKe(Integer pertemuanKe) {
+        this.pertemuanKe = pertemuanKe;
+    }
+
+    public Integer getStudentCount() {
+        return studentCount;
+    }
+
+    public void setStudentCount(Integer studentCount) {
+        this.studentCount = studentCount;
+    }
+
+    public Integer getSakitCount() {
+        return sakitCount;
+    }
+
+    public void setSakitCount(Integer sakitCount) {
+        this.sakitCount = sakitCount;
+    }
+
+    public Integer getIzinCount() {
+        return izinCount;
+    }
+
+    public void setIzinCount(Integer izinCount) {
+        this.izinCount = izinCount;
+    }
+
+    public Integer getAlphaCount() {
+        return alphaCount;
+    }
+
+    public void setAlphaCount(Integer alphaCount) {
+        this.alphaCount = alphaCount;
     }
 }

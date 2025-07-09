@@ -45,4 +45,54 @@ public interface PresenceKBMStudentRepository extends JpaRepository<PresenceKBMS
                     ") s\n" +
                     "order by \"studentName\"", nativeQuery = true)
     public List<PresenceSubjectStudentDTO> findDetailStudentsBySubjectTeacherId(@Param("id") String id);
+
+    @Query(value = "with p as (\n" +
+            "\tselect apks.presence_id, apks.id presence_student_id, apks.student_id, apks.presence_status_id, coalesce(ps.name,'') presence_status_name, apks.note, apks.attachment, apks.created_date\n" +
+            "\tfrom ac_presence_kbm apk \n" +
+            "\tjoin ac_presence_kbm_student apks on apks.presence_id=apk.id\n" +
+            "\tleft join presence_status ps on ps.id=apks.presence_status_id\n" +
+            "\twhere apk.schedule_id=?1\n" +
+            "\tand cast(apk.presence_date as date)= cast(?2 as date)\n" +
+            "), s  as (\n" +
+            "\tselect count(case when p.presence_status_id=2 then p.presence_student_id else null end) izin_count, \n" +
+            "\tcount(case when p.presence_status_id=3 then p.presence_student_id else null end) sakit_count,\n" +
+            "\tcount(case when p.presence_status_id=0 then p.presence_student_id else null end) aplha_count\n" +
+            "\tfrom p\n" +
+            "), sm as (\n" +
+            "\tselect count(student_id) student_count from ac_subject_schedule_student where subject_schedule_teacher_id=?1\n" +
+            ")\n" +
+            "\n" +
+            "SELECT acrs.student_id \"studentId\", as2.name \"studentName\", as2.nis, as2.nisn, as2.photo, \n" +
+            "p.presence_student_id \"presenceId\", coalesce(p.presence_status_id, 1) \"presenceStatusId\", coalesce(p.presence_status_name, 'Hadir') \"presenceStatusName\", \n" +
+            "coalesce(p.note,'') note, p.attachment, p.created_date \"presenceDate\",\n" +
+            "coalesce(s.izin_count,0) \"izinCount\", coalesce(s.sakit_count,0) \"sakitCount\", coalesce(s.aplha_count,0) \"aplhaCount\"\n" +
+            "FROM ac_subject_schedule_teacher st \n" +
+            "join ac_subject_schedule ass on ass.id=st.schedule_id \n" +
+            "JOIN ac_class_room_student acrs on acrs.class_room_id = ass.class_room_id \n" +
+            "join ac_student as2 on as2.id=acrs.student_id \n" +
+            "left join p on p.student_id=acrs.student_id \n" +
+            "left join s on true\n" +
+            "left join sm on true\n" +
+            "where st.id=?1\n" +
+            "and coalesce(sm.student_count,0) = 0\n" +
+            "\n" +
+            "union all \n" +
+            "\n" +
+            "SELECT sss.student_id \"studentId\", as2.name \"studentName\", as2.nis, as2.nisn, as2.photo, \n" +
+            "p.presence_student_id \"presenceId\", coalesce(p.presence_status_id, 1) \"presenceStatusId\", coalesce(p.presence_status_name, 'Hadir') \"presenceStatusName\", \n" +
+            "coalesce(p.note,'') note, p.attachment, p.created_date \"presenceDate\",\n" +
+            "coalesce(s.izin_count,0) \"izinCount\", coalesce(s.sakit_count,0) \"sakitCount\", coalesce(s.aplha_count,0) \"aplhaCount\"\n" +
+            "FROM ac_subject_schedule_teacher st \n" +
+            "join ac_subject_schedule ass on ass.id=st.schedule_id \n" +
+            "JOIN ac_subject_schedule_student sss on sss.subject_schedule_teacher_id = st.id\n" +
+            "join ac_student as2 on as2.id=sss.student_id \n" +
+            "left join p on p.student_id=sss.student_id \n" +
+            "left join s on true\n" +
+            "left join sm on true\n" +
+            "where st.id=?1\n" +
+            "and coalesce(sm.student_count,0) > 0\n" +
+            "order by \"studentName\" ", nativeQuery = true)
+    public List<PresenceSubjectStudentDTO> findByDetailStudentByScheduleIdAndDate(String teacherScheduleId, String date);
+
+
 }
